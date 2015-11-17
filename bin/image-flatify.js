@@ -37,14 +37,14 @@ var optsParser = optionator({
       option: 'help',
       alias: 'h',
       type: 'Boolean',
-      default: false,
+      default: 'false',
       description: 'Help and usage instructions'
     },
     {
       option: 'version',
       alias: 'V',
       type: 'Boolean',
-      default: false,
+      default: 'false',
       description: 'Version number',
       example: '-V'
     },
@@ -52,21 +52,21 @@ var optsParser = optionator({
       option: 'verbose',
       alias: 'v',
       type: 'Boolean',
-      default: false,
+      default: 'false',
       description: 'Verbose output, will print which file is currently being processed'
     },
     {
       option: 'keep-in-directories',
       alias: 'K',
       type: 'Boolean',
-      default: false,
+      default: 'false',
       description: 'Keep the renamed image files in their original directory'
     },
     {
       option: 'delete-empty-directories',
       alias: 'D',
       type: 'Boolean',
-      default: true,
+      default: 'true',
       description: 'Delete any directories that become empty after processing'
     }
   ]
@@ -105,4 +105,4 @@ if (!fs.existsSync(directory)) {
 }
 
 // Fire away
-flatify(directory, {verbose: opts.verbose});
+flatify(directory, opts);
