@@ -6,8 +6,11 @@
   "main": "index.js",
   "bin": "bin/image-flatify.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run lint",
     "lint": "eslint -c .eslintrc index.js bin/image-flatify.js"
+  },
+  "engines": {
+    "node": ">=4.2.0"
   },
   "files": [
     "bin",
@@ -16,14 +19,23 @@
     "LICENSE"
   ],
   "keywords": [
-    "image"
+    "image",
+    "graphicmagick",
+    "imagemagick"
   ],
   "author": {
     "name": "Juga Paazmaya",
+    "email": "paazmaya@yahoo.com",
     "url": "http://paazmaya.fi"
   },
+  "bugs": {
+    "url": "https://github.com/paazmaya/image-flatify/issues"
+  },
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "gm": "^1.21.1",
+    "optionator": "^0.6.0"
+  },
   "devDependencies": {
     "eslint": "^1.9.0"
   }

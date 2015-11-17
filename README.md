@@ -12,9 +12,18 @@ but the filenames inside those folders are always the same.
 This tool will solve that step in the process when renaming and organising
 images.
 
+Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `4.2.0`.
+
+## Installation
+
 ```sh
 [sudo] npm install --global image-flatify
 ```
+
+Either ImageMagick or GraphicsMagick needs to be available via `PATH`
+environment, since it used used by [the `gm` module](https://www.npmjs.com/package/gm),
+which is used for retrieving the image creation time.
+
 
 ### License
 
