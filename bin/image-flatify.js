@@ -30,7 +30,7 @@ catch (error) {
 }
 
 var optsParser = optionator({
-  prepend: `${pkg.name} [options]`,
+  prepend: `${pkg.name} [options] <directory>`,
   append: `Version ${pkg.version}`,
   options: [
     {
@@ -56,11 +56,18 @@ var optsParser = optionator({
       description: 'Verbose output, will print which file is currently being processed'
     },
     {
-      option: 'recursive',
-      alias: 'r',
+      option: 'keep-in-directories',
+      alias: 'K',
       type: 'Boolean',
       default: false,
-      description: 'Recursive search of images in the previous and current directories'
+      description: 'Keep the renamed image files in their original directory'
+    },
+    {
+      option: 'delete-empty-directories',
+      alias: 'D',
+      type: 'Boolean',
+      default: true,
+      description: 'Delete any directories that become empty after processing'
     }
   ]
 });
@@ -72,15 +79,30 @@ try {
 }
 catch (error) {
   console.error(error.message);
-  process.exit();
+  process.exit(1);
 }
 
 if (opts.version) {
   console.log(pkg.version);
-  process.exit();
+  process.exit(0);
 }
 
 if (opts.help) {
   console.log(optsParser.generateHelp());
-  process.exit();
+  process.exit(0);
 }
+
+if (opts._.length !== 1) {
+	console.error('Directory not specified');
+  process.exit(1);
+}
+
+var directory = path.resolve(opts._[0]);
+
+if (!fs.existsSync(directory)) {
+	console.error(`Directory (${directory}) does not exist`);
+  process.exit(1);
+}
+
+// Fire away
+flatify(directory, {verbose: opts.verbose});

@@ -20,12 +20,14 @@ Please note that the minimum supported version of [Node.js](https://nodejs.org/e
 [sudo] npm install --global image-flatify
 ```
 
-Either ImageMagick or GraphicsMagick needs to be available via `PATH`
-environment, since it used used by [the `gm` module](https://www.npmjs.com/package/gm),
-which is used for retrieving the image creation time.
+## Command line options
+
+```sh
+image-flatify --help
+```
 
 
-### License
+## License
 
 Licensed under [the MIT license](LICENSE).
 

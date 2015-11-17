@@ -33,7 +33,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "gm": "^1.21.1",
+    "fecha": "^1.0.0",
+    "is-image": "^1.0.1",
     "optionator": "^0.6.0"
   },
   "devDependencies": {
