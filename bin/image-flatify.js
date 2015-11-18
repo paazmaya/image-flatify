@@ -37,14 +37,12 @@ var optsParser = optionator({
       option: 'help',
       alias: 'h',
       type: 'Boolean',
-      default: 'false',
       description: 'Help and usage instructions'
     },
     {
       option: 'version',
       alias: 'V',
       type: 'Boolean',
-      default: 'false',
       description: 'Version number',
       example: '-V'
     },
@@ -52,22 +50,25 @@ var optsParser = optionator({
       option: 'verbose',
       alias: 'v',
       type: 'Boolean',
-      default: 'false',
       description: 'Verbose output, will print which file is currently being processed'
+    },
+    {
+      option: 'dry-run',
+      alias: 'n',
+      type: 'Boolean',
+      description: 'Try it out without actually touching anything'
     },
     {
       option: 'keep-in-directories',
       alias: 'K',
       type: 'Boolean',
-      default: 'false',
       description: 'Keep the renamed image files in their original directory'
     },
     {
-      option: 'delete-empty-directories',
+      option: 'no-delete-empty-directories',
       alias: 'D',
       type: 'Boolean',
-      default: 'true',
-      description: 'Delete any directories that become empty after processing'
+      description: 'Do not delete any directories that become empty after processing'
     }
   ]
 });
@@ -105,4 +106,9 @@ if (!fs.existsSync(directory)) {
 }
 
 // Fire away
-flatify(directory, opts);
+flatify(directory, {
+  verbose: typeof opts.verbose === 'boolean' ? opts.verbose : false,
+  dryRun: typeof opts.dryRun === 'boolean' ? opts.dryRun : false,
+  keepInDirectories: typeof opts.keepInDirectories === 'boolean' ? opts.keepInDirectories : false,
+  noDeleteEmptyDirectories: typeof opts.noDeleteEmptyDirectories === 'boolean' ? opts.noDeleteEmptyDirectories : false,
+});

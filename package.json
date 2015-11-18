@@ -1,6 +1,6 @@
 {
   "name": "image-flatify",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Take a directory, search images recursively and rename as single flat directory with date based filenames",
   "homepage": "https://github.com/paazmaya/image-flatify",
   "main": "index.js",
@@ -20,13 +20,17 @@
   ],
   "keywords": [
     "image",
-    "graphicmagick",
-    "imagemagick"
+    "rename",
+    "organize"
   ],
   "author": {
     "name": "Juga Paazmaya",
     "email": "paazmaya@yahoo.com",
     "url": "http://paazmaya.fi"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:paazmaya/image-flatify.git"
   },
   "bugs": {
     "url": "https://github.com/paazmaya/image-flatify/issues"
