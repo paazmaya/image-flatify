@@ -11,16 +11,17 @@
 'use strict';
 
 const fs = require('fs'),
-	path = require('path');
+  path = require('path');
 
 const optionator = require('optionator');
 
 const flatify = require('../index');
 
-var pkg;
+let pkg;
 
 try {
-  var packageJson = fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8');
+  const packageJson = fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8');
+
   pkg = JSON.parse(packageJson);
 }
 catch (error) {
@@ -29,7 +30,7 @@ catch (error) {
   process.exit();
 }
 
-var optsParser = optionator({
+const optsParser = optionator({
   prepend: `${pkg.name} [options] <directory>`,
   append: `Version ${pkg.version}`,
   options: [
@@ -73,7 +74,7 @@ var optsParser = optionator({
   ]
 });
 
-var opts;
+let opts;
 
 try {
   opts = optsParser.parse(process.argv);
@@ -94,14 +95,14 @@ if (opts.help) {
 }
 
 if (opts._.length !== 1) {
-	console.error('Directory not specified');
+  console.error('Directory not specified');
   process.exit(1);
 }
 
-var directory = path.resolve(opts._[0]);
+const directory = path.resolve(opts._[0]);
 
 if (!fs.existsSync(directory)) {
-	console.error(`Directory (${directory}) does not exist`);
+  console.error(`Directory (${directory}) does not exist`);
   process.exit(1);
 }
 
@@ -110,5 +111,5 @@ flatify(directory, {
   verbose: typeof opts.verbose === 'boolean' ? opts.verbose : false,
   dryRun: typeof opts.dryRun === 'boolean' ? opts.dryRun : false,
   keepInDirectories: typeof opts.keepInDirectories === 'boolean' ? opts.keepInDirectories : false,
-  noDeleteEmptyDirectories: typeof opts.noDeleteEmptyDirectories === 'boolean' ? opts.noDeleteEmptyDirectories : false,
+  noDeleteEmptyDirectories: typeof opts.noDeleteEmptyDirectories === 'boolean' ? opts.noDeleteEmptyDirectories : false
 });
