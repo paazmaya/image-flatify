@@ -27,7 +27,7 @@ try {
 catch (error) {
   console.error('Could not read/parse "package.json", quite strange...');
   console.error(error);
-  process.exit();
+  process.exit(1);
 }
 
 const optsParser = optionator({
@@ -81,6 +81,7 @@ try {
 }
 catch (error) {
   console.error(error.message);
+  console.log(optsParser.generateHelp());
   process.exit(1);
 }
 

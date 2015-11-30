@@ -21,6 +21,8 @@ const INDEX_NOT_FOUND = -1;
  *
  * @param {string} directory  Directory
  * @param {object} options    {verbose: boolean}
+ *
+ * @returns {array} List of image with full path
  */
 const getImages = function _getImages (directory, options) {
   if (options.verbose) {
@@ -29,9 +31,9 @@ const getImages = function _getImages (directory, options) {
   let images = [];
 
   const items = fs.readdirSync(directory)
-    .map((item) => {
-      return path.join(directory, item);
-    });
+    .map((item) => (
+      path.join(directory, item)
+    ));
 
   items.forEach((item) => {
     const stat = fs.statSync(item);
@@ -50,14 +52,17 @@ const getImages = function _getImages (directory, options) {
 /**
  * Remove any empty directories that were touched during the operation
  *
+ * @param {string} directories  List of directories to remove if empty
+ * @param {object} options      {verbose: boolean}
+ *
  * @returns {void}
  */
 const cleanDirectories = function _cleanDirectories (directories, options) {
   // Sort by path length so that subdirectory is removed before its parent
 
-  const dirs = directories.sort((itemA, itemB) => {
-    return itemB.length - itemA.length;
-  });
+  const dirs = directories.sort((itemA, itemB) => (
+    itemB.length - itemA.length
+  ));
 
   dirs.forEach((item) => {
     const files = fs.readdirSync(item);
