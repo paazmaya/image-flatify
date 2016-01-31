@@ -30,7 +30,7 @@ image-flatify --help
 
 First thing to do is to file [an issue](https://github.com/paazmaya/image-foldarizer/issues).
 Then possibly open a Pull Request for solving the given issue.
-ESLint is used for linting the code, please use it by doing:
+[ESLint](http://eslint.org) is used for linting the code, please use it by doing:
 
 ```sh
 npm install
@@ -39,7 +39,10 @@ npm run lint
 
 ## Version history
 
-* `v0.1.0` (2015-11-18) Gets the job simply done, hence first release
+* `v0.2.0` (2016-02-01)
+    - Include other media files in addition to image files
+* `v0.1.0` (2015-11-18)
+    - Gets the job simply done, hence first release
 
 ## License
 

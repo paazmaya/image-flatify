@@ -2,6 +2,8 @@
  * image-flatify
  * https://github.com/paazmaya/image-flatify
  *
+ * Take a directory, search images recursively and rename as single flat directory with date based filenames
+ *
  * Copyright (c) Juga Paazmaya <paazmaya@yahoo.com> (http://paazmaya.fi)
  * Licensed under the MIT license
  */
@@ -12,9 +14,22 @@ const fs = require('fs'),
   path = require('path');
 
 const fecha = require('fecha'),
-  isImage = require('is-image');
+  imageExtensions = require('image-extensions');
 
 const INDEX_NOT_FOUND = -1;
+
+/**
+ * Check if the given file path has a suffix matching the
+ * available media file suffixes.
+ *
+ * @returns {bool} True in case the filepath is a media file according to the suffix
+ */
+const isMedia = function _isMedia (filepath) {
+  const list = imageExtensions.concat(['mp4', 'avi', 'mpg', 'mpeg']);
+
+	return list.indexOf(path.extname(filepath).slice(1).toLowerCase()) !== INDEX_NOT_FOUND;
+};
+
 
 /**
  * Read a directory, by returning all files with full filepath
@@ -38,7 +53,7 @@ const getImages = function _getImages (directory, options) {
   items.forEach((item) => {
     const stat = fs.statSync(item);
 
-    if (stat.isFile() && isImage(item)) {
+    if (stat.isFile() && isMedia(item)) {
       images.push(item);
     }
     else if (stat.isDirectory()) {

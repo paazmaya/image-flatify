@@ -4,6 +4,8 @@
  * image-flatify
  * https://github.com/paazmaya/image-flatify
  *
+ * Take a directory, search images recursively and rename as single flat directory with date based filenames
+ *
  * Copyright (c) Juga Paazmaya <paazmaya@yahoo.com> (http://paazmaya.fi)
  * Licensed under the MIT license
  */
