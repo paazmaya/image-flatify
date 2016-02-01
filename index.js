@@ -11,7 +11,8 @@
 'use strict';
 
 const fs = require('fs'),
-  path = require('path');
+  path = require('path'),
+  execSync = require('child_process').execSync;
 
 const fecha = require('fecha'),
   imageExtensions = require('image-extensions');
@@ -29,7 +30,6 @@ const isMedia = function _isMedia (filepath) {
 
 	return list.indexOf(path.extname(filepath).slice(1).toLowerCase()) !== INDEX_NOT_FOUND;
 };
-
 
 /**
  * Read a directory, by returning all files with full filepath
@@ -99,6 +99,40 @@ const cleanDirectories = function _cleanDirectories (directories, options) {
 };
 
 /**
+ * Get the best guess for the date when the picture was taken
+ *
+ * @param {string} filepath  Media file path
+ *
+ * @returns {string} Date formatted as a string
+ * @see http://www.graphicsmagick.org/GraphicsMagick.html#details-format
+ */
+const getDateString = function _getDate (filepath) {
+  const formatString = 'YYYY-MM-DD-HH-mm-ss',
+    cmd = `gm identify -format %[EXIF:DateTime] "${filepath}"`;
+
+  let exifDate = execSync(cmd, {
+    timeout: 2000,
+    encoding: 'utf8'
+  });
+
+  if (typeof exifDate === 'string' && exifDate !== 'unknown') {
+    exifDate = exifDate.trim().replace(/(\:|\s)/g, '-');
+  }
+  else {
+    // https://nodejs.org/api/fs.html#fs_stat_time_values
+    const stat = fs.statSync(filepath);
+
+    exifDate = fecha.format(stat.birthtime, formatString);
+
+    // In case birthtime is zero, then should not be trusted and used mtime instead
+    // const dateM = fecha.format(stat.mtime, formatString);
+    // const dateC = fecha.format(stat.ctime, formatString);
+  }
+
+  return exifDate;
+};
+
+/**
  * @param {string} directory  Root directory
  * @param {object} options    Boolean properties: verbose, dryRun, keepInDirectories, noDeleteEmptyDirectories
  *
@@ -114,31 +148,28 @@ module.exports = function flatify (directory, options) {
   const directories = [];
 
   files.forEach((filepath) => {
-    // https://nodejs.org/api/fs.html#fs_stat_time_values
-    const stat = fs.statSync(filepath),
-      ext = path.extname(filepath),
-      dirpath = path.dirname(filepath);
+    const ext = path.extname(filepath),
+      sourceDir = path.dirname(filepath);
 
-    if (directories.indexOf(dirpath) === INDEX_NOT_FOUND && dirpath !== directory) {
-      directories.push(dirpath);
-    }
-
-    // In case birthtime is zero, then should not be trusted and used mtime instead
-    const dateB = fecha.format(stat.birthtime, 'YYYY-MM-DD-HH-mm-ss-SSS');
-
-    /*
-    const dateM = fecha.format(stat.mtime, 'YYYY-MM-DD-HH-mm-ss-SSS');
-    const dateC = fecha.format(stat.ctime, 'YYYY-MM-DD-HH-mm-ss-SSS');
-
-    console.log('  ' + dateB);
-    console.log('  ' + dateM);
-    console.log('  ' + dateC);
-    */
-
-    let targetPath = path.join(directory, dateB + ext);
+    let destDir = directory,
+      counter = 0;
 
     if (options.keepInDirectories) {
-      targetPath = path.join(dirpath, dateB + ext);
+      destDir = sourceDir;
+    }
+
+    if (directories.indexOf(sourceDir) === INDEX_NOT_FOUND && sourceDir !== directory) {
+      directories.push(sourceDir);
+    }
+
+    const dateString = getDateString(filepath);
+
+    let targetPath = path.join(destDir, dateString + ext);
+
+    // Check for existing...
+    while (fs.existsSync(targetPath)) {
+      targetPath = path.join(destDir, dateString + '_' + counter + ext);
+      counter++;
     }
 
     if (options.verbose) {

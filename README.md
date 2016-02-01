@@ -16,6 +16,11 @@ Please note that the minimum supported version of [Node.js](https://nodejs.org/e
 
 ## Installation
 
+Make sure to have at least Node.js version `4.2.0` and
+[GraphicsMagick](http://www.graphicsmagick.org/).
+The latter can be installed for example for Mac via [Brew](http://brew.sh):
+`brew install graphicsmagick`.
+
 ```sh
 [sudo] npm install --global image-flatify
 ```
@@ -24,6 +29,30 @@ Please note that the minimum supported version of [Node.js](https://nodejs.org/e
 
 ```sh
 image-flatify --help
+```
+
+```sh
+image-flatify [options] <directory>
+
+  -h, --help                 Help and usage instructions
+  -V, --version              Version number
+  -v, --verbose              Verbose output, will print which file is currently being
+                             processed
+  -n, --dry-run              Try it out without actually touching anything
+  -K, --keep-in-directories  Keep the renamed image files in their original directory
+  -D, --no-delete-empty-directories  Do not delete any directories that become empty
+                                     after processing
+
+Version 0.2.0
+```
+
+### Example commands
+
+The following command shows how the renaming would be done in the current directory, but it is
+not done since the `--dry-run` option is used.
+
+```sh
+image-flatify -vn .
 ```
 
 ## Contributing
@@ -39,6 +68,8 @@ npm run lint
 
 ## Version history
 
+* `v0.3.0` (2016-02-01)
+  - Using GraphicsMagick for getting the creation date when possible
 * `v0.2.0` (2016-02-01)
     - Include other media files in addition to image files
 * `v0.1.0` (2015-11-18)
