@@ -16,10 +16,8 @@ Please note that the minimum supported version of [Node.js](https://nodejs.org/e
 
 ## Installation
 
-Make sure to have at least Node.js version `4.2.0` and
-[GraphicsMagick](http://www.graphicsmagick.org/).
-The latter can be installed for example for Mac via [Brew](http://brew.sh):
-`brew install graphicsmagick`.
+Make sure to have [GraphicsMagick](http://www.graphicsmagick.org/) available in the `PATH`.
+It can be installed for example for Mac via [Brew](http://brew.sh): `brew install graphicsmagick`.
 
 ```sh
 [sudo] npm install --global image-flatify
@@ -68,8 +66,10 @@ npm run lint
 
 ## Version history
 
+* `v0.3.1` (2016-02-03)
+    - Reduce linting warnings while separating logic slightly
 * `v0.3.0` (2016-02-01)
-  - Using GraphicsMagick for getting the creation date when possible
+    - Using GraphicsMagick for getting the creation date when possible
 * `v0.2.0` (2016-02-01)
     - Include other media files in addition to image files
 * `v0.1.0` (2015-11-18)

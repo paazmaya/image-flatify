@@ -23,6 +23,8 @@ const INDEX_NOT_FOUND = -1;
  * Check if the given file path has a suffix matching the
  * available media file suffixes.
  *
+ * @param {string} filepath  Absolute file path
+ *
  * @returns {bool} True in case the filepath is a media file according to the suffix
  */
 const isMedia = function _isMedia (filepath) {
@@ -133,6 +135,32 @@ const getDateString = function _getDate (filepath) {
 };
 
 /**
+ * Get the full file path for the target file, based on the
+ * destination directory, while checking that the resulting path
+ * does not exist.
+ *
+ * @param {string} destDir  Destination directory
+ * @param {string} filepath  Original file path
+ *
+ * @returns {string} The full target path of the file
+ */
+const getTargetPath = function _getTargetPath (destDir, filepath) {
+  const dateString = getDateString(filepath),
+    ext = path.extname(filepath);
+
+  let targetPath = path.join(destDir, dateString + ext),
+    counter = 0;
+
+  // Check for existing...
+  while (fs.existsSync(targetPath)) {
+    targetPath = path.join(destDir, `${dateString}_${counter}${ext}`);
+    ++counter;
+  }
+
+  return targetPath;
+};
+
+/**
  * @param {string} directory  Root directory
  * @param {object} options    Boolean properties: verbose, dryRun, keepInDirectories, noDeleteEmptyDirectories
  *
@@ -148,11 +176,9 @@ module.exports = function flatify (directory, options) {
   const directories = [];
 
   files.forEach((filepath) => {
-    const ext = path.extname(filepath),
-      sourceDir = path.dirname(filepath);
+    const sourceDir = path.dirname(filepath);
 
-    let destDir = directory,
-      counter = 0;
+    let destDir = directory;
 
     if (options.keepInDirectories) {
       destDir = sourceDir;
@@ -162,15 +188,7 @@ module.exports = function flatify (directory, options) {
       directories.push(sourceDir);
     }
 
-    const dateString = getDateString(filepath);
-
-    let targetPath = path.join(destDir, dateString + ext);
-
-    // Check for existing...
-    while (fs.existsSync(targetPath)) {
-      targetPath = path.join(destDir, dateString + '_' + counter + ext);
-      counter++;
-    }
+    const targetPath = getTargetPath(destDir, filepath);
 
     if (options.verbose) {
       console.log(`Moving ${filepath} --> ${targetPath}`);
