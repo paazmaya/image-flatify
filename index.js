@@ -28,7 +28,7 @@ const INDEX_NOT_FOUND = -1;
  * @returns {bool} True in case the filepath is a media file according to the suffix
  */
 const isMedia = function _isMedia (filepath) {
-  const list = imageExtensions.concat(['mp4', 'avi', 'mpg', 'mpeg']);
+  const list = imageExtensions.concat(['mp4', 'avi', 'mpg', 'mpeg', 'mts']);
 
 	return list.indexOf(path.extname(filepath).slice(1).toLowerCase()) !== INDEX_NOT_FOUND;
 };
@@ -110,25 +110,53 @@ const cleanDirectories = function _cleanDirectories (directories, options) {
  */
 const getDateString = function _getDate (filepath) {
   const formatString = 'YYYY-MM-DD-HH-mm-ss',
-    cmd = `gm identify -format %[EXIF:DateTime] "${filepath}"`;
+    cmdIdentify = `gm identify -format %[EXIF:DateTime] "${filepath}"`,
+    cmdMediainfo = `mediainfo -f "${filepath}" | grep "File last modification date (local)"`;
 
-  let exifDate = execSync(cmd, {
-    timeout: 2000,
-    encoding: 'utf8'
-  });
+  let exifDate;
+
+  try {
+    // gm identify: No decode delegate for this image format (00000.MTS).
+    // gm identify: Request did not return an image.
+    exifDate = execSync(cmdIdentify, {
+      timeout: 2000,
+      encoding: 'utf8'
+    });
+  }
+  catch (error) {
+    console.log('Using GraphicsMagick failed');
+  }
 
   if (typeof exifDate === 'string' && exifDate !== 'unknown') {
     exifDate = exifDate.trim().replace(/(\:|\s)/g, '-');
   }
   else {
-    // https://nodejs.org/api/fs.html#fs_stat_time_values
-    const stat = fs.statSync(filepath);
+    try {
+      let mediaDate = execSync(cmdMediainfo, {
+        timeout: 2000,
+        encoding: 'utf8'
+      });
+      console.log('mediaDate: ' + mediaDate.indexOf(/\d/));
+      exifDate = mediaDate.substr(mediaDate.indexOf(/\d/));
+      console.log('exifDate: ' + exifDate);
+    }
+    catch (error) {
+      console.log('Using Mediainfo failed');
+    }
+    if (typeof exifDate === 'string' && exifDate !== 'unknown') {
+      exifDate = exifDate.trim().replace(/(\:|\s)/g, '-');
+    }
+    else {
 
-    exifDate = fecha.format(stat.birthtime, formatString);
+      // https://nodejs.org/api/fs.html#fs_stat_time_values
+      const stat = fs.statSync(filepath);
 
-    // In case birthtime is zero, then should not be trusted and used mtime instead
-    // const dateM = fecha.format(stat.mtime, formatString);
-    // const dateC = fecha.format(stat.ctime, formatString);
+      exifDate = fecha.format(stat.birthtime, formatString);
+
+      // In case birthtime is zero, then should not be trusted and used mtime instead
+      // const dateM = fecha.format(stat.mtime, formatString);
+      // const dateC = fecha.format(stat.ctime, formatString);
+    }
   }
 
   return exifDate;
