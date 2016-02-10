@@ -28,7 +28,7 @@ const INDEX_NOT_FOUND = -1;
  * @returns {bool} True in case the filepath is a media file according to the suffix
  */
 const isMedia = function _isMedia (filepath) {
-  const list = imageExtensions.concat(['mp4', 'avi', 'mpg', 'mpeg', 'mts']),
+  const list = imageExtensions.concat(['mp4', 'avi', 'mpg', 'mpeg', 'mts', 'mov']),
     ext = path.extname(filepath).slice(1).toLowerCase();
 
 	return list.indexOf(ext) !== INDEX_NOT_FOUND;
