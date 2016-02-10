@@ -114,7 +114,7 @@ const getDateStringMediainfo = function _getDateStringMediainfo (filepath) {
   let possible = false;
 
   try {
-    let mediaDate = execSync(cmdMediainfo, {
+    const mediaDate = execSync(cmdMediainfo, {
       timeout: 2000,
       encoding: 'utf8'
     });
@@ -192,7 +192,7 @@ const getDateString = function _getDateString (filepath) {
  */
 const getTargetPath = function _getTargetPath (destDir, filepath) {
   const dateString = getDateString(filepath),
-    ext = path.extname(filepath);
+    ext = path.extname(filepath).toLowerCase();
 
   let targetPath = path.join(destDir, dateString + ext),
     counter = 0;
