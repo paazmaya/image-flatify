@@ -28,9 +28,10 @@ const INDEX_NOT_FOUND = -1;
  * @returns {bool} True in case the filepath is a media file according to the suffix
  */
 const isMedia = function _isMedia (filepath) {
-  const list = imageExtensions.concat(['mp4', 'avi', 'mpg', 'mpeg', 'mts']);
+  const list = imageExtensions.concat(['mp4', 'avi', 'mpg', 'mpeg', 'mts']),
+    ext = path.extname(filepath).slice(1).toLowerCase();
 
-	return list.indexOf(path.extname(filepath).slice(1).toLowerCase()) !== INDEX_NOT_FOUND;
+	return list.indexOf(ext) !== INDEX_NOT_FOUND;
 };
 
 /**
@@ -101,6 +102,35 @@ const cleanDirectories = function _cleanDirectories (directories, options) {
 };
 
 /**
+ * Get the best guess for the date when the video was taken
+ *
+ * @param {string} filepath  Media file path
+ *
+ * @returns {string|bool} Date formatted as a string or false when no match
+ */
+const getDateStringMediainfo = function _getDateStringMediainfo (filepath) {
+  const cmdMediainfo = `mediainfo -f "${filepath}" | grep date`;
+
+  let possible = false;
+
+  try {
+    let mediaDate = execSync(cmdMediainfo, {
+      timeout: 2000,
+      encoding: 'utf8'
+    });
+
+    const lines = mediaDate.split('\n');
+
+    possible = lines.length > 0 ? lines[0].replace(/[a-zA-Z]+/g, '').trim().replace(/^[\s\:]+/g, '') : false;
+  }
+  catch (error) {
+    console.log('Using Mediainfo failed');
+  }
+
+  return possible;
+};
+
+/**
  * Get the best guess for the date when the picture was taken
  *
  * @param {string} filepath  Media file path
@@ -108,10 +138,9 @@ const cleanDirectories = function _cleanDirectories (directories, options) {
  * @returns {string} Date formatted as a string
  * @see http://www.graphicsmagick.org/GraphicsMagick.html#details-format
  */
-const getDateString = function _getDate (filepath) {
+const getDateString = function _getDateString (filepath) {
   const formatString = 'YYYY-MM-DD-HH-mm-ss',
-    cmdIdentify = `gm identify -format %[EXIF:DateTime] "${filepath}"`,
-    cmdMediainfo = `mediainfo -f "${filepath}" | grep "File last modification date (local)"`;
+    cmdIdentify = `gm identify -format %[EXIF:DateTime] "${filepath}"`;
 
   let exifDate;
 
@@ -127,27 +156,16 @@ const getDateString = function _getDate (filepath) {
     console.log('Using GraphicsMagick failed');
   }
 
-  if (typeof exifDate === 'string' && exifDate !== 'unknown') {
+  if (typeof exifDate === 'string' && exifDate.match(/^\d+/)) {
     exifDate = exifDate.trim().replace(/(\:|\s)/g, '-');
   }
   else {
-    try {
-      let mediaDate = execSync(cmdMediainfo, {
-        timeout: 2000,
-        encoding: 'utf8'
-      });
-      console.log('mediaDate: ' + mediaDate.indexOf(/\d/));
-      exifDate = mediaDate.substr(mediaDate.indexOf(/\d/));
-      console.log('exifDate: ' + exifDate);
-    }
-    catch (error) {
-      console.log('Using Mediainfo failed');
-    }
-    if (typeof exifDate === 'string' && exifDate !== 'unknown') {
+    exifDate = getDateStringMediainfo(filepath);
+
+    if (typeof exifDate === 'string' && exifDate.match(/^\d+/)) {
       exifDate = exifDate.trim().replace(/(\:|\s)/g, '-');
     }
     else {
-
       // https://nodejs.org/api/fs.html#fs_stat_time_values
       const stat = fs.statSync(filepath);
 

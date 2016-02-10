@@ -16,8 +16,15 @@ Please note that the minimum supported version of [Node.js](https://nodejs.org/e
 
 ## Installation
 
-Make sure to have [GraphicsMagick](http://www.graphicsmagick.org/) available in the `PATH`.
-It can be installed for example for Mac via [Brew](http://brew.sh): `brew install graphicsmagick`.
+Make sure to have [GraphicsMagick](http://www.graphicsmagick.org/) and [Mediainfo]()
+available in the `PATH`.
+They can be installed for example for Mac via [Brew](http://brew.sh):
+
+```sh
+brew install graphicsmagick mediainfo
+```
+
+Now install the command line tool globally, which might need increased privileges:
 
 ```sh
 [sudo] npm install --global image-flatify
@@ -66,6 +73,8 @@ npm run lint
 
 ## Version history
 
+* `v0.4.0` (2016-02-10)
+    - Trying to use `mediainfo` when GraphicsMagick does not provide any reasonable value
 * `v0.3.1` (2016-02-03)
     - Reduce linting warnings while separating logic slightly
 * `v0.3.0` (2016-02-01)
