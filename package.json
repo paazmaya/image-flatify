@@ -38,13 +38,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "fecha": "^1.2.2",
+    "fecha": "^2.0.0",
     "image-extensions": "^1.1.0",
     "optionator": "^0.8.1"
   },
   "devDependencies": {
     "codecov": "^1.0.1",
-    "eslint": "^2.0.0",
+    "eslint": "^2.2.0",
     "istanbul": "^0.4.2",
     "tape": "^4.4.0"
   }
