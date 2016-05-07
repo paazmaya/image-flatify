@@ -73,6 +73,8 @@ npm run lint
 
 ## Version history
 
+* `v0.5.0` (2016-05)
+  - Using shared ESLint configuration #4
 * `v0.4.0` (2016-02-10)
     - Trying to use `mediainfo` when GraphicsMagick does not provide any reasonable value
 * `v0.3.1` (2016-02-03)
