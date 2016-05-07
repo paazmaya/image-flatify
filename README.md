@@ -2,6 +2,9 @@
 
 > Take a directory, search image files recursively and rename them based on their creation time, producing a flat directory
 
+[![Build Status](https://travis-ci.org/paazmaya/image-flatify.svg?branch=master)](https://travis-ci.org/paazmaya/image-flatify)
+[![codecov](https://codecov.io/gh/paazmaya/image-flatify/branch/master/graph/badge.svg)](https://codecov.io/gh/paazmaya/image-flatify)
+
 Got so fed up with mobile devices creating image files named `DCIM_01.JPG`
 or similar, hence having the same filenames after importing them to my
 computer.
