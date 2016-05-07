@@ -31,7 +31,7 @@ const isMedia = function _isMedia (filepath) {
   const list = imageExtensions.concat(['mp4', 'avi', 'mpg', 'mpeg', 'mts', 'mov']),
     ext = path.extname(filepath).slice(1).toLowerCase();
 
-	return list.indexOf(ext) !== INDEX_NOT_FOUND;
+  return list.indexOf(ext) !== INDEX_NOT_FOUND;
 };
 
 /**
@@ -49,9 +49,9 @@ const getImages = function _getImages (directory, options) {
   let images = [];
 
   const items = fs.readdirSync(directory)
-    .map((item) => (
+    .map((item) =>
       path.join(directory, item)
-    ));
+    );
 
   items.forEach((item) => {
     const stat = fs.statSync(item);
@@ -78,9 +78,9 @@ const getImages = function _getImages (directory, options) {
 const cleanDirectories = function _cleanDirectories (directories, options) {
   // Sort by path length so that subdirectory is removed before its parent
 
-  const dirs = directories.sort((itemA, itemB) => (
+  const dirs = directories.sort((itemA, itemB) =>
     itemB.length - itemA.length
-  ));
+  );
 
   dirs.forEach((item) => {
     const files = fs.readdirSync(item);

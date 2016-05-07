@@ -19,7 +19,7 @@ Please note that the minimum supported version of [Node.js](https://nodejs.org/e
 
 ## Installation
 
-Make sure to have [GraphicsMagick](http://www.graphicsmagick.org/) and [Mediainfo]()
+Make sure to have [GraphicsMagick](http://www.graphicsmagick.org/) and [Mediainfo](https://mediaarea.net/en/MediaInfo)
 available in the `PATH`.
 They can be installed for example for Mac via [Brew](http://brew.sh):
 
@@ -65,13 +65,18 @@ image-flatify -vn .
 
 ## Contributing
 
-First thing to do is to file [an issue](https://github.com/paazmaya/image-foldarizer/issues).
+First thing to do is to file [an issue](https://github.com/paazmaya/image-flatify/issues).
+
+[Please refer to a GitHub blog post on how to create somewhat perfect pull request.](https://github.com/blog/1943-how-to-write-the-perfect-pull-request "How to write the perfect pull request")
+
 Then possibly open a Pull Request for solving the given issue.
-[ESLint](http://eslint.org) is used for linting the code, please use it by doing:
+[ESLint](http://eslint.org) is used for linting the code and unit testing is done with [tape](https://github.com/substack/tape).
+
+Execute them by running:
 
 ```sh
 npm install
-npm run lint
+npm test
 ```
 
 ## Version history
