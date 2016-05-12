@@ -17,7 +17,8 @@ const fs = require('fs'),
 const fecha = require('fecha'),
   imageExtensions = require('image-extensions');
 
-const INDEX_NOT_FOUND = -1;
+const INDEX_NOT_FOUND = -1,
+  EXTENSIONS = imageExtensions.concat(['mp4', 'avi', 'mpg', 'mpeg', 'mts', 'mov']);
 
 /**
  * Check if the given file path has a suffix matching the
@@ -28,10 +29,9 @@ const INDEX_NOT_FOUND = -1;
  * @returns {bool} True in case the filepath is a media file according to the suffix
  */
 const isMedia = function _isMedia (filepath) {
-  const list = imageExtensions.concat(['mp4', 'avi', 'mpg', 'mpeg', 'mts', 'mov']),
-    ext = path.extname(filepath).slice(1).toLowerCase();
+  const ext = path.extname(filepath).slice(1).toLowerCase();
 
-  return list.indexOf(ext) !== INDEX_NOT_FOUND;
+  return EXTENSIONS.indexOf(ext) !== INDEX_NOT_FOUND;
 };
 
 /**
@@ -237,7 +237,9 @@ module.exports = function flatify (directory, options) {
     const targetPath = getTargetPath(destDir, filepath);
 
     if (options.verbose) {
-      console.log(`Moving ${filepath} --> ${targetPath}`);
+      const inPath = path.relative(filepath),
+        outPath = path.relative(targetPath);
+      console.log(`Moving ${inPath} --> ${outPath}`);
     }
     if (!options.dryRun) {
       fs.renameSync(filepath, targetPath);
