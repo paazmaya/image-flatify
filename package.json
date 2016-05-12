@@ -1,6 +1,6 @@
 {
   "name": "image-flatify",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Take a directory, search images recursively and rename as single flat directory with date based filenames",
   "homepage": "https://github.com/paazmaya/image-flatify",
   "main": "index.js",

@@ -51,7 +51,7 @@ image-flatify [options] <directory>
   -D, --no-delete-empty-directories  Do not delete any directories that become empty
                                      after processing
 
-Version 0.2.0
+Version 0.5.0
 ```
 
 ### Example commands
@@ -81,8 +81,9 @@ npm test
 
 ## Version history
 
-* `v0.5.0` (2016-05)
+* `v0.5.0` (2016-05-12)
   - Using shared ESLint configuration #4
+  - `.mov` extension also included
 * `v0.4.0` (2016-02-10)
     - Trying to use `mediainfo` when GraphicsMagick does not provide any reasonable value
 * `v0.3.1` (2016-02-03)
