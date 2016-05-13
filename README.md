@@ -81,9 +81,10 @@ npm test
 
 ## Version history
 
-* `v0.6.0` (2016-)
+* `v0.6.0` (2016-05-)
   - Show only relative path when verbose #7
   - Option to lowercase file extension #6
+  - Total number of renamed files #5
 * `v0.5.0` (2016-05-12)
   - Using shared ESLint configuration #4
   - `.mov` extension also included

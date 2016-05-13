@@ -215,11 +215,11 @@ const getTargetPath = function _getTargetPath (destDir, filepath, lowercaseSuffi
 /**
  * @param {string} directory  Root directory
  * @param {object} options    Set of options that are all boolean
- * @param {boolean} options.verbose
- * @param {boolean} options.dryRun
- * @param {boolean} options.keepInDirectories
- * @param {boolean} options.lowercaseSuffix
- * @param {boolean} options.noDeleteEmptyDirectories
+ * @param {boolean} options.verbose Print out current process
+ * @param {boolean} options.dryRun  Do not touch any files, just show what could be done
+ * @param {boolean} options.keepInDirectories Rename in the original folders
+ * @param {boolean} options.lowercaseSuffix   Lowercase the resulting file suffix
+ * @param {boolean} options.noDeleteEmptyDirectories Do not delete any directories, even when empty
  *
  * @returns {void}
  */
@@ -230,6 +230,9 @@ module.exports = function flatify (directory, options) {
 
   // List of directories that were touched during the renames
   const directories = [];
+
+  // Counter for files that were moved/renamed/touched
+  let movedFiles = 0;
 
   files.forEach((filepath) => {
     const sourceDir = path.dirname(filepath);
@@ -253,12 +256,15 @@ module.exports = function flatify (directory, options) {
     }
     if (!options.dryRun) {
       fs.renameSync(filepath, targetPath);
+      ++movedFiles;
     }
   });
 
   if (!options.noDeleteEmptyDirectories && !options.keepInDirectories) {
     cleanDirectories(directories, options);
   }
+
+  console.log(`Moved total of ${movedFiles} image files`);
 };
 
 // Exposed for testing
