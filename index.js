@@ -250,8 +250,8 @@ module.exports = function flatify (directory, options) {
     const targetPath = getTargetPath(destDir, filepath, options.lowercaseSuffix);
 
     if (options.verbose) {
-      const inPath = path.relative(filepath),
-        outPath = path.relative(targetPath);
+      const inPath = path.relative(directory, filepath),
+        outPath = path.relative(directory, targetPath);
       console.log(`Moving ${inPath} --> ${outPath}`);
     }
     if (!options.dryRun) {
