@@ -44,14 +44,13 @@ image-flatify [options] <directory>
 
   -h, --help                 Help and usage instructions
   -V, --version              Version number
-  -v, --verbose              Verbose output, will print which file is currently being
-                             processed
+  -v, --verbose              Verbose output, will print which file is currently being processed
   -n, --dry-run              Try it out without actually touching anything
   -K, --keep-in-directories  Keep the renamed image files in their original directory
-  -D, --no-delete-empty-directories  Do not delete any directories that become empty
-                                     after processing
+  -l, --lowercase-suffix     Lowercase the resulting file suffixes, or use as is by default
+  -D, --no-delete-empty-directories  Do not delete any directories that become empty after processing
 
-Version 0.5.0
+Version 0.6.0
 ```
 
 ### Example commands
@@ -81,7 +80,7 @@ npm test
 
 ## Version history
 
-* `v0.6.0` (2016-05-)
+* `v0.6.0` (2016-05-13)
   - Show only relative path when verbose #7
   - Option to lowercase file extension #6
   - Total number of renamed files #5
