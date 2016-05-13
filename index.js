@@ -187,12 +187,18 @@ const getDateString = function _getDateString (filepath) {
  *
  * @param {string} destDir  Destination directory
  * @param {string} filepath  Original file path
+ * @param {boolean} lowercaseSuffix  Should the suffix be in lowercase
  *
  * @returns {string} The full target path of the file
  */
-const getTargetPath = function _getTargetPath (destDir, filepath) {
-  const dateString = getDateString(filepath),
-    ext = path.extname(filepath).toLowerCase();
+const getTargetPath = function _getTargetPath (destDir, filepath, lowercaseSuffix) {
+  const dateString = getDateString(filepath);
+
+  let ext = path.extname(filepath);
+
+  if (lowercaseSuffix) {
+    ext = ext.toLowerCase();
+  }
 
   let targetPath = path.join(destDir, dateString + ext),
     counter = 0;
@@ -208,7 +214,12 @@ const getTargetPath = function _getTargetPath (destDir, filepath) {
 
 /**
  * @param {string} directory  Root directory
- * @param {object} options    Boolean properties: verbose, dryRun, keepInDirectories, noDeleteEmptyDirectories
+ * @param {object} options    Set of options that are all boolean
+ * @param {boolean} options.verbose
+ * @param {boolean} options.dryRun
+ * @param {boolean} options.keepInDirectories
+ * @param {boolean} options.lowercaseSuffix
+ * @param {boolean} options.noDeleteEmptyDirectories
  *
  * @returns {void}
  */
@@ -216,7 +227,6 @@ module.exports = function flatify (directory, options) {
   const files = getImages(directory, options);
 
   console.log(`Found total of ${files.length} image files to be processed`);
-  console.log(options);
 
   // List of directories that were touched during the renames
   const directories = [];
@@ -234,7 +244,7 @@ module.exports = function flatify (directory, options) {
       directories.push(sourceDir);
     }
 
-    const targetPath = getTargetPath(destDir, filepath);
+    const targetPath = getTargetPath(destDir, filepath, options.lowercaseSuffix);
 
     if (options.verbose) {
       const inPath = path.relative(filepath),
@@ -250,3 +260,11 @@ module.exports = function flatify (directory, options) {
     cleanDirectories(directories, options);
   }
 };
+
+// Exposed for testing
+module.exports._isMedia = isMedia;
+module.exports._getImages = getImages;
+module.exports._cleanDirectories = cleanDirectories;
+module.exports._getDateStringMediainfo = getDateStringMediainfo;
+module.exports._getDateString = getDateString;
+module.exports._getTargetPath = getTargetPath;

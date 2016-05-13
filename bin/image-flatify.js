@@ -68,6 +68,12 @@ const optsParser = optionator({
       description: 'Keep the renamed image files in their original directory'
     },
     {
+      option: 'lowercase-suffix',
+      alias: 'l',
+      type: 'Boolean',
+      description: 'Lowercase the resulting file suffixes, or use as is by default'
+    },
+    {
       option: 'no-delete-empty-directories',
       alias: 'D',
       type: 'Boolean',
@@ -114,5 +120,6 @@ flatify(directory, {
   verbose: typeof opts.verbose === 'boolean' ? opts.verbose : false,
   dryRun: typeof opts.dryRun === 'boolean' ? opts.dryRun : false,
   keepInDirectories: typeof opts.keepInDirectories === 'boolean' ? opts.keepInDirectories : false,
+  lowercaseSuffix: typeof opts.lowercaseSuffix === 'boolean' ? opts.lowercaseSuffix : false,
   noDeleteEmptyDirectories: typeof opts.noDeleteEmptyDirectories === 'boolean' ? opts.noDeleteEmptyDirectories : false
 });
