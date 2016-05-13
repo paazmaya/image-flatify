@@ -80,6 +80,8 @@ npm test
 
 ## Version history
 
+* `v0.6.1` (2016-05-13)
+  - Must be relative to the given directory
 * `v0.6.0` (2016-05-13)
   - Show only relative path when verbose #7
   - Option to lowercase file extension #6
