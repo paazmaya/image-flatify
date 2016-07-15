@@ -6,7 +6,7 @@
  *
  * Take a directory, search images recursively and rename as single flat directory with date based filenames
  *
- * Copyright (c) Juga Paazmaya <paazmaya@yahoo.com> (http://paazmaya.fi)
+ * Copyright (c) Juga Paazmaya <paazmaya@yahoo.com> (https://paazmaya.fi)
  * Licensed under the MIT license
  */
 
@@ -22,7 +22,7 @@ const flatify = require('../index');
 let pkg;
 
 try {
-  const packageJson = fs.readFileSync(path.join(__dirname, '../package.json'), 'utf8');
+  const packageJson = fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8');
 
   pkg = JSON.parse(packageJson);
 }
