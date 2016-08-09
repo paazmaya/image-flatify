@@ -87,7 +87,7 @@ Please make sure it is over 90% at all times.
 
 * `v0.6.2` (2016-08-09)
     - Move code coverage from `instanbul` to `nyc`
-    - Test also in Windows, at [AppVeyor](https://ci.appveyor.com/project/paazmaya/image-foldarizer)
+    - Test also in Windows, at [AppVeyor](https://ci.appveyor.com/project/paazmaya/image-flatify)
     - Testing command line interface
 * `v0.6.1` (2016-05-13)
   - Must be relative to the given directory
