@@ -70,17 +70,25 @@ First thing to do is to file [an issue](https://github.com/paazmaya/image-flatif
 [Please refer to a GitHub blog post on how to create somewhat perfect pull request.](https://github.com/blog/1943-how-to-write-the-perfect-pull-request "How to write the perfect pull request")
 
 Then possibly open a Pull Request for solving the given issue.
-[ESLint](http://eslint.org) is used for linting the code and unit testing is done with [tape](https://github.com/substack/tape).
+[ESLint](http://eslint.org) is used for linting the code, which can be executed by running;
 
-Execute them by running:
 
 ```sh
 npm install
-npm test
+npm run lint
 ```
+
+Unit tests are written with [`tape`](https://github.com/substack/tape) and can be executed with `npm test`.
+Code coverage is inspected with [`nyc`](https://github.com/istanbuljs/nyc) and
+can be executed with `npm run coverage` after running `npm test`.
+Please make sure it is over 90% at all times.
 
 ## Version history
 
+* `v0.6.2` (2016-08-09)
+    - Move code coverage from `instanbul` to `nyc`
+    - Test also in Windows, at [AppVeyor](https://ci.appveyor.com/project/paazmaya/image-foldarizer)
+    - Testing command line interface
 * `v0.6.1` (2016-05-13)
   - Must be relative to the given directory
 * `v0.6.0` (2016-05-13)
