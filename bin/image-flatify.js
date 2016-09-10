@@ -72,7 +72,7 @@ const optsParser = optionator({
       alias: 'p',
       type: 'String',
       default: '',
-      description: ''
+      description: 'Prefix for the resulting filename, default empty'
     },
     {
       option: 'lowercase-suffix',

@@ -13,20 +13,29 @@ computer.
 One annoying example is Sony Xperia which saves burst images in separate folders
 but the filenames inside those folders are always the same.
 
-This tool will solve that step in the process when renaming and organising
-images.
+This tool will solve that step in the process when renaming and organising images.
 
 Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `4.2.0`.
 
 ## Installation
 
-Make sure to have [GraphicsMagick](http://www.graphicsmagick.org/) and [Mediainfo](https://mediaarea.net/en/MediaInfo)
-available in the `PATH`.
-They can be installed for example for Mac via [Brew](http://brew.sh):
+Make sure to have both [GraphicsMagick](http://www.graphicsmagick.org/) and
+[Mediainfo](https://mediaarea.net/en/MediaInfo) available in the `PATH` environment variable.
+
+They can be installed for example for Mac OS via [Brew](http://brew.sh):
 
 ```sh
 brew install graphicsmagick mediainfo
 ```
+
+In Ubuntu Linux it can be done with command:
+
+```sh
+sudo apt-get install graphicsmagick mediainfo
+```
+
+In Windows they need to be downloaded from their sites and once installed,
+their installation paths should be added in the `Path` system environment variable.
 
 Now install the command line tool globally, which might need increased privileges:
 
@@ -48,7 +57,7 @@ image-flatify [options] <directory>
   -v, --verbose              Verbose output, will print which file is currently being processed
   -n, --dry-run              Try it out without actually touching anything
   -K, --keep-in-directories  Keep the renamed image files in their original directory
-  -p, --prefix String
+  -p, --prefix String        Prefix for the resulting filename, default empty
   -l, --lowercase-suffix     Lowercase the resulting file suffixes, or use as is by default
   -D, --no-delete-empty-directories  Do not delete any directories that become empty after processing
 

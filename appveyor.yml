@@ -23,6 +23,9 @@ install:
   - appveyor DownloadFile "http://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick-binaries/1.3.24/GraphicsMagick-1.3.24-Q16-win64-dll.exe?r=&ts=1470470434&use_mirror=kent"
   - GraphicsMagick-1.3.24-Q16-win64-dll.exe /SP /VERYSILENT /NORESTART /NOICONS /DIR=%CD%\gm
   - set PATH=%CD%\gm;%PATH%
+  - appveyor DownloadFile "https://mediaarea.net/download/binary/mediainfo/0.7.88/MediaInfo_CLI_0.7.88_Windows_x64.zip"
+  - 7z e MediaInfo_CLI_0.7.88_Windows_x64.zip
+  - dir
   - npm install
 
 test_script:
