@@ -68,6 +68,13 @@ const optsParser = optionator({
       description: 'Keep the renamed image files in their original directory'
     },
     {
+      option: 'prefix',
+      alias: 'p',
+      type: 'String',
+      default: '',
+      description: ''
+    },
+    {
       option: 'lowercase-suffix',
       alias: 'l',
       type: 'Boolean',
@@ -121,6 +128,7 @@ flatify(directory, {
   verbose: typeof opts.verbose === 'boolean' ? opts.verbose : false,
   dryRun: typeof opts.dryRun === 'boolean' ? opts.dryRun : false,
   keepInDirectories: typeof opts.keepInDirectories === 'boolean' ? opts.keepInDirectories : false,
+  prefix: opts.prefix,
   lowercaseSuffix: typeof opts.lowercaseSuffix === 'boolean' ? opts.lowercaseSuffix : false,
   noDeleteEmptyDirectories: typeof opts.noDeleteEmptyDirectories === 'boolean' ? opts.noDeleteEmptyDirectories : false
 });

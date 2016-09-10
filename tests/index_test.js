@@ -21,7 +21,6 @@ tape('a function is exported', (test) => {
   test.equal(flatify.length, 2, 'has two arguments');
 });
 
-
 tape('private methods exposed for testing', (test) => {
   test.plan(6);
 
@@ -31,4 +30,18 @@ tape('private methods exposed for testing', (test) => {
   test.equal(typeof flatify._getDateStringMediainfo, 'function');
   test.equal(typeof flatify._getDateString, 'function');
   test.equal(typeof flatify._getTargetPath, 'function');
+});
+
+tape('getTargetPath - Uses prefix', (test) => {
+  test.plan(1);
+
+  const destDir = '';
+  const filepath = 'tests/fixtures/IMG_0640.JPG';
+  const options = {
+    prefix: 'hoplaa-',
+    lowercaseSuffix: true
+  };
+  const targetPath = flatify._getTargetPath(destDir, filepath, options);
+
+  test.equal(targetPath, 'hoplaa-2016-06-05-20-40-00.jpg', 'Target filename has prefix');
 });

@@ -38,7 +38,8 @@ const isMedia = function _isMedia (filepath) {
  * Read a directory, by returning all files with full filepath
  *
  * @param {string} directory  Directory
- * @param {object} options    {verbose: boolean}
+ * @param {object}  options    Set of options that most are boolean
+ * @param {boolean} options.verbose Print out current process
  *
  * @returns {array} List of image with full path
  */
@@ -71,7 +72,9 @@ const getImages = function _getImages (directory, options) {
  * Remove any empty directories that were touched during the operation
  *
  * @param {string} directories  List of directories to remove if empty
- * @param {object} options      {verbose: boolean}
+ * @param {object}  options    Set of options that most are boolean
+ * @param {boolean} options.verbose Print out current process
+ * @param {boolean} options.dryRun  Do not touch any files, just show what could be done
  *
  * @returns {void}
  */
@@ -121,7 +124,9 @@ const getDateStringMediainfo = function _getDateStringMediainfo (filepath) {
 
     const lines = mediaDate.split('\n');
 
-    possible = lines.length > 0 ? lines[0].replace(/[a-zA-Z]+/g, '').trim().replace(/^[\s\:]+/g, '') : false;
+    if (lines.length > 0) {
+      possible = lines[0].replace(/[a-zA-Z]+/g, '').trim().replace(/^[\s\:]+/g, '');
+    }
   }
   catch (error) {
     console.log('Using Mediainfo failed');
@@ -187,21 +192,23 @@ const getDateString = function _getDateString (filepath) {
  *
  * @param {string} destDir  Destination directory
  * @param {string} filepath  Original file path
- * @param {boolean} lowercaseSuffix  Should the suffix be in lowercase
+ * @param {object}  options    Set of options that most are boolean
+ * @param {string}  options.prefix Prefix for the resulting filename, defaults to empty string
+ * @param {boolean} options.lowercaseSuffix   Lowercase the resulting file suffix
  *
  * @returns {string} The full target path of the file
  */
-const getTargetPath = function _getTargetPath (destDir, filepath, lowercaseSuffix) {
-  const dateString = getDateString(filepath);
+const getTargetPath = function _getTargetPath (destDir, filepath, options) {
+  const dateString = options.prefix + getDateString(filepath);
 
   let ext = path.extname(filepath);
 
-  if (lowercaseSuffix) {
+  if (options.lowercaseSuffix) {
     ext = ext.toLowerCase();
   }
 
   let targetPath = path.join(destDir, dateString + ext),
-    counter = 0;
+    counter = 1;
 
   // Check for existing...
   while (fs.existsSync(targetPath)) {
@@ -213,11 +220,12 @@ const getTargetPath = function _getTargetPath (destDir, filepath, lowercaseSuffi
 };
 
 /**
- * @param {string} directory  Root directory
- * @param {object} options    Set of options that are all boolean
+ * @param {string}  directory  Root directory
+ * @param {object}  options    Set of options that most are boolean
  * @param {boolean} options.verbose Print out current process
  * @param {boolean} options.dryRun  Do not touch any files, just show what could be done
  * @param {boolean} options.keepInDirectories Rename in the original folders
+ * @param {string}  options.prefix Prefix for the resulting filename, defaults to empty string
  * @param {boolean} options.lowercaseSuffix   Lowercase the resulting file suffix
  * @param {boolean} options.noDeleteEmptyDirectories Do not delete any directories, even when empty
  *
@@ -247,7 +255,7 @@ module.exports = function flatify (directory, options) {
       directories.push(sourceDir);
     }
 
-    const targetPath = getTargetPath(destDir, filepath, options.lowercaseSuffix);
+    const targetPath = getTargetPath(destDir, filepath, options);
 
     if (options.verbose) {
       const inPath = path.relative(directory, filepath),

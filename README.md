@@ -48,10 +48,11 @@ image-flatify [options] <directory>
   -v, --verbose              Verbose output, will print which file is currently being processed
   -n, --dry-run              Try it out without actually touching anything
   -K, --keep-in-directories  Keep the renamed image files in their original directory
+  -p, --prefix String
   -l, --lowercase-suffix     Lowercase the resulting file suffixes, or use as is by default
   -D, --no-delete-empty-directories  Do not delete any directories that become empty after processing
 
-Version 0.6.0
+Version 0.7.0
 ```
 
 ### Example commands
@@ -86,10 +87,12 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
+* `v0.7.0` (2016-09-11)
+  - Option to prefix resulting filename #9
 * `v0.6.2` (2016-08-09)
-    - Move code coverage from `instanbul` to `nyc`
-    - Test also in Windows, at [AppVeyor](https://ci.appveyor.com/project/paazmaya/image-flatify)
-    - Testing command line interface
+  - Move code coverage from `instanbul` to `nyc`
+  - Test also in Windows, at [AppVeyor](https://ci.appveyor.com/project/paazmaya/image-flatify)
+  - Testing command line interface
 * `v0.6.1` (2016-05-13)
   - Must be relative to the given directory
 * `v0.6.0` (2016-05-13)
@@ -100,19 +103,18 @@ Please make sure it is over 90% at all times.
   - Using shared ESLint configuration #4
   - `.mov` extension also included
 * `v0.4.0` (2016-02-10)
-    - Trying to use `mediainfo` when GraphicsMagick does not provide any reasonable value
+  - Trying to use `mediainfo` when GraphicsMagick does not provide any reasonable value
 * `v0.3.1` (2016-02-03)
-    - Reduce linting warnings while separating logic slightly
+  - Reduce linting warnings while separating logic slightly
 * `v0.3.0` (2016-02-01)
-    - Using GraphicsMagick for getting the creation date when possible
+  - Using GraphicsMagick for getting the creation date when possible
 * `v0.2.0` (2016-02-01)
-    - Include other media files in addition to image files
+  - Include other media files in addition to image files
 * `v0.1.0` (2015-11-18)
-    - Gets the job simply done, hence first release
+  - Gets the job simply done, hence first release
 
 ## License
 
 Licensed under [the MIT license](LICENSE).
 
 Copyright (c) [Juga Paazmaya](https://paazmaya.fi) <paazmaya@yahoo.com>
-
