@@ -9,6 +9,8 @@ addons:
       - graphicsmagick
       - mediainfo
 script:
+  - gm version
+  - mediainfo --Version
   - npm run lint
   - npm test
 after_script: "npm run coverage"

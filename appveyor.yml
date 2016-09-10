@@ -25,7 +25,9 @@ install:
   - set PATH=%CD%\gm;%PATH%
   - appveyor DownloadFile "https://mediaarea.net/download/binary/mediainfo/0.7.88/MediaInfo_CLI_0.7.88_Windows_x64.zip"
   - 7z e MediaInfo_CLI_0.7.88_Windows_x64.zip
-  - dir
+  - set PATH=%CD%;%PATH%
+  - gm version
+  - mediainfo --Version
   - npm install
 
 test_script:
