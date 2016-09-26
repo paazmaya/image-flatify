@@ -10,7 +10,7 @@ addons:
       - mediainfo
 script:
   - gm version
-  - mediainfo --Version
+  - mediainfo --Version || true
   - npm run lint
   - npm test
 after_script: "npm run coverage"

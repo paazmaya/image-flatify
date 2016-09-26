@@ -84,12 +84,8 @@ First thing to do is to file [an issue](https://github.com/paazmaya/image-flatif
 Linting is done with [ESLint](http://eslint.org) and can be executed with `npm run lint`.
 There should be no errors appearing after any JavaScript file changes.
 
-```sh
-npm install
-npm run lint
-```
-
 Unit tests are written with [`tape`](https://github.com/substack/tape) and can be executed with `npm test`.
+
 Code coverage is inspected with [`nyc`](https://github.com/istanbuljs/nyc) and
 can be executed with `npm run coverage` after running `npm test`.
 Please make sure it is over 90% at all times.
