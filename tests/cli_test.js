@@ -67,4 +67,23 @@ tape('cli should complain when non existing option used', (test) => {
 
 });
 
+tape('cli should use given prefix, verbose dry run', (test) => {
+  test.plan(1);
+
+  const prefix = 'i-like-lego';
+
+  execFile('node', [pkg.bin, '-p', prefix, '-nv', 'tests/fixtures'], null, (err, stdout) => {
+    test.ok(stdout.trim().indexOf('--> ' + prefix + '20') !== -1, 'Prefix seen');
+  });
+
+});
+
+tape('cli should not have prefix when not specified, verbose dry run', (test) => {
+  test.plan(1);
+
+  execFile('node', [pkg.bin, '-nv', 'tests/fixtures'], null, (err, stdout) => {
+    test.ok(stdout.trim().indexOf('--> 20') !== -1, 'Prefix not seen');
+  });
+
+});
 

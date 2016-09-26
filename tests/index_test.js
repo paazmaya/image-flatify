@@ -52,10 +52,19 @@ tape('getTargetPath - Keep suffix as is', (test) => {
   const destDir = '';
   const filepath = 'tests/fixtures/IMG_0640.JPG';
   const options = {
-    prefix: '',
     lowercaseSuffix: false
   };
   const targetPath = flatify._getTargetPath(destDir, filepath, options);
 
-  test.equal(targetPath, '2016-06-05-20-40-00.JPG', 'Target filename has prefix');
+  test.equal(targetPath, '2016-06-05-20-40-00.JPG', 'Target filename has uppercase suffix');
 });
+
+tape('getDateString - Get date via GM as expected', (test) => {
+  test.plan(1);
+
+  const filepath = 'tests/fixtures/IMG_0640.JPG';
+  const output = flatify._getDateString(filepath);
+
+  test.equal(output, '2016-06-05-20-40-00', 'Dashed date received');
+});
+

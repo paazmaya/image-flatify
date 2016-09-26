@@ -96,6 +96,8 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
+* `v0.7.1` (2016-09-26)
+  - When not defining `prefix` option, it became `undefined` in the output filename
 * `v0.7.0` (2016-09-11)
   - Option to prefix resulting filename #9
 * `v0.6.2` (2016-08-09)

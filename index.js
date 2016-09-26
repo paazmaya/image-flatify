@@ -161,14 +161,16 @@ const getDateString = function _getDateString (filepath) {
     console.log('Using GraphicsMagick failed');
   }
 
+  const MATCH_REPLACE = /(:|\s)/g;
+
   if (typeof exifDate === 'string' && exifDate.match(/^\d+/)) {
-    exifDate = exifDate.trim().replace(/(\:|\s)/g, '-');
+    exifDate = exifDate.trim().replace(MATCH_REPLACE, '-');
   }
   else {
     exifDate = getDateStringMediainfo(filepath);
 
     if (typeof exifDate === 'string' && exifDate.match(/^\d+/)) {
-      exifDate = exifDate.trim().replace(/(\:|\s)/g, '-');
+      exifDate = exifDate.trim().replace(MATCH_REPLACE, '-');
     }
     else {
       // https://nodejs.org/api/fs.html#fs_stat_time_values
@@ -199,6 +201,9 @@ const getDateString = function _getDateString (filepath) {
  * @returns {string} The full target path of the file
  */
 const getTargetPath = function _getTargetPath (destDir, filepath, options) {
+  options = options || {};
+  options.prefix = options.prefix || '';
+
   const dateString = options.prefix + getDateString(filepath);
 
   let ext = path.extname(filepath);
