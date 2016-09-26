@@ -35,7 +35,7 @@ const isMedia = function _isMedia (filepath) {
 };
 
 /**
- * Read a directory, by returning all files with full filepath
+ * Read a directory recursively, by returning all files with full filepath
  *
  * @param {string} directory  Directory
  * @param {object}  options    Set of options that most are boolean
