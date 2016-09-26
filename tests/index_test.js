@@ -22,12 +22,13 @@ tape('a function is exported', (test) => {
 });
 
 tape('private methods exposed for testing', (test) => {
-  test.plan(6);
+  test.plan(7);
 
   test.equal(typeof flatify._isMedia, 'function');
   test.equal(typeof flatify._getImages, 'function');
   test.equal(typeof flatify._cleanDirectories, 'function');
   test.equal(typeof flatify._getDateStringMediainfo, 'function');
+  test.equal(typeof flatify._getDateStringGraphicsMagick, 'function');
   test.equal(typeof flatify._getDateString, 'function');
   test.equal(typeof flatify._getTargetPath, 'function');
 });

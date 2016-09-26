@@ -125,10 +125,20 @@ if (!fs.existsSync(directory)) {
 
 // Fire away
 flatify(directory, {
-  verbose: typeof opts.verbose === 'boolean' ? opts.verbose : false,
-  dryRun: typeof opts.dryRun === 'boolean' ? opts.dryRun : false,
-  keepInDirectories: typeof opts.keepInDirectories === 'boolean' ? opts.keepInDirectories : false,
+  verbose: typeof opts.verbose === 'boolean' ?
+    opts.verbose :
+    false,
+  dryRun: typeof opts.dryRun === 'boolean' ?
+    opts.dryRun :
+    false,
+  keepInDirectories: typeof opts.keepInDirectories === 'boolean' ?
+    opts.keepInDirectories :
+    false,
   prefix: opts.prefix,
-  lowercaseSuffix: typeof opts.lowercaseSuffix === 'boolean' ? opts.lowercaseSuffix : false,
-  noDeleteEmptyDirectories: typeof opts.noDeleteEmptyDirectories === 'boolean' ? opts.noDeleteEmptyDirectories : false
+  lowercaseSuffix: typeof opts.lowercaseSuffix === 'boolean' ?
+    opts.lowercaseSuffix :
+    false,
+  noDeleteEmptyDirectories: typeof opts.noDeleteEmptyDirectories === 'boolean' ?
+    opts.noDeleteEmptyDirectories :
+    false
 });

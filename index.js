@@ -92,6 +92,7 @@ const cleanDirectories = function _cleanDirectories (directories, options) {
       if (options.verbose) {
         console.log(`Cannot delete directory which has files (${files.length}): ${item}`);
       }
+
       return;
     }
     // Check if empty and delete
@@ -125,7 +126,8 @@ const getDateStringMediainfo = function _getDateStringMediainfo (filepath) {
     const lines = mediaDate.split('\n');
 
     if (lines.length > 0) {
-      possible = lines[0].replace(/[a-zA-Z]+/g, '').trim().replace(/^[\s\:]+/g, '');
+      const MATCH_REPLACE = /^[\s:]+/g;
+      possible = lines[0].replace(/[a-zA-Z]+/g, '').trim().replace(MATCH_REPLACE, '');
     }
   }
   catch (error) {
@@ -143,9 +145,8 @@ const getDateStringMediainfo = function _getDateStringMediainfo (filepath) {
  * @returns {string} Date formatted as a string
  * @see http://www.graphicsmagick.org/GraphicsMagick.html#details-format
  */
-const getDateString = function _getDateString (filepath) {
-  const formatString = 'YYYY-MM-DD-HH-mm-ss',
-    cmdIdentify = `gm identify -format %[EXIF:DateTime] "${filepath}"`;
+const getDateStringGraphicsMagick = function _getDateStringGraphicsMagick (filepath) {
+  const cmdIdentify = `gm identify -format %[EXIF:DateTime] "${filepath}"`;
 
   let exifDate;
 
@@ -161,6 +162,20 @@ const getDateString = function _getDateString (filepath) {
     console.log('Using GraphicsMagick failed');
   }
 
+  return exifDate;
+};
+
+/**
+ * Get the best guess for the date when the picture was taken
+ *
+ * @param {string} filepath  Media file path
+ *
+ * @returns {string} Date formatted as a string
+ */
+const getDateString = function _getDateString (filepath) {
+
+  let exifDate = getDateStringGraphicsMagick(filepath);
+
   const MATCH_REPLACE = /(:|\s)/g;
 
   if (typeof exifDate === 'string' && exifDate.match(/^\d+/)) {
@@ -175,6 +190,7 @@ const getDateString = function _getDateString (filepath) {
     else {
       // https://nodejs.org/api/fs.html#fs_stat_time_values
       const stat = fs.statSync(filepath);
+      const formatString = 'YYYY-MM-DD-HH-mm-ss';
 
       exifDate = fecha.format(stat.birthtime, formatString);
 
@@ -285,5 +301,6 @@ module.exports._isMedia = isMedia;
 module.exports._getImages = getImages;
 module.exports._cleanDirectories = cleanDirectories;
 module.exports._getDateStringMediainfo = getDateStringMediainfo;
+module.exports._getDateStringGraphicsMagick = getDateStringGraphicsMagick;
 module.exports._getDateString = getDateString;
 module.exports._getTargetPath = getTargetPath;
