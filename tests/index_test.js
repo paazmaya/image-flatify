@@ -69,7 +69,16 @@ tape('getDateString - Get date via GM as expected', (test) => {
   test.equal(output, '2016-06-05-20-40-00', 'Dashed date received');
 });
 
-tape('getDateStringGraphicsMagick', (test) => {
+tape('getDateString - non existing file', (test) => {
+  test.plan(1);
+
+  const filepath = 'tests/-/not-existing.jpg';
+  const output = flatify._getDateString(filepath);
+
+  test.notOk(output);
+});
+
+tape('getDateStringGraphicsMagick - existing file', (test) => {
   test.plan(1);
 
   const filepath = 'tests/fixtures/IMG_0640.JPG';
@@ -78,7 +87,16 @@ tape('getDateStringGraphicsMagick', (test) => {
   test.equal(output, '2016:06:05 20:40:00\n');
 });
 
-tape('getDateStringMediainfo', (test) => {
+tape('getDateStringGraphicsMagick - non existing file', (test) => {
+  test.plan(1);
+
+  const filepath = 'tests/-/not-existing.jpg';
+  const output = flatify._getDateStringGraphicsMagick(filepath);
+
+  test.notOk(output);
+});
+
+tape('getDateStringMediainfo - existing file', (test) => {
   test.plan(1);
 
   const filepath = 'tests/fixtures/IMG_0640.JPG';
@@ -86,19 +104,29 @@ tape('getDateStringMediainfo', (test) => {
 
   test.equal(output, '2016-09-10 22:40:42');
 });
-/*
-tape('cleanDirectories', (test) => {
+
+tape('getDateStringMediainfo - non existing file', (test) => {
+  test.plan(1);
+
+  const filepath = 'tests/-/not-existing.jpg';
+  const output = flatify._getDateStringMediainfo(filepath);
+
+  test.notOk(output);
+});
+
+tape('cleanDirectories - non existing single directory', (test) => {
   test.plan(1);
 
   const options = {
     dryRun: true
   };
-  const output = flatify._cleanDirectories(['tests/fixtures'], options);
+  const dirs = ['tests/-/not-existing'];
+  const output = flatify._cleanDirectories(dirs, options);
 
-  test.equal(output, '');
+  test.notOk(output);
 });
-*/
-tape('getImages', (test) => {
+
+tape('getImages - got one image in sub directory', (test) => {
   test.plan(1);
 
   const output = flatify._getImages('tests', {});
@@ -106,11 +134,20 @@ tape('getImages', (test) => {
   test.equal(output.length, 1);
 });
 
+tape('getImages - got no images', (test) => {
+  test.plan(1);
+
+  const output = flatify._getImages('not even existing', {});
+
+  test.equal(output.length, 0);
+});
+
 tape('isMedia', (test) => {
-  test.plan(4);
+  test.plan(5);
 
   test.notOk(flatify._isMedia('hoplaa.js'));
   test.ok(flatify._isMedia('hoplaa.jpg'));
   test.ok(flatify._isMedia('hoplaa.jpeg'));
   test.ok(flatify._isMedia('hoplaa.mp4'));
+  test.ok(flatify._isMedia('hoplaa.test.GIF'));
 });

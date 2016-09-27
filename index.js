@@ -49,6 +49,14 @@ const getImages = function _getImages (directory, options) {
   }
   let images = [];
 
+  try {
+    fs.accessSync(directory);
+  }
+  catch (error) {
+    console.error(`Directory ${directory} did not exists`);
+    return images;
+  }
+
   const items = fs.readdirSync(directory)
     .map((item) =>
       path.join(directory, item)
@@ -86,6 +94,15 @@ const cleanDirectories = function _cleanDirectories (directories, options) {
   );
 
   dirs.forEach((item) => {
+    try {
+      fs.accessSync(item);
+    }
+    catch (error) {
+      console.error(`Directory ${item} did not exists`);
+
+      return;
+    }
+
     const files = fs.readdirSync(item);
 
     if (files.length > 0) {
@@ -170,9 +187,17 @@ const getDateStringGraphicsMagick = function _getDateStringGraphicsMagick (filep
  *
  * @param {string} filepath  Media file path
  *
- * @returns {string} Date formatted as a string
+ * @returns {string|bool} Date formatted as a string or false when failed
  */
 const getDateString = function _getDateString (filepath) {
+
+  try {
+    fs.accessSync(filepath);
+  }
+  catch (error) {
+    console.error(`File ${filepath} did not exists`);
+    return false;
+  }
 
   let exifDate = getDateStringGraphicsMagick(filepath);
 
