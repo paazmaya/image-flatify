@@ -54,6 +54,7 @@ const getImages = function _getImages (directory, options) {
   }
   catch (error) {
     console.error(`Directory ${directory} did not exists`);
+
     return images;
   }
 
@@ -196,6 +197,7 @@ const getDateString = function _getDateString (filepath) {
   }
   catch (error) {
     console.error(`File ${filepath} did not exists`);
+
     return false;
   }
 
