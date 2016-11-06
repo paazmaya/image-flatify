@@ -15,6 +15,9 @@ but the filenames inside those folders are always the same.
 
 This tool will solve that step in the process when renaming and organising images.
 
+The given directory will be searched recursively for media files and they all will be renamed to the given directory.
+Those directories which are touched during the operation, in case they will be empty after the rename, the directory will be renamed.
+
 Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `4.2.0`.
 
 ## Installation

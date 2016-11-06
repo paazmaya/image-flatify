@@ -6,8 +6,8 @@
   "main": "index.js",
   "bin": "bin/image-flatify.js",
   "scripts": {
-    "lint": "eslint -c .eslintrc.json index.js bin/image-flatify.js",
-    "test": "nyc tape tests/*_test.js",
+    "lint": "eslint -c .eslintrc.json index.js bin lib",
+    "test": "nyc tape tests/*_test.js tests/lib/*_test.js",
     "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov"
   },
   "engines": {
@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "codecov": "^1.0.1",
-    "eslint": "^3.9.0",
+    "eslint": "^3.9.1",
     "eslint-config-paazmaya": "^3.0.0",
-    "nyc": "^8.3.2",
+    "nyc": "^8.4.0",
     "tape": "^4.6.2"
   }
 }
