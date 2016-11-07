@@ -33,7 +33,7 @@ catch (error) {
 }
 
 const optsParser = optionator({
-  prepend: `${pkg.name} [options] <directory>`,
+  prepend: `${pkg.name} [options] <directory> [more directories]`,
   append: `Version ${pkg.version}`,
   options: [
     {
@@ -116,24 +116,26 @@ if (opts.help) {
   process.exit(0);
 }
 
-if (opts._.length !== 1) {
-  console.error('Directory not specified');
+if (opts._.length === 0) {
+  console.error('Directory/directories were not specified');
   console.log(optsParser.generateHelp());
   process.exit(1);
 }
 
-const directory = path.resolve(opts._[0]);
+const directories = opts._.map(item => path.resolve(item));
 
-try {
-  fs.accessSync(directory);
-}
-catch (error) {
-  console.error(`Directory (${directory}) does not exist`);
-  process.exit(1);
-}
+// Fail the whole thing on the first directory that cannot be accessed
+directories.forEach(directory => {
+  try {
+    fs.accessSync(directory);
+  }
+  catch (error) {
+    console.error(`Directory (${directory}) does not exist`);
+    process.exit(1);
+  }
+});
 
-// Fire away
-flatify(directory, {
+const options = {
   verbose: typeof opts.verbose === 'boolean' ?
     opts.verbose :
     false,
@@ -153,4 +155,8 @@ flatify(directory, {
   noDeleteEmptyDirectories: typeof opts.noDeleteEmptyDirectories === 'boolean' ?
     opts.noDeleteEmptyDirectories :
     false
+};
+
+directories.forEach(directory => {
+  flatify(directory, options);
 });

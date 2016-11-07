@@ -56,7 +56,7 @@ image-flatify --help
 ```
 
 ```sh
-image-flatify [options] <directory>
+image-flatify [options] <directory> [more directories]
 
   -h, --help                 Help and usage instructions
   -V, --version              Version number
@@ -99,8 +99,9 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
-* `v0.8.0` (2016-09-26)
+* `v0.8.0` (2016-11-07)
   - Add option to include a hash to the filename before the suffix #3
+  - More than one directory can be given as a command line input
 * `v0.7.1` (2016-09-26)
   - When not defining `prefix` option, it became `undefined` in the output filename
 * `v0.7.0` (2016-09-11)

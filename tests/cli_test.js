@@ -5,6 +5,7 @@
  * Copyright (c) Juga Paazmaya <paazmaya@yahoo.com> (https://paazmaya.fi)
  * Licensed under the MIT license
  */
+/* eslint-disable handle-callback-err */
 
 'use strict';
 
@@ -87,3 +88,30 @@ tape('cli should not have prefix when not specified, verbose dry run', (test) =>
 
 });
 
+tape('cli should require at least one directory', (test) => {
+  test.plan(1);
+
+  execFile('node', [pkg.bin, '-nv'], null, (err, stdout, stderr) => {
+    test.equal(stderr.trim(), 'Directory/directories were not specified');
+  });
+
+});
+
+tape('cli should accept two directory', (test) => {
+  test.plan(1);
+
+  execFile('node', [pkg.bin, '-nv', 'tests/fixtures', 'tests/lib'], null, (err, stdout, stderr) => {
+    test.equal(stderr.trim(), '', 'No errors since both directories existed');
+  });
+
+});
+
+tape('cli should accept two directory, but fail when the latter does not exist', (test) => {
+  test.plan(2);
+
+  execFile('node', [pkg.bin, '-nv', 'tests/fixtures', 'tests/not-here'], null, (err, stdout, stderr) => {
+    test.ok(stderr.trim().indexOf('tests/not-here) does not exist') !== -1);
+    test.equal(stdout.trim(), '', 'No standard output since error existed');
+  });
+
+});
