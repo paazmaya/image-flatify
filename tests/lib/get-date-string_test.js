@@ -38,7 +38,7 @@ tape('getDateStringGraphicsMagick - existing file', (test) => {
   const filepath = 'tests/fixtures/IMG_0640.JPG';
   const output = getDateString._getDateStringGraphicsMagick(filepath);
 
-  test.equal(output, '2016:06:05 20:40:00\n');
+  test.equal(output, '2016:06:05 20:40:00');
 });
 
 tape('getDateStringGraphicsMagick - non existing file', (test) => {
