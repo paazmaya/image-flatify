@@ -25,7 +25,10 @@ Please note that the minimum supported version of [Node.js](https://nodejs.org/e
 Make sure to have both [GraphicsMagick](http://www.graphicsmagick.org/) and
 [Mediainfo](https://mediaarea.net/en/MediaInfo) available in the `PATH` environment variable.
 
-They can be installed for example for Mac OS via [Brew](http://brew.sh):
+The versions supported are [GraphicsMagick `1.3.x`](http://www.graphicsmagick.org/NEWS.html)
+and [MediaInfo `0.7.x`](https://mediaarea.net/MediaInfo/ChangeLog).
+
+They can be installed for example for macOS via [Brew](http://brew.sh):
 
 ```sh
 brew install graphicsmagick mediainfo
@@ -37,7 +40,7 @@ In Ubuntu Linux it can be done with command:
 sudo apt-get install graphicsmagick mediainfo
 ```
 
-In Windows they need to be downloaded from their sites and once installed,
+In Windows, the applications need to be downloaded from their sites and once installed,
 their installation paths should be added in the `Path` system environment variable.
 
 Now install the command line tool globally, which might need increased privileges:
@@ -61,10 +64,11 @@ image-flatify [options] <directory>
   -n, --dry-run              Try it out without actually touching anything
   -K, --keep-in-directories  Keep the renamed image files in their original directory
   -p, --prefix String        Prefix for the resulting filename, default empty
+  -a, --append-hash          Always append a hash string to the filename instead of a possible counter
   -l, --lowercase-suffix     Lowercase the resulting file suffixes, or use as is by default
   -D, --no-delete-empty-directories  Do not delete any directories that become empty after processing
 
-Version 0.7.0
+Version 0.8.0
 ```
 
 ### Example commands
@@ -95,6 +99,8 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
+* `v0.8.0` (2016-09-26)
+  - Add option to include a hash to the filename before the suffix #3
 * `v0.7.1` (2016-09-26)
   - When not defining `prefix` option, it became `undefined` in the output filename
 * `v0.7.0` (2016-09-11)
