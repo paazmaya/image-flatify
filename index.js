@@ -25,6 +25,7 @@ const INDEX_NOT_FOUND = -1;
  * @param {object}  options    Set of options that most are boolean
  * @param {boolean} options.verbose Print out current process
  * @param {boolean} options.dryRun  Do not touch any files, just show what could be done
+ * @param {boolean} options.appendHash Always append a hash string to the filename instead of a possible counter
  *
  * @returns {void}
  */
@@ -73,6 +74,7 @@ const cleanDirectories = function _cleanDirectories (directories, options) {
  * @param {string}  options.prefix Prefix for the resulting filename, defaults to empty string
  * @param {boolean} options.lowercaseSuffix   Lowercase the resulting file suffix
  * @param {boolean} options.noDeleteEmptyDirectories Do not delete any directories, even when empty
+ * @param {boolean} options.appendHash Always append a hash string to the filename instead of a possible counter
  *
  * @returns {void}
  */

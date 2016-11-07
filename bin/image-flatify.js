@@ -75,6 +75,12 @@ const optsParser = optionator({
       description: 'Prefix for the resulting filename, default empty'
     },
     {
+      option: 'append-hash',
+      alias: 'a',
+      type: 'Boolean',
+      description: 'Always append a hash string to the filename instead of a possible counter'
+    },
+    {
       option: 'lowercase-suffix',
       alias: 'l',
       type: 'Boolean',
@@ -118,7 +124,10 @@ if (opts._.length !== 1) {
 
 const directory = path.resolve(opts._[0]);
 
-if (!fs.existsSync(directory)) {
+try {
+  fs.accessSync(directory);
+}
+catch (error) {
   console.error(`Directory (${directory}) does not exist`);
   process.exit(1);
 }
@@ -135,6 +144,9 @@ flatify(directory, {
     opts.keepInDirectories :
     false,
   prefix: opts.prefix,
+  appendHash: typeof opts.appendHash === 'boolean' ?
+    opts.appendHash :
+    false,
   lowercaseSuffix: typeof opts.lowercaseSuffix === 'boolean' ?
     opts.lowercaseSuffix :
     false,
