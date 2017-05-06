@@ -10,9 +10,6 @@
 
 'use strict';
 
-const fs = require('fs'),
-  path = require('path');
-
 const tape = require('tape');
 
 const flatify = require('../index');

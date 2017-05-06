@@ -110,7 +110,7 @@ tape('cli should accept two directory, but fail when the latter does not exist',
   test.plan(2);
 
   execFile('node', [pkg.bin, '-nv', 'tests/fixtures', 'tests/not-here'], null, (err, stdout, stderr) => {
-    test.ok(stderr.trim().indexOf('tests/not-here) does not exist') !== -1);
+    test.ok(stderr.trim().indexOf(`tests${path.sep}not-here) does not exist`) !== -1);
     test.equal(stdout.trim(), '', 'No standard output since error existed');
   });
 
