@@ -18,7 +18,7 @@ This tool will solve that step in the process when renaming and organising image
 The given directory will be searched recursively for media files and they all will be renamed to the given directory.
 Those directories which are touched during the operation, in case they will be empty after the rename, the directory will be renamed.
 
-Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `4.2.0`.
+Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `6.9.5` (LTS).
 
 ## Installation
 
@@ -99,9 +99,10 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
-* `v0.8.0` (2016-11-07)
+* `v0.8.0` (2017-05-07)
   - Add option to include a hash to the filename before the suffix #3
   - More than one directory can be given as a command line input
+  - Minimum Node.js version lifted from `4.2.0` to `6.9.5`
 * `v0.7.1` (2016-09-26)
   - When not defining `prefix` option, it became `undefined` in the output filename
 * `v0.7.0` (2016-09-11)
