@@ -12,11 +12,16 @@
 
 const tape = require('tape');
 
-const flatify = require('../index');
+const cleanDirectories = require('../../lib/clean-directories');
 
-tape('a function is exported', (test) => {
-  test.plan(2);
+tape('cleanDirectories - non existing single directory', (test) => {
+  test.plan(1);
 
-  test.equal(typeof flatify, 'function');
-  test.equal(flatify.length, 2, 'has two arguments');
+  const options = {
+    dryRun: true
+  };
+  const dirs = ['tests/-/not-existing'];
+  const output = cleanDirectories(dirs, options);
+
+  test.notOk(output);
 });

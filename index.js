@@ -14,56 +14,10 @@ const fs = require('fs'),
   path = require('path');
 
 const getTargetPath = require('./lib/get-target-path'),
-  getImages = require('./lib/get-images');
+  getImages = require('./lib/get-images'),
+  cleanDirectories = require('./lib/clean-directories');
 
 const INDEX_NOT_FOUND = -1;
-
-/**
- * Remove any empty directories that were touched during the operation
- *
- * @param {string} directories  List of directories to remove if empty
- * @param {object}  options    Set of options that most are boolean
- * @param {boolean} options.verbose Print out current process
- * @param {boolean} options.dryRun  Do not touch any files, just show what could be done
- * @param {boolean} options.appendHash Always append a hash string to the filename instead of a possible counter
- *
- * @returns {void}
- */
-const cleanDirectories = function _cleanDirectories (directories, options) {
-  // Sort by path length so that subdirectory is removed before its parent
-
-  const dirs = directories.sort((itemA, itemB) =>
-    itemB.length - itemA.length
-  );
-
-  dirs.forEach((item) => {
-    try {
-      fs.accessSync(item);
-    }
-    catch (error) {
-      console.error(`Directory ${item} did not exists`);
-
-      return;
-    }
-
-    const files = fs.readdirSync(item);
-
-    if (files.length > 0) {
-      if (options.verbose) {
-        console.log(`Cannot delete directory which has files (${files.length}): ${item}`);
-      }
-
-      return;
-    }
-    // Check if empty and delete
-    if (options.verbose) {
-      console.log(`Deleting empty directory ${item}`);
-    }
-    if (!options.dryRun) {
-      fs.rmdirSync(item);
-    }
-  });
-};
 
 /**
  * @param {string}  directory  Root directory
@@ -121,5 +75,3 @@ module.exports = function flatify (directory, options) {
 
   console.log(`Moved total of ${movedFiles} image files`);
 };
-
-module.exports._cleanDirectories = cleanDirectories;
