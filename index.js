@@ -35,7 +35,9 @@ const INDEX_NOT_FOUND = -1;
 module.exports = function flatify (directory, options) {
   const files = getImages(directory, options);
 
-  console.log(`Found total of ${files.length} image files to be processed`);
+  if (options.verbose) {
+    console.log(`Found total of ${files.length} image files to be processed`);
+  }
 
   // List of directories that were touched during the renames
   const directories = [];
@@ -73,5 +75,12 @@ module.exports = function flatify (directory, options) {
     cleanDirectories(directories, options);
   }
 
-  console.log(`Moved total of ${movedFiles} image files`);
+  if (options.verbose) {
+    if (options.dryRun) {
+      console.log(`Would have moved total of ${movedFiles} image files, but did not due to dry-run`);
+    }
+    else {
+      console.log(`Moved total of ${movedFiles} image files`);
+    }
+  }
 };

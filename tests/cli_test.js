@@ -115,3 +115,12 @@ tape('cli should accept two directory, but fail when the latter does not exist',
   });
 
 });
+
+tape('cli does not move files when dry-run', (test) => {
+  test.plan(1);
+
+  execFile('node', [pkg.bin, '-nv', path.join(__dirname, 'fixtures')], null, (err, stdout) => {
+    test.ok(stdout.trim().indexOf('Would have moved total of ') !== -1);
+  });
+
+});

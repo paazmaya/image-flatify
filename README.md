@@ -99,10 +99,11 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
-* `v0.8.0` (2017-05-07)
+* `v0.8.0` (2017-07-10)
   - Add option to include a hash to the filename before the suffix #3
   - More than one directory can be given as a command line input
   - Minimum Node.js version lifted from `4.2.0` to `6.9.5`
+  - Print the number of possibly affected files, also when dry-run
 * `v0.7.1` (2016-09-26)
   - When not defining `prefix` option, it became `undefined` in the output filename
 * `v0.7.0` (2016-09-11)
