@@ -5,6 +5,7 @@
 [![Build Status](https://travis-ci.org/paazmaya/image-flatify.svg?branch=master)](https://travis-ci.org/paazmaya/image-flatify)
 [![Windows build status](https://ci.appveyor.com/api/projects/status/h561l3h2l26aobr1/branch/master?svg=true)](https://ci.appveyor.com/project/paazmaya/image-flatify/branch/master)
 [![codecov](https://codecov.io/gh/paazmaya/image-flatify/branch/master/graph/badge.svg)](https://codecov.io/gh/paazmaya/image-flatify)
+[![Dependency Status](https://gemnasium.com/badges/github.com/paazmaya/image-flatify.svg)](https://gemnasium.com/github.com/paazmaya/image-flatify)
 
 Got so fed up with mobile devices creating image files named `DCIM_01.JPG`
 or similar, hence having the same filenames after importing them to my
