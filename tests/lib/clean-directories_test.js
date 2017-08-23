@@ -10,6 +10,9 @@
 
 'use strict';
 
+const fs = require('fs'),
+  path = require('path');
+
 const tape = require('tape');
 
 const cleanDirectories = require('../../lib/clean-directories');
@@ -24,4 +27,21 @@ tape('cleanDirectories - non existing single directory', (test) => {
   const output = cleanDirectories(dirs, options);
 
   test.notOk(output);
+});
+
+tape('cleanDirectories._cleanDirectory - does not remove when dry run, but tells about it', (test) => {
+  test.plan(1);
+
+  const tmpDir = path.join(__dirname, 'temporary-folder');
+  if (fs.existsSync(tmpDir)) {
+    fs.mkdirSync(tmpDir);
+  }
+
+  const options = {
+    dryRun: true,
+    verbose: true
+  };
+  cleanDirectories._cleanDirectory(tmpDir, options);
+
+  test.ok(fs.existsSync(tmpDir));
 });
