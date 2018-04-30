@@ -19,7 +19,7 @@ This tool will solve that step in the process when renaming and organising image
 The given directory will be searched recursively for media files and they all will be renamed to the given directory.
 Those directories which are touched during the operation, in case they will be empty after the rename, the directory will be renamed.
 
-Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `6.9.5`, which is [the Long Term Support (LTS) version](https://github.com/nodejs/LTS#lts-schedule1).
+Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `8.11.1`, which is [the active Long Term Support (LTS) version](https://github.com/nodejs/Release#release-schedule).
 
 ## Installation
 
