@@ -33,7 +33,11 @@ tape('cleanDirectories._cleanDirectory - does not remove when dry run, but tells
   test.plan(1);
 
   const tmpDir = path.join(__dirname, 'temporary-folder');
-  if (fs.existsSync(tmpDir)) {
+
+  try {
+    fs.accessSync(tmpDir);
+  }
+  catch (error) {
     fs.mkdirSync(tmpDir);
   }
 
