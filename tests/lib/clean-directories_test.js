@@ -29,6 +29,34 @@ tape('cleanDirectories - non existing single directory', (test) => {
   test.notOk(output);
 });
 
+tape('cleanDirectories - removes directory', (test) => {
+  test.plan(1);
+
+  const tmpDir = path.join(__dirname, 'temporary-folder');
+
+  try {
+    fs.accessSync(tmpDir);
+  }
+  catch (error) {
+    fs.mkdirSync(tmpDir);
+  }
+
+  const options = {
+    dryRun: false,
+    verbose: true
+  };
+  cleanDirectories([tmpDir, 'not-here'], options);
+
+  try {
+    fs.accessSync(tmpDir);
+    test.fail();
+  }
+  catch (error) {
+    test.pass();
+  }
+});
+
+
 tape('cleanDirectories._cleanDirectory - does not remove when dry run, but tells about it', (test) => {
   test.plan(1);
 
@@ -47,5 +75,38 @@ tape('cleanDirectories._cleanDirectory - does not remove when dry run, but tells
   };
   cleanDirectories._cleanDirectory(tmpDir, options);
 
-  test.ok(fs.existsSync(tmpDir));
+  try {
+    fs.accessSync(tmpDir);
+    test.pass();
+  }
+  catch (error) {
+    test.fail();
+  }
+});
+
+tape('cleanDirectories._cleanDirectory - removes directory', (test) => {
+  test.plan(1);
+
+  const tmpDir = path.join(__dirname, 'temporary-folder');
+
+  try {
+    fs.accessSync(tmpDir);
+  }
+  catch (error) {
+    fs.mkdirSync(tmpDir);
+  }
+
+  const options = {
+    dryRun: false,
+    verbose: true
+  };
+  cleanDirectories._cleanDirectory(tmpDir, options);
+
+  try {
+    fs.accessSync(tmpDir);
+    test.fail();
+  }
+  catch (error) {
+    test.pass();
+  }
 });

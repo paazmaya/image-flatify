@@ -53,7 +53,8 @@ tape('getTargetPath - Uses prefix, hash and lowercases', (test) => {
   };
   const output = getTargetPath(destDir, filepath, options);
 
-  test.equal(output, 'hoplaa-2016-06-05-20-40-00_1e7712e1b543b324baa6bd6b101b4dc3.jpg');
+  // Something like hoplaa-2016-06-05-20-40-00_1e7712e1b543b324baa6bd6b101b4dc3.jpg
+  test.equal(output.length, 63, 'Target filename has a length of containing the hash');
 });
 
 tape('getTargetPath - Keep suffix as is', (test) => {
@@ -70,7 +71,7 @@ tape('getTargetPath - Keep suffix as is', (test) => {
 });
 
 tape('getTargetPath - Add hash before suffix', (test) => {
-  test.plan(1);
+  test.plan(2);
 
   const destDir = '';
   const filepath = 'tests/fixtures/IMG_0640.JPG';
@@ -79,11 +80,13 @@ tape('getTargetPath - Add hash before suffix', (test) => {
   };
   const output = getTargetPath(destDir, filepath, options);
 
-  test.equal(output, '2016-06-05-20-40-00_706e885f464419f27ebe952861e43d25.JPG', 'Target filename contains hash');
+  // Something like 2016-06-05-20-40-00_706e885f464419f27ebe952861e43d25.JPG
+  test.equal(output.length, 56, 'Target filename has a length of containing the hash');
+  test.ok(output.indexOf('2016-06-05-20-40-00_') === 0);
 });
 
 tape('getTargetPath - Add hash before suffix while lowercased suffix', (test) => {
-  test.plan(1);
+  test.plan(3);
 
   const destDir = '';
   const filepath = 'tests/fixtures/IMG_0640.JPG';
@@ -93,7 +96,10 @@ tape('getTargetPath - Add hash before suffix while lowercased suffix', (test) =>
   };
   const output = getTargetPath(destDir, filepath, options);
 
-  test.equal(output, '2016-06-05-20-40-00_706e885f464419f27ebe952861e43d25.jpg', 'Target filename contains hash and lowercase suffix');
+  // Something like 2016-06-05-20-40-00_706e885f464419f27ebe952861e43d25.jpg
+  test.equal(output.length, 56, 'Target filename has a length of containing the hash');
+  test.ok(output.indexOf('2016-06-05-20-40-00_') === 0);
+  test.equal(output.indexOf('.jpg'), 52);
 });
 
 tape('getTargetPath - Source not existing', (test) => {
