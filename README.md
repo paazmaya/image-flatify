@@ -69,7 +69,7 @@ image-flatify [options] <directory> [more directories]
   -l, --lowercase-suffix     Lowercase the resulting file suffixes, or use as is by default
   -D, --no-delete-empty-directories  Do not delete any directories that become empty after processing
 
-Version 0.8.0
+Version 0.9.0
 ```
 
 ### Example commands
@@ -100,9 +100,10 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
-* `v0.9.0` (2018-05-)
+* `v0.9.0` (2018-05-14)
   - Minimum Node.js version lifted from `6.9.5` to `8.11.1`
   - Randomise hash suffix in order to avoid accidental overwriting
+  - Achieve `91%` code coverage #1
 * `v0.8.0` (2017-07-10)
   - Add option to include a hash to the filename before the suffix #3
   - More than one directory can be given as a command line input
