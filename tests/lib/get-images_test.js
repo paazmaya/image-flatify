@@ -19,7 +19,7 @@ tape('getImages - got one image in sub directory', (test) => {
 
   const output = getImages('tests', {});
 
-  test.equal(output.length, 1);
+  test.equal(output.length, 2);
 });
 
 tape('getImages - got no images', (test) => {

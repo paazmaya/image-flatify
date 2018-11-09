@@ -67,3 +67,12 @@ tape('getDateStringMediainfo - non existing file', (test) => {
 
   test.notOk(output);
 });
+
+tape('getDateString - not an image file', (test) => {
+  test.plan(1);
+
+  const filepath = 'LICENSE';
+  const output = getDateString(filepath);
+
+  test.equal(typeof output, 'string');
+});

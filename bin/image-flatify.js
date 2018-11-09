@@ -136,6 +136,7 @@ directories.forEach(directory => {
 });
 
 // FIXME: Is mediainfo available in PATH?
+// 'mediainfo --Version'
 
 const options = {
   verbose: typeof opts.verbose === 'boolean' ?

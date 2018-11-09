@@ -100,7 +100,7 @@ tape('cli should require at least one directory', (test) => {
 tape('cli should accept two directory', (test) => {
   test.plan(1);
 
-  execFile('node', [pkg.bin, '-nv', 'tests/fixtures', 'tests/lib'], null, (err, stdout, stderr) => {
+  execFile('node', [pkg.bin, '-n', 'tests/fixtures', 'tests/lib'], null, (err, stdout, stderr) => {
     test.equal(stderr.trim(), '', 'No errors since both directories existed');
   });
 
@@ -109,7 +109,7 @@ tape('cli should accept two directory', (test) => {
 tape('cli should accept two directory, but fail when the latter does not exist', (test) => {
   test.plan(2);
 
-  execFile('node', [pkg.bin, '-nv', 'tests/fixtures', 'tests/not-here'], null, (err, stdout, stderr) => {
+  execFile('node', [pkg.bin, '-v', 'tests/fixtures', 'tests/not-here'], null, (err, stdout, stderr) => {
     test.ok(stderr.trim().indexOf(`tests${path.sep}not-here) does not exist`) !== -1);
     test.equal(stdout.trim(), '', 'No standard output since error existed');
   });
@@ -121,6 +121,16 @@ tape('cli does not move files when dry-run', (test) => {
 
   execFile('node', [pkg.bin, '-nv', path.join(__dirname, 'fixtures')], null, (err, stdout) => {
     test.ok(stdout.trim().indexOf('Would have moved total of ') !== -1);
+  });
+
+});
+tape('cli appends with hash', (test) => {
+  test.plan(1);
+
+  const regex = /40-00_\S+\.JPG/gu;
+
+  execFile('node', [pkg.bin, '-anKDv', path.join(__dirname, 'fixtures')], null, (err, stdout) => {
+    test.ok(regex.test(stdout));
   });
 
 });

@@ -10,6 +10,8 @@
 
 'use strict';
 
+const path = require('path');
+
 const tape = require('tape');
 
 const getTargetPath = require('../../lib/get-target-path');
@@ -113,4 +115,15 @@ tape('getTargetPath - Source not existing', (test) => {
   const output = getTargetPath(destDir, filepath, options);
 
   test.notOk(output);
+});
+
+tape('getTargetPath - Destination exists, so adding a counter', (test) => {
+  test.plan(1);
+
+  const destDir = path.join(__dirname, '..', 'expected');
+  const filepath = path.join(__dirname, '..', 'fixtures', 'IMG_0640.JPG');
+
+  const output = getTargetPath(destDir, filepath);
+
+  test.equal(output, path.join(destDir, '2016-06-05-20-40-00_1.JPG'));
 });
