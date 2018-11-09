@@ -71,7 +71,7 @@ image-flatify [options] <directory> [more directories]
   -l, --lowercase-suffix     Lowercase the resulting file suffixes, or use as is by default
   -D, --no-delete-empty-directories  Do not delete any directories that become empty after processing
 
-Version 0.9.0
+Version 1.0.0
 ```
 
 ### Example commands

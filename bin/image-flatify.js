@@ -123,10 +123,10 @@ if (opts._.length === 0) {
   process.exit(1);
 }
 
-const directories = opts._.map(item => path.resolve(item));
+const directories = opts._.map((item) => path.resolve(item));
 
 // Fail the whole thing on the first directory that cannot be accessed
-directories.forEach(directory => {
+directories.forEach((directory) => {
   try {
     fs.accessSync(directory);
   }
@@ -179,6 +179,6 @@ const options = {
     false
 };
 
-directories.forEach(directory => {
+directories.forEach((directory) => {
   flatify(directory, options);
 });
