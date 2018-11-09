@@ -102,6 +102,9 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
+* `v1.0.0` (2018-11-09)
+  - Check that both `mediainfo` and `gm` are available before trying anything
+  - More code coverage, so about time to make first major release
 * `v0.9.0` (2018-05-14)
   - Minimum Node.js version lifted from `6.9.5` to `8.11.1`
   - Randomise hash suffix in order to avoid accidental overwriting

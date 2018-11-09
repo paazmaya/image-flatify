@@ -13,7 +13,8 @@
 'use strict';
 
 const fs = require('fs'),
-  path = require('path');
+  path = require('path'),
+  execSync = require('child_process').execSync;
 
 const optionator = require('optionator');
 
@@ -135,8 +136,26 @@ directories.forEach(directory => {
   }
 });
 
-// FIXME: Is mediainfo available in PATH?
-// 'mediainfo --Version'
+const execConfig = {
+  encoding: 'utf8'
+};
+
+try {
+  execSync('mediainfo --Version', execConfig);
+}
+catch (error) {
+  console.error('Looks like MediaInfo is not available. Please install it before continuing.');
+  process.exit(1);
+}
+
+try {
+  execSync('gm version', execConfig);
+}
+catch (error) {
+  console.error('Looks like GraphicsMagick is not available. Please install it before continuing.');
+  process.exit(1);
+}
+
 
 const options = {
   verbose: typeof opts.verbose === 'boolean' ?
