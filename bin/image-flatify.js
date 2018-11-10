@@ -141,7 +141,7 @@ const execConfig = {
 };
 
 try {
-  execSync('mediainfo --Help', execConfig);
+  execSync('mediainfo package.json', execConfig);
 }
 catch (error) {
   console.error('Looks like MediaInfo is not available. Please install it before continuing.');
