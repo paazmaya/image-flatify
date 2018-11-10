@@ -56,7 +56,6 @@ tape('cleanDirectories - removes directory', (test) => {
   }
 });
 
-
 tape('cleanDirectories._cleanDirectory - does not remove when dry run, but tells about it', (test) => {
   test.plan(1);
 
@@ -108,5 +107,25 @@ tape('cleanDirectories._cleanDirectory - removes directory', (test) => {
   }
   catch (error) {
     test.pass();
+  }
+});
+
+tape('cleanDirectories._cleanDirectory - does not remove non empty directory', (test) => {
+  test.plan(1);
+
+  const directory = path.resolve('node_modules');
+
+  const options = {
+    dryRun: true,
+    verbose: true
+  };
+  cleanDirectories._cleanDirectory(directory, options);
+
+  try {
+    fs.accessSync(directory);
+    test.pass();
+  }
+  catch (error) {
+    test.fail();
   }
 });
