@@ -102,6 +102,8 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
+* `v1.0.1` (2018-11-10)
+  - Use [`npm-shrinkwrap.json`](https://docs.npmjs.com/files/shrinkwrap.json) for locking the working set of 3rd party dependencies
 * `v1.0.0` (2018-11-09)
   - Check that both `mediainfo` and `gm` are available before trying anything
   - More code coverage, so about time to make first major release

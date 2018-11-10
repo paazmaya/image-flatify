@@ -1,4 +1,3 @@
-*-*.json
 tmp
 *.lcov
 
@@ -36,4 +35,3 @@ flow
 *.cpuprofile
 *.heapsnapshot
 memwatch.*
-
