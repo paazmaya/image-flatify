@@ -23,6 +23,8 @@ Those directories which are touched during the operation, in case they will be e
 
 Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `8.11.1`, which is [the active Long Term Support (LTS) version](https://github.com/nodejs/Release#release-schedule).
 
+See also [`image-foldarizer`](https://github.com/paazmaya/image-foldarizer) for organising images by their names and counter numbers.
+
 ## Installation
 
 Make sure to have both [GraphicsMagick](http://www.graphicsmagick.org/) and
@@ -46,7 +48,7 @@ sudo apt-get install graphicsmagick mediainfo
 In Windows, the applications need to be downloaded from their sites and once installed,
 their installation paths should be added in the `Path` system environment variable.
 
-Now install the command line tool globally, which might need increased privileges:
+Now install the `image-flatify` command line tool globally, which might need increased privileges:
 
 ```sh
 [sudo] npm install --global image-flatify
@@ -102,8 +104,10 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
-* `v1.0.1` (2018-11-10)
+* `v1.1.0` (2018-11-10)
   - Use [`npm-shrinkwrap.json`](https://docs.npmjs.com/files/shrinkwrap.json) for locking the working set of 3rd party dependencies
+  - `mediainfo` exists with non-zero exit code when not used with a file, hence have to tests is existence by checking against an existing file
+  - Include `mkv` extension to the list of possibly processed files
 * `v1.0.0` (2018-11-09)
   - Check that both `mediainfo` and `gm` are available before trying anything
   - More code coverage, so about time to make first major release
