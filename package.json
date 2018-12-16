@@ -41,13 +41,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "fecha": "~3.0.0",
+    "fecha": "~3.0.2",
     "image-extensions": "~1.1.0",
     "optionator": "~0.8.2"
   },
   "devDependencies": {
     "codecov": "^3.1.0",
-    "eslint": "^5.8.0",
+    "eslint": "^5.10.0",
     "eslint-config-paazmaya": "^5.1.0",
     "nyc": "^13.1.0",
     "tape": "^4.9.1"
