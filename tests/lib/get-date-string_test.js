@@ -56,7 +56,7 @@ tape('getDateStringMediainfo - existing file', (test) => {
   const filepath = 'tests/fixtures/IMG_0640.JPG';
   const output = getDateString._getDateStringMediainfo(filepath);
 
-  test.equal(output.indexOf('201'), 0, 'Begins with current decade year');
+  test.ok(/\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}/u.test(output), 'Date looking format');
 });
 
 tape('getDateStringMediainfo - non existing file', (test) => {
