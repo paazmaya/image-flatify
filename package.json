@@ -1,6 +1,6 @@
 {
   "name": "image-flatify",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Take a directory, search images recursively and rename as single flat directory with date based filenames",
   "homepage": "https://github.com/paazmaya/image-flatify",
   "main": "index.js",
@@ -11,8 +11,7 @@
     "coverage": "nyc --all --exclude tests report --reporter=text-lcov > coverage.lcov && codecov"
   },
   "engines": {
-    "node": ">=10.13.0",
-    "npm": ">=5.0.0"
+    "node": ">=10.13.0"
   },
   "files": [
     "bin",
@@ -43,7 +42,7 @@
   "dependencies": {
     "fecha": "~4.0.0",
     "image-extensions": "~1.1.0",
-    "optionator": "~0.8.2"
+    "optionator": "~0.8.3"
   },
   "devDependencies": {
     "codecov": "3.6.4",

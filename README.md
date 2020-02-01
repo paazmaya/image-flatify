@@ -30,8 +30,10 @@ See also [`image-foldarizer`](https://github.com/paazmaya/image-foldarizer) for 
 Make sure to have both [GraphicsMagick](http://www.graphicsmagick.org/) and
 [Mediainfo](https://mediaarea.net/en/MediaInfo) available in the `PATH` environment variable.
 
-The versions supported are [GraphicsMagick `1.3.x`](http://www.graphicsmagick.org/NEWS.html)
-and [MediaInfo `0.7.x`](https://mediaarea.net/MediaInfo/ChangeLog).
+The versions supported (tested via automation) are
+[GraphicsMagick `1.3.31`](http://www.graphicsmagick.org/NEWS.html)
+and [MediaInfo `18.08`](https://mediaarea.net/MediaInfo/ChangeLog).
+Other versions should work...
 
 They can be installed for example for macOS via [Brew](http://brew.sh):
 
@@ -73,7 +75,7 @@ image-flatify [options] <directory> [more directories]
   -l, --lowercase-suffix     Lowercase the resulting file suffixes, or use as is by default
   -D, --no-delete-empty-directories  Do not delete any directories that become empty after processing
 
-Version 1.0.0
+Version 2.0.0
 ```
 
 ### Example commands
@@ -104,6 +106,9 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
+* `v2.0.0` (2020-02-01)
+  - Minimum Node.js version lifted from `8.11.1` to `10.13.0`
+  - Now always printing the total number of files touched, verbose or not
 * `v1.1.0` (2018-11-10)
   - Use [`npm-shrinkwrap.json`](https://docs.npmjs.com/files/shrinkwrap.json) for locking the working set of 3rd party dependencies
   - `mediainfo` exists with non-zero exit code when not used with a file, hence have to tests is existence by checking against an existing file
