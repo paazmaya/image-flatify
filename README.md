@@ -6,7 +6,6 @@
 [![Windows build status](https://ci.appveyor.com/api/projects/status/h561l3h2l26aobr1/branch/master?svg=true)](https://ci.appveyor.com/project/paazmaya/image-flatify/branch/master)
 [![codecov](https://codecov.io/gh/paazmaya/image-flatify/branch/master/graph/badge.svg)](https://codecov.io/gh/paazmaya/image-flatify)
 [![dependencies Status](https://david-dm.org/paazmaya/image-flatify/status.svg)](https://david-dm.org/paazmaya/image-flatify)
-[![Report](https://inspecode.rocro.com/badges/github.com/paazmaya/image-flatify/report?token=F4UjXTz7RtXNZHfRjSE8jKCj3h0rZHcXHIJUnySIiJA&branch=master)](https://inspecode.rocro.com/reports/github.com/paazmaya/image-flatify/branch/master/summary)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpaazmaya%2Fimage-flatify.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fpaazmaya%2Fimage-flatify?ref=badge_shield)
 
 Got so fed up with mobile devices creating image files named `DCIM_01.JPG`
