@@ -7,7 +7,7 @@
  */
 /* eslint-disable handle-callback-err */
 
-'use strict';
+
 
 const fs = require('fs'),
   path = require('path'),

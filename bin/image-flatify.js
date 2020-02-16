@@ -10,11 +10,12 @@
  * Licensed under the MIT license
  */
 
-'use strict';
 
 const fs = require('fs'),
   path = require('path'),
-  execSync = require('child_process').execSync;
+  {
+    execSync
+  } = require('child_process');
 
 const optionator = require('optionator');
 
