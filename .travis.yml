@@ -10,7 +10,7 @@ addons:
       - mediainfo
 script:
   - gm version
-  - mediainfo --Help
+  - mediainfo --Help || true # help exits with 255
   - npm run lint
   - npm test
 after_script: "npm run coverage"

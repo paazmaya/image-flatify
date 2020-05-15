@@ -142,7 +142,10 @@ const execConfig = {
 };
 
 try {
-  execSync('mediainfo --Help', execConfig);
+  const versionOutput = execSync('mediainfo --Version', execConfig);
+  if (versionOutput.indexOf('MediaInfoLib') === -1) {
+    throw new Error('Noup.');
+  }
 }
 catch (error) {
   console.error('Looks like MediaInfo is not available. Please install it before continuing.');
