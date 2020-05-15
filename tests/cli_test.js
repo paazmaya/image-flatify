@@ -74,7 +74,7 @@ tape('cli should use given prefix, verbose dry run', (test) => {
   const prefix = 'i-like-lego';
 
   execFile('node', [pkg.bin, '-p', prefix, '-nv', 'tests/fixtures'], null, (err, stdout) => {
-    test.equal(stdout.trim().indexOf('--> ' + prefix + '20'), 156, 'Prefix seen');
+    test.equal(stdout.trim().indexOf('--> ' + prefix + '20'), 151, 'Prefix seen');
   });
 
 });
@@ -83,7 +83,7 @@ tape('cli should not have prefix when not specified, verbose dry run', (test) =>
   test.plan(1);
 
   execFile('node', [pkg.bin, '-nv', 'tests/fixtures'], null, (err, stdout) => {
-    test.equal(stdout.trim().indexOf('--> 20'), 156, 'Prefix not seen');
+    test.equal(stdout.trim().indexOf('--> 20'), 151, 'Prefix not seen');
   });
 
 });
