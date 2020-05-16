@@ -141,15 +141,15 @@ const execConfig = {
   encoding: 'utf8'
 };
 
+let versionOutput = '';
 try {
-  const versionOutput = execSync('mediainfo --Version', execConfig);
-  if (versionOutput.indexOf('MediaInfoLib') === -1) {
-    throw new Error('Noup.');
-  }
+  versionOutput = execSync('mediainfo --Version', execConfig);
 }
 catch (error) {
-  console.error('Looks like MediaInfo is not available. Please install it before continuing.');
-  process.exit(1);
+  if (!versionOutput || versionOutput.indexOf('MediaInfoLib') === -1) {
+    console.error('Looks like MediaInfo is not available. Please install it before continuing.');
+    process.exit(1);
+  }
 }
 
 try {
