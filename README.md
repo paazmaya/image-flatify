@@ -106,6 +106,8 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
+* `v2.0.2` (2020-07-20)
+  - Dependencies updated, to get rid of security issues
 * `v2.0.1` (2020-05-28)
   - Dependencies updated, as usual
   - Try to allow `mediainfo` exiting with non-zero value, even when it succeeds
