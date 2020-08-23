@@ -7,8 +7,6 @@
  */
 /* eslint-disable handle-callback-err */
 
-
-
 const fs = require('fs'),
   path = require('path'),
   execFile = require('child_process').execFile;
@@ -74,7 +72,7 @@ tape('cli should use given prefix, verbose dry run', (test) => {
   const prefix = 'i-like-lego';
 
   execFile('node', [pkg.bin, '-p', prefix, '-nv', 'tests/fixtures'], null, (err, stdout) => {
-    test.ok(stdout.trim().indexOf('--> ' + prefix + '20') > 100, 'Prefix seen');
+    test.ok(stdout.trim().indexOf(`--> ${prefix}20`) > 100, 'Prefix seen');
   });
 
 });

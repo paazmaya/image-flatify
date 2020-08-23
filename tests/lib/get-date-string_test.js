@@ -8,8 +8,6 @@
  * Licensed under the MIT license
  */
 
-
-
 const tape = require('tape');
 
 const getDateString = require('../../lib/get-date-string');
