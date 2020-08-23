@@ -142,7 +142,8 @@ const execConfig = {
 
 let versionOutput = '';
 try {
-  versionOutput = execSync('mediainfo --Version', execConfig);
+  // Why does it exit non-zero when all is good?
+  versionOutput = execSync('mediainfo --Version || true', execConfig);
 }
 catch (error) {
   if (!versionOutput || versionOutput.indexOf('MediaInfoLib') === -1) {
