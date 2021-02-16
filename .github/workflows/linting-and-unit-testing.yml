@@ -9,6 +9,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        apt-get update
+        apt-get install -y graphicsmagick mediainfo
+
+    - uses: actions/checkout@v2
+
     - name: Use Node.js v14
       uses: actions/setup-node@v2
       with:
