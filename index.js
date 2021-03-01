@@ -64,8 +64,8 @@ module.exports = function flatify (directory, options) {
     }
     if (!options.dryRun) {
       fs.renameSync(filepath, targetPath);
-      ++movedFiles;
     }
+    ++movedFiles;
   });
 
   if (!options.noDeleteEmptyDirectories && !options.keepInDirectories) {
