@@ -106,10 +106,11 @@ Please make sure it is over 90% at all times.
 
 ## Version history
 
-* `v2.x.x` (2021)
+* `v2.0.3` (2021-03-02)
   - Need to migrate all but one test execution away from Travis CI due to free account limitations
   - Now using GitHub Actions to execute tests with Node.js v14
   - Fix showing the number of possibly affected files in dry run
+  - Include files with the `3gp` suffix in the process
 * `v2.0.2` (2020-08-24)
   - Perhaps does not fail as often with getting MediaInfo installation status
 * `v2.0.1` (2020-07-20)
