@@ -2,7 +2,7 @@
 
 > Take a directory, search image files recursively and rename them based on their creation time, producing a flat directory
 
-[![Build Status](https://travis-ci.org/paazmaya/image-flatify.svg?branch=master)](https://travis-ci.org/paazmaya/image-flatify)
+[![Build Status](https://travis-ci.com/paazmaya/image-flatify.svg?branch=master)](https://travis-ci.com/paazmaya/image-flatify)
 [![Windows build status](https://ci.appveyor.com/api/projects/status/h561l3h2l26aobr1/branch/master?svg=true)](https://ci.appveyor.com/project/paazmaya/image-flatify/branch/master)
 [![codecov](https://codecov.io/gh/paazmaya/image-flatify/branch/master/graph/badge.svg)](https://codecov.io/gh/paazmaya/image-flatify)
 [![dependencies Status](https://david-dm.org/paazmaya/image-flatify/status.svg)](https://david-dm.org/paazmaya/image-flatify)
