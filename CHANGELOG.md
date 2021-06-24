@@ -4,7 +4,7 @@ This changelog covers the version history and possible upcoming changes.
 It follows the guidance from https://keepachangelog.com/en/1.0.0/.
 
 ## Unreleased
-
+- Minimum supported Node.js version lifted from `10.13.0` to `14.15.0`
 
 ## `v2.0.3` (2021-03-02)
 - Need to migrate all but one test execution away from Travis CI due to free account limitations

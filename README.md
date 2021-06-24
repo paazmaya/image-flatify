@@ -21,7 +21,7 @@ This tool will solve that step in the process when renaming and organising image
 The given directory will be searched recursively for media files and they all will be renamed to the given directory.
 Those directories which are touched during the operation, in case they will be empty after the rename, the directory will be renamed.
 
-Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `10.13.0`, which is [the active Long Term Support (LTS) version](https://github.com/nodejs/Release#release-schedule).
+Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `14.15.0`, which is [the active Long Term Support (LTS) version](https://github.com/nodejs/Release#release-schedule).
 
 See also [`image-foldarizer`](https://github.com/paazmaya/image-foldarizer) for organising images by their names and counter numbers.
 
