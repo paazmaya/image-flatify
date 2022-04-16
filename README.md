@@ -5,7 +5,7 @@
 [![Build Status](https://app.travis-ci.com/paazmaya/image-flatify.svg?branch=master)](https://app.travis-ci.com/paazmaya/image-flatify)
 [![Windows build status](https://ci.appveyor.com/api/projects/status/h561l3h2l26aobr1/branch/master?svg=true)](https://ci.appveyor.com/project/paazmaya/image-flatify/branch/master)
 [![codecov](https://codecov.io/gh/paazmaya/image-flatify/branch/master/graph/badge.svg)](https://codecov.io/gh/paazmaya/image-flatify)
-[![dependencies Status](https://david-dm.org/paazmaya/image-flatify/status.svg)](https://david-dm.org/paazmaya/image-flatify)
+
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpaazmaya%2Fimage-flatify.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fpaazmaya%2Fimage-flatify?ref=badge_shield)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=paazmaya_image-flatify&metric=code_smells)](https://sonarcloud.io/dashboard?id=paazmaya_image-flatify)
 
