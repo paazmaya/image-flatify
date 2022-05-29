@@ -1,6 +1,6 @@
 {
   "name": "image-flatify",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "description": "Take a directory, search images recursively and rename as single flat directory with date based filenames",
   "homepage": "https://github.com/paazmaya/image-flatify",
   "main": "index.js",
@@ -9,8 +9,8 @@
   },
   "scripts": {
     "lint": "eslint index.js bin lib",
-    "test": "nyc --all --exclude tests tape tests/*_test.js tests/lib/*_test.js",
-    "coverage": "nyc --all --exclude tests report --reporter=text-lcov > coverage.lcov && codecov"
+    "test": "nyc --exclude tests tape tests/*_test.js tests/lib/*_test.js",
+    "coverage": "nyc --exclude tests report --reporter=text-lcov > coverage.lcov && codecov"
   },
   "engines": {
     "node": ">=14.15.0"

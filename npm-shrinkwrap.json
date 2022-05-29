@@ -1,12 +1,12 @@
 {
   "name": "image-flatify",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "image-flatify",
-      "version": "2.0.3",
+      "version": "3.0.0",
       "license": "MIT",
       "dependencies": {
         "fecha": "4.2.3",
