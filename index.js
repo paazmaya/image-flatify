@@ -8,13 +8,12 @@
  * Licensed under the MIT license
  */
 
+import fs from 'fs';
+import path from 'path';
 
-const fs = require('fs'),
-  path = require('path');
-
-const getTargetPath = require('./lib/get-target-path'),
-  getImages = require('./lib/get-images'),
-  cleanDirectories = require('./lib/clean-directories');
+import getTargetPath from './lib/get-target-path.js';
+import getImages from './lib/get-images.js';
+import cleanDirectories from './lib/clean-directories.js';
 
 const INDEX_NOT_FOUND = -1;
 
@@ -31,7 +30,7 @@ const INDEX_NOT_FOUND = -1;
  *
  * @returns {void}
  */
-module.exports = function flatify (directory, options) {
+export default function flatify (directory, options) {
   const files = getImages(directory, options);
 
   console.log(`Found total of ${files.length} image files to be processed`);
@@ -78,4 +77,4 @@ module.exports = function flatify (directory, options) {
   else {
     console.log(`Moved total of ${movedFiles} image files`);
   }
-};
+}

@@ -8,9 +8,9 @@
  * Licensed under the MIT license
  */
 
-const tape = require('tape');
+import tape from 'tape';
 
-const getImages = require('../../lib/get-images');
+import getImages, {isMedia} from '../../lib/get-images.js';
 
 tape('getImages - got one image in sub directory', (test) => {
   test.plan(1);
@@ -31,9 +31,9 @@ tape('getImages - got no images', (test) => {
 tape('isMedia', (test) => {
   test.plan(5);
 
-  test.notOk(getImages._isMedia('hoplaa.js'));
-  test.ok(getImages._isMedia('hoplaa.jpg'));
-  test.ok(getImages._isMedia('hoplaa.jpeg'));
-  test.ok(getImages._isMedia('hoplaa.mp4'));
-  test.ok(getImages._isMedia('hoplaa.test.GIF'));
+  test.notOk(isMedia('hoplaa.js'));
+  test.ok(isMedia('hoplaa.jpg'));
+  test.ok(isMedia('hoplaa.jpeg'));
+  test.ok(isMedia('hoplaa.mp4'));
+  test.ok(isMedia('hoplaa.test.GIF'));
 });

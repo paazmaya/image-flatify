@@ -8,12 +8,12 @@
  * Licensed under the MIT license
  */
 
-const fs = require('fs'),
-  path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-const tape = require('tape');
+import tape from 'tape';
 
-const cleanDirectories = require('../../lib/clean-directories');
+import cleanDirectories, {cleanDirectory} from '../../lib/clean-directories.js';
 
 tape('cleanDirectories - non existing single directory', (test) => {
   test.plan(1);
@@ -30,7 +30,7 @@ tape('cleanDirectories - non existing single directory', (test) => {
 tape('cleanDirectories - removes directory', (test) => {
   test.plan(1);
 
-  const tmpDir = path.join(__dirname, 'temporary-folder');
+  const tmpDir = path.join('tests', 'temporary-folder');
 
   try {
     fs.accessSync(tmpDir);
@@ -57,7 +57,7 @@ tape('cleanDirectories - removes directory', (test) => {
 tape('cleanDirectories._cleanDirectory - does not remove when dry run, but tells about it', (test) => {
   test.plan(1);
 
-  const tmpDir = path.join(__dirname, 'temporary-folder');
+  const tmpDir = path.join('tests', 'temporary-folder');
 
   try {
     fs.accessSync(tmpDir);
@@ -70,7 +70,7 @@ tape('cleanDirectories._cleanDirectory - does not remove when dry run, but tells
     dryRun: true,
     verbose: true
   };
-  cleanDirectories._cleanDirectory(tmpDir, options);
+  cleanDirectory(tmpDir, options);
 
   try {
     fs.accessSync(tmpDir);
@@ -84,7 +84,7 @@ tape('cleanDirectories._cleanDirectory - does not remove when dry run, but tells
 tape('cleanDirectories._cleanDirectory - removes directory', (test) => {
   test.plan(1);
 
-  const tmpDir = path.join(__dirname, 'temporary-folder');
+  const tmpDir = path.join('tests', 'temporary-folder');
 
   try {
     fs.accessSync(tmpDir);
@@ -97,7 +97,7 @@ tape('cleanDirectories._cleanDirectory - removes directory', (test) => {
     dryRun: false,
     verbose: true
   };
-  cleanDirectories._cleanDirectory(tmpDir, options);
+  cleanDirectory(tmpDir, options);
 
   try {
     fs.accessSync(tmpDir);
@@ -117,7 +117,7 @@ tape('cleanDirectories._cleanDirectory - does not remove non empty directory', (
     dryRun: true,
     verbose: true
   };
-  cleanDirectories._cleanDirectory(directory, options);
+  cleanDirectory(directory, options);
 
   try {
     fs.accessSync(directory);

@@ -8,11 +8,11 @@
  * Licensed under the MIT license
  */
 
-const path = require('path');
+import path from 'path';
 
-const tape = require('tape');
+import tape from 'tape';
 
-const getTargetPath = require('../../lib/get-target-path');
+import getTargetPath from '../../lib/get-target-path.js';
 
 tape('getTargetPath - Uses prefix', (test) => {
   test.plan(1);
@@ -118,8 +118,8 @@ tape('getTargetPath - Source not existing', (test) => {
 tape('getTargetPath - Destination exists, so adding a counter', (test) => {
   test.plan(1);
 
-  const destDir = path.join(__dirname, '..', 'expected');
-  const filepath = path.join(__dirname, '..', 'fixtures', 'IMG_0640.JPG');
+  const destDir = path.join('tests', 'expected');
+  const filepath = path.join('tests', 'fixtures', 'IMG_0640.JPG');
 
   const output = getTargetPath(destDir, filepath);
 

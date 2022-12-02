@@ -8,9 +8,9 @@
  * Licensed under the MIT license
  */
 
-const tape = require('tape');
+import tape from 'tape';
 
-const flatify = require('../index');
+import flatify from '../index.js';
 
 tape('a function is exported', (test) => {
   test.plan(2);

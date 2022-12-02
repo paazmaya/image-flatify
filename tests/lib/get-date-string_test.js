@@ -8,9 +8,9 @@
  * Licensed under the MIT license
  */
 
-const tape = require('tape');
+import tape from 'tape';
 
-const getDateString = require('../../lib/get-date-string');
+import getDateString, {getDateStringMediainfo, getDateStringGraphicsMagick} from '../../lib/get-date-string.js';
 
 tape('getDateString - Get date via GM as expected', (test) => {
   test.plan(1);
@@ -34,7 +34,7 @@ tape('getDateStringGraphicsMagick - existing file', (test) => {
   test.plan(1);
 
   const filepath = 'tests/fixtures/IMG_0640.JPG';
-  const output = getDateString._getDateStringGraphicsMagick(filepath);
+  const output = getDateStringGraphicsMagick(filepath);
 
   test.equal(output, '2016:06:05 20:40:00');
 });
@@ -43,7 +43,7 @@ tape('getDateStringGraphicsMagick - non existing file', (test) => {
   test.plan(1);
 
   const filepath = 'tests/-/not-existing.jpg';
-  const output = getDateString._getDateStringGraphicsMagick(filepath);
+  const output = getDateStringGraphicsMagick(filepath);
 
   test.notOk(output);
 });
@@ -52,7 +52,7 @@ tape('getDateStringMediainfo - existing file', (test) => {
   test.plan(1);
 
   const filepath = 'tests/fixtures/IMG_0640.JPG';
-  const output = getDateString._getDateStringMediainfo(filepath);
+  const output = getDateStringMediainfo(filepath);
 
   test.ok(/\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}/u.test(output), 'Date looking format');
 });
@@ -61,7 +61,7 @@ tape('getDateStringMediainfo - non existing file', (test) => {
   test.plan(1);
 
   const filepath = 'tests/-/not-existing.jpg';
-  const output = getDateString._getDateStringMediainfo(filepath);
+  const output = getDateStringMediainfo(filepath);
 
   test.notOk(output);
 });

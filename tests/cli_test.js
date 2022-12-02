@@ -7,15 +7,15 @@
  */
 /* eslint-disable handle-callback-err */
 
-const fs = require('fs'),
-  path = require('path'),
-  {
+import fs from 'fs';
+import path from 'path';
+import {
     execFile
-  } = require('child_process');
+} from 'child_process';
 
-const tape = require('tape');
+import tape from 'tape';
 
-const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
+import pkg from '../package.json' assert { type: 'json' };
 const bin = path.join('bin', 'image-flatify');
 
 tape('cli should output version number', (test) => {
@@ -41,21 +41,6 @@ tape('cli should output help when requested', (test) => {
 
   execFile('node', [bin, '--help'], null, (err, stdout) => {
     test.ok(stdout.trim().indexOf('image-flatify [options] <directory>') !== -1, 'Help appeared');
-  });
-
-});
-
-tape('cli should complain when package.json is gone', (test) => {
-  test.plan(1);
-
-  const nameFrom = 'package.json',
-    nameTo = '_package.json';
-
-  fs.renameSync(nameFrom, nameTo);
-
-  execFile('node', [bin, '-h'], null, (err, stdout, stderr) => {
-    test.ok(stderr.trim().indexOf('Could not read') !== -1, 'Complaint seen');
-    fs.renameSync(nameTo, nameFrom);
   });
 
 });
@@ -93,7 +78,7 @@ tape('cli should require at least one directory', (test) => {
   test.plan(1);
 
   execFile('node', [bin, '-nv'], null, (err, stdout, stderr) => {
-    test.equal(stderr.trim(), 'Directory/directories were not specified');
+    test.ok(stderr.trim().indexOf('Directory/directories were not specified') !== -1);
   });
 
 });
@@ -120,7 +105,7 @@ tape('cli should accept two directory, but fail when the latter does not exist',
 tape('cli does not move files when dry-run', (test) => {
   test.plan(1);
 
-  execFile('node', [bin, '-nv', path.join(__dirname, 'fixtures')], null, (err, stdout) => {
+  execFile('node', [bin, '-nv', path.join('tests', 'fixtures')], null, (err, stdout) => {
     test.ok(stdout.trim().indexOf('Would have moved total of ') !== -1);
   });
 
@@ -130,7 +115,7 @@ tape('cli appends with hash', (test) => {
 
   const regex = /40-00_\S+\.JPG/gu;
 
-  execFile('node', [bin, '-anKDv', path.join(__dirname, 'fixtures')], null, (err, stdout) => {
+  execFile('node', [bin, '-anKDv', path.join('tests', 'fixtures')], null, (err, stdout) => {
     test.ok(regex.test(stdout));
   });
 
