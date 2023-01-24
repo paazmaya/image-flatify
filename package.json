@@ -9,7 +9,7 @@
     "image-flatify": "bin/image-flatify.js"
   },
   "scripts": {
-    "lint": "eslint *.js bin lib",
+    "lint": "eslint *.js lib",
     "test": "c8 --exclude tests tape tests/*_test.js tests/lib/*_test.js",
     "coverage": "c8 --exclude tests report --reporter=text-lcov > coverage.lcov && codecov"
   },
