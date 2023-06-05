@@ -5,6 +5,12 @@ It follows the guidance from https://keepachangelog.com/en/1.0.0/.
 
 ## Unreleased
 
+## `v3.0.1` (2023-06-05)
+
+- It's all ES Modules now
+- Start testing against Node.js v18
+- Drop `image-extensions` dependency and define all the file suffixes in place
+
 ## `v3.0.0` (2022-05-29)
 - Minimum supported Node.js version lifted from `10.13.0` to `14.15.0`
 - Include files ending with `.heic` or `.heif` to be covered by this tool #186
