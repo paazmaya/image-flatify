@@ -45,7 +45,7 @@
   "license": "MIT",
   "dependencies": {
     "fecha": "4.2.3",
-    "optionator": "0.9.1"
+    "optionator": "0.9.3"
   },
   "devDependencies": {
     "c8": "8.0.0",
