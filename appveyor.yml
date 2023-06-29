@@ -27,7 +27,7 @@ install:
   - set PATH=%CD%\mediainfo;%PATH%
   - appveyor DownloadFile "https://exiftool.org/exiftool-12.60.zip"
   - 7z e -y exiftool-12.60.zip -oexiftool 
-  - rename exiftool\exiftool(-k).exe exiftool\exiftool.exe
+  - rename exiftool\exiftool(-k).exe exiftool.exe
   - set PATH=%CD%\exiftool;%PATH%
   - gm version
   - mediainfo --Version
