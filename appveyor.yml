@@ -26,7 +26,8 @@ install:
   - 7z e -y MediaInfo_CLI_19.04_Windows_x64.zip -omediainfo
   - set PATH=%CD%\mediainfo;%PATH%
   - appveyor DownloadFile "https://exiftool.org/exiftool-12.60.zip"
-  - 7z e -y exiftool-12.60.zip -oexiftool
+  - 7z e -y exiftool-12.60.zip -oexiftool 
+  - rename exiftool\exiftool(-k).exe exiftool\exiftool.exe
   - set PATH=%CD%\exiftool;%PATH%
   - gm version
   - mediainfo --Version
