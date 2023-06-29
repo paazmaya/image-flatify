@@ -10,7 +10,7 @@
 
 import tape from 'tape';
 
-import getDateString, {getDateStringMediainfo, getDateStringGraphicsMagick} from '../../lib/get-date-string.js';
+import getDateString, {getDateStringMediainfo, getDateStringExiftool, getDateStringGraphicsMagick} from '../../lib/get-date-string.js';
 
 tape('getDateString - Get date via GM as expected', (test) => {
   test.plan(1);
@@ -30,7 +30,7 @@ tape('getDateString - non existing file', (test) => {
   test.notOk(output);
 });
 
-tape('getDateStringGraphicsMagick - existing file', (test) => {
+tape('getDateStringGraphicsMagick - existing image file', (test) => {
   test.plan(1);
 
   const filepath = 'tests/fixtures/IMG_0640.JPG';
@@ -48,7 +48,25 @@ tape('getDateStringGraphicsMagick - non existing file', (test) => {
   test.notOk(output);
 });
 
-tape('getDateStringMediainfo - existing file', (test) => {
+tape('getDateStringExiftool - existing image file', (test) => {
+  test.plan(1);
+
+  const filepath = 'tests/fixtures/IMG_0640.JPG';
+  const output = getDateStringExiftool(filepath);
+
+  test.equal(output, '2016:06:05 20:40:00');
+});
+
+tape('getDateStringExiftool - non existing file', (test) => {
+  test.plan(1);
+
+  const filepath = 'tests/-/not-existing.jpg';
+  const output = getDateStringExiftool(filepath);
+
+  test.notOk(output);
+});
+
+tape('getDateStringMediainfo - existing image file', (test) => {
   test.plan(1);
 
   const filepath = 'tests/fixtures/IMG_0640.JPG';

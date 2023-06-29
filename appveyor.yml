@@ -25,8 +25,12 @@ install:
   - appveyor DownloadFile "https://downloads.sourceforge.net/project/mediainfo/binary/mediainfo/19.04/MediaInfo_CLI_19.04_Windows_x64.zip"
   - 7z e -y MediaInfo_CLI_19.04_Windows_x64.zip -omediainfo
   - set PATH=%CD%\mediainfo;%PATH%
+  - appveyor DownloadFile "https://exiftool.org/exiftool-12.60.zip"
+  - 7z e -y exiftool-12.60.zip -oexiftool
+  - set PATH=%CD%\exiftool;%PATH%
   - gm version
   - mediainfo --Version
+  - exiftool --version
   - npm ci
 
 test_script:
