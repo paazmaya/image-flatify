@@ -23,4 +23,7 @@ jobs:
         node-version: '18.x'
     - run: npm ci
     - run: npm run lint
-    - run: npm test
+    - run: npm run coverage
+
+    - name: Upload unit test coverage report to Codecov
+      uses: codecov/codecov-action@v3
