@@ -31,7 +31,7 @@ install:
   - set PATH=%CD%\exiftool;%PATH%
   - gm version
   - mediainfo --Version
-  - exiftool --version
+  - exiftool -ver
   - npm ci
 
 test_script:
