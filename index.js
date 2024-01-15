@@ -8,8 +8,8 @@
  * Licensed under the MIT license
  */
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import getTargetPath from './lib/get-target-path.js';
 import getImages from './lib/get-images.js';

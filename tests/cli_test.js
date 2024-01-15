@@ -7,11 +7,11 @@
  */
 /* eslint-disable handle-callback-err */
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import {
     execFile
-} from 'child_process';
+} from 'node:child_process';
 
 import tape from 'tape';
 
