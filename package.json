@@ -37,7 +37,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:paazmaya/image-flatify.git"
+    "url": "git+ssh://git@github.com/paazmaya/image-flatify.git"
   },
   "bugs": {
     "url": "https://github.com/paazmaya/image-flatify/issues"
