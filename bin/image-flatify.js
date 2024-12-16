@@ -121,7 +121,7 @@ directories.forEach((directory) => {
   try {
     fs.accessSync(directory);
   }
-  catch (error) {
+  catch {
     console.error(`Directory (${directory}) does not exist`);
     process.exit(1);
   }
@@ -136,7 +136,7 @@ try {
   // Why does it exit non-zero when all is good?
   versionOutput = execSync('mediainfo --Version || true', execConfig);
 }
-catch (error) {
+catch {
   if (!versionOutput || versionOutput.indexOf('MediaInfoLib') === -1) {
     console.error('Looks like MediaInfo is not available. Please install it before continuing.');
     process.exit(1);
@@ -146,7 +146,7 @@ catch (error) {
 try {
   execSync('gm version', execConfig);
 }
-catch (error) {
+catch {
   console.error('Looks like GraphicsMagick is not available. Please install it before continuing.');
   process.exit(1);
 }

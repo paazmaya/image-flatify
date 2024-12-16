@@ -35,7 +35,7 @@ tape('cleanDirectories - removes directory', (test) => {
   try {
     fs.accessSync(tmpDir);
   }
-  catch (error) {
+  catch {
     fs.mkdirSync(tmpDir);
   }
 
@@ -49,7 +49,7 @@ tape('cleanDirectories - removes directory', (test) => {
     fs.accessSync(tmpDir);
     test.fail();
   }
-  catch (error) {
+  catch {
     test.pass();
   }
 });
@@ -62,7 +62,7 @@ tape('cleanDirectories._cleanDirectory - does not remove when dry run, but tells
   try {
     fs.accessSync(tmpDir);
   }
-  catch (error) {
+  catch {
     fs.mkdirSync(tmpDir);
   }
 
@@ -76,7 +76,7 @@ tape('cleanDirectories._cleanDirectory - does not remove when dry run, but tells
     fs.accessSync(tmpDir);
     test.pass();
   }
-  catch (error) {
+  catch {
     test.fail();
   }
 });
@@ -89,7 +89,7 @@ tape('cleanDirectories._cleanDirectory - removes directory', (test) => {
   try {
     fs.accessSync(tmpDir);
   }
-  catch (error) {
+  catch {
     fs.mkdirSync(tmpDir);
   }
 
@@ -103,7 +103,7 @@ tape('cleanDirectories._cleanDirectory - removes directory', (test) => {
     fs.accessSync(tmpDir);
     test.fail();
   }
-  catch (error) {
+  catch {
     test.pass();
   }
 });
@@ -123,7 +123,7 @@ tape('cleanDirectories._cleanDirectory - does not remove non empty directory', (
     fs.accessSync(directory);
     test.pass();
   }
-  catch (error) {
+  catch  {
     test.fail();
   }
 });
