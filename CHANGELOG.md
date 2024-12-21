@@ -3,7 +3,7 @@
 This changelog covers the version history and possible upcoming changes.
 It follows the guidance from https://keepachangelog.com/en/1.0.0/.
 
-## Unreleased
+## `v4.0.0` (2024-12-21)
 
 - Minimum supported Node.js version lifted from `14.15.0` to `22.11.0`
 - Start using `exiftool` for reading media file information #187

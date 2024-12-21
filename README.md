@@ -30,7 +30,7 @@ Make sure to have both [GraphicsMagick](http://www.graphicsmagick.org/) and
 [Mediainfo](https://mediaarea.net/en/MediaInfo) available in the `PATH` environment variable.
 
 The versions supported (tested via automation) are
-[GraphicsMagick `1.3.31`](http://www.graphicsmagick.org/NEWS.html)
+[GraphicsMagick `1.3.45`](http://www.graphicsmagick.org/NEWS.html)
 and [MediaInfo `18.08`](https://mediaarea.net/MediaInfo/ChangeLog).
 Other versions should work...
 
@@ -74,7 +74,7 @@ image-flatify [options] <directory> [more directories]
   -l, --lowercase-suffix     Lowercase the resulting file suffixes, or use as is by default
   -D, --no-delete-empty-directories  Do not delete any directories that become empty after processing
 
-Version 2.0.0
+Version 4.0.0
 ```
 
 ### Example commands

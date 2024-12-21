@@ -26,5 +26,9 @@ jobs:
     - run: npm run lint
     - run: npm run coverage
 
-    - name: Upload unit test coverage report to Codecov
+    - name: Upload code coverage to codecov
+      # https://github.com/marketplace/actions/codecov
       uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: coverage.lcov
