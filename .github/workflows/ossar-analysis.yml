@@ -31,11 +31,11 @@ jobs:
     - name: Install .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '3.1.201'
+        dotnet-version: '6.0.x'
 
       # Run open source static analysis tools
     - name: Run OSSAR
-      uses: github/ossar-action@v1
+      uses: github/ossar-action@v2
       id: ossar
 
       # Upload results to the Security tab
