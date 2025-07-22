@@ -3,7 +3,7 @@
 > Take a directory, search image files recursively and rename them based on their creation time, producing a flat directory
 
 [![Windows build status](https://ci.appveyor.com/api/projects/status/h561l3h2l26aobr1/branch/master?svg=true)](https://ci.appveyor.com/project/paazmaya/image-flatify/branch/master)
-[![Node.js v22 CI](https://github.com/paazmaya/image-flatify/actions/workflows/linting-and-unit-testing.yml/badge.svg)](https://github.com/paazmaya/image-flatify/actions/workflows/linting-and-unit-testing.yml)
+[![Node.js CI](https://github.com/paazmaya/image-flatify/actions/workflows/linting-and-unit-testing.yml/badge.svg)](https://github.com/paazmaya/image-flatify/actions/workflows/linting-and-unit-testing.yml)
 [![codecov](https://codecov.io/gh/paazmaya/image-flatify/branch/master/graph/badge.svg)](https://codecov.io/gh/paazmaya/image-flatify)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpaazmaya%2Fimage-flatify.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fpaazmaya%2Fimage-flatify?ref=badge_shield)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=paazmaya_image-flatify&metric=code_smells)](https://sonarcloud.io/dashboard?id=paazmaya_image-flatify)
@@ -20,7 +20,7 @@ This tool will solve that step in the process when renaming and organising image
 The given directory will be searched recursively for media files and they all will be renamed to the given directory.
 Those directories which are touched during the operation, in case they will be empty after the rename, the directory will be renamed.
 
-Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `22.11.0`, which is [the active Long Term Support (LTS) version](https://github.com/nodejs/Release#release-schedule).
+Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `24.12.0`, which is [the active Long Term Support (LTS) version](https://github.com/nodejs/Release#release-schedule).
 
 See also [`image-foldarizer`](https://github.com/paazmaya/image-foldarizer) for organising images by their names and counter numbers.
 
