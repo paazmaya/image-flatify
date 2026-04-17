@@ -17,7 +17,7 @@
       },
       "devDependencies": {
         "c8": "11.0.0",
-        "eslint": "10.2.0",
+        "eslint": "10.2.1",
         "eslint-config-paazmaya": "9.0.1",
         "eslint-plugin-n": "17.24.0",
         "tape": "5.9.0"
@@ -960,17 +960,17 @@
       }
     },
     "node_modules/eslint": {
-      "version": "10.2.0",
-      "resolved": "https://registry.npmjs.org/eslint/-/eslint-10.2.0.tgz",
-      "integrity": "sha512-+L0vBFYGIpSNIt/KWTpFonPrqYvgKw1eUI5Vn7mEogrQcWtWYtNQ7dNqC+px/J0idT3BAkiWrhfS7k+Tum8TUA==",
+      "version": "10.2.1",
+      "resolved": "https://registry.npmjs.org/eslint/-/eslint-10.2.1.tgz",
+      "integrity": "sha512-wiyGaKsDgqXvF40P8mDwiUp/KQjE1FdrIEJsM8PZ3XCiniTMXS3OHWWUe5FI5agoCnr8x4xPrTDZuxsBlNHl+Q==",
       "dev": true,
       "dependencies": {
         "@eslint-community/eslint-utils": "^4.8.0",
         "@eslint-community/regexpp": "^4.12.2",
-        "@eslint/config-array": "^0.23.4",
-        "@eslint/config-helpers": "^0.5.4",
-        "@eslint/core": "^1.2.0",
-        "@eslint/plugin-kit": "^0.7.0",
+        "@eslint/config-array": "^0.23.5",
+        "@eslint/config-helpers": "^0.5.5",
+        "@eslint/core": "^1.2.1",
+        "@eslint/plugin-kit": "^0.7.1",
         "@humanfs/node": "^0.16.6",
         "@humanwhocodes/module-importer": "^1.0.1",
         "@humanwhocodes/retry": "^0.4.2",
@@ -1164,7 +1164,22 @@
         "url": "https://opencollective.com/eslint"
       }
     },
-    "node_modules/eslint/node_modules/espree": {
+    "node_modules/eslint/node_modules/minimatch": {
+      "version": "10.2.5",
+      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-10.2.5.tgz",
+      "integrity": "sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg==",
+      "dev": true,
+      "dependencies": {
+        "brace-expansion": "^5.0.5"
+      },
+      "engines": {
+        "node": "18 || 20 || >=22"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/isaacs"
+      }
+    },
+    "node_modules/espree": {
       "version": "11.2.0",
       "resolved": "https://registry.npmjs.org/espree/-/espree-11.2.0.tgz",
       "integrity": "sha512-7p3DrVEIopW1B1avAGLuCSh1jubc01H2JHc8B4qqGblmg5gI9yumBgACjWo4JlIc04ufug4xJ3SQI8HkS/Rgzw==",
@@ -1181,19 +1196,16 @@
         "url": "https://opencollective.com/eslint"
       }
     },
-    "node_modules/eslint/node_modules/minimatch": {
-      "version": "10.2.5",
-      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-10.2.5.tgz",
-      "integrity": "sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg==",
+    "node_modules/espree/node_modules/eslint-visitor-keys": {
+      "version": "5.0.1",
+      "resolved": "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-5.0.1.tgz",
+      "integrity": "sha512-tD40eHxA35h0PEIZNeIjkHoDR4YjjJp34biM0mDvplBe//mB+IHCqHDGV7pxF+7MklTvighcCPPZC7ynWyjdTA==",
       "dev": true,
-      "dependencies": {
-        "brace-expansion": "^5.0.5"
-      },
       "engines": {
-        "node": "18 || 20 || >=22"
+        "node": "^20.19.0 || ^22.13.0 || >=24"
       },
       "funding": {
-        "url": "https://github.com/sponsors/isaacs"
+        "url": "https://opencollective.com/eslint"
       }
     },
     "node_modules/esquery": {
@@ -3872,17 +3884,17 @@
       "dev": true
     },
     "eslint": {
-      "version": "10.2.0",
-      "resolved": "https://registry.npmjs.org/eslint/-/eslint-10.2.0.tgz",
-      "integrity": "sha512-+L0vBFYGIpSNIt/KWTpFonPrqYvgKw1eUI5Vn7mEogrQcWtWYtNQ7dNqC+px/J0idT3BAkiWrhfS7k+Tum8TUA==",
+      "version": "10.2.1",
+      "resolved": "https://registry.npmjs.org/eslint/-/eslint-10.2.1.tgz",
+      "integrity": "sha512-wiyGaKsDgqXvF40P8mDwiUp/KQjE1FdrIEJsM8PZ3XCiniTMXS3OHWWUe5FI5agoCnr8x4xPrTDZuxsBlNHl+Q==",
       "dev": true,
       "requires": {
         "@eslint-community/eslint-utils": "^4.8.0",
         "@eslint-community/regexpp": "^4.12.2",
-        "@eslint/config-array": "^0.23.4",
-        "@eslint/config-helpers": "^0.5.4",
-        "@eslint/core": "^1.2.0",
-        "@eslint/plugin-kit": "^0.7.0",
+        "@eslint/config-array": "^0.23.5",
+        "@eslint/config-helpers": "^0.5.5",
+        "@eslint/core": "^1.2.1",
+        "@eslint/plugin-kit": "^0.7.1",
         "@humanfs/node": "^0.16.6",
         "@humanwhocodes/module-importer": "^1.0.1",
         "@humanwhocodes/retry": "^0.4.2",
@@ -3929,17 +3941,6 @@
           "resolved": "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-5.0.1.tgz",
           "integrity": "sha512-tD40eHxA35h0PEIZNeIjkHoDR4YjjJp34biM0mDvplBe//mB+IHCqHDGV7pxF+7MklTvighcCPPZC7ynWyjdTA==",
           "dev": true
-        },
-        "espree": {
-          "version": "11.2.0",
-          "resolved": "https://registry.npmjs.org/espree/-/espree-11.2.0.tgz",
-          "integrity": "sha512-7p3DrVEIopW1B1avAGLuCSh1jubc01H2JHc8B4qqGblmg5gI9yumBgACjWo4JlIc04ufug4xJ3SQI8HkS/Rgzw==",
-          "dev": true,
-          "requires": {
-            "acorn": "^8.16.0",
-            "acorn-jsx": "^5.3.2",
-            "eslint-visitor-keys": "^5.0.1"
-          }
         },
         "minimatch": {
           "version": "10.2.5",
@@ -4023,6 +4024,25 @@
       "resolved": "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-3.4.3.tgz",
       "integrity": "sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==",
       "dev": true
+    },
+    "espree": {
+      "version": "11.2.0",
+      "resolved": "https://registry.npmjs.org/espree/-/espree-11.2.0.tgz",
+      "integrity": "sha512-7p3DrVEIopW1B1avAGLuCSh1jubc01H2JHc8B4qqGblmg5gI9yumBgACjWo4JlIc04ufug4xJ3SQI8HkS/Rgzw==",
+      "dev": true,
+      "requires": {
+        "acorn": "^8.16.0",
+        "acorn-jsx": "^5.3.2",
+        "eslint-visitor-keys": "^5.0.1"
+      },
+      "dependencies": {
+        "eslint-visitor-keys": {
+          "version": "5.0.1",
+          "resolved": "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-5.0.1.tgz",
+          "integrity": "sha512-tD40eHxA35h0PEIZNeIjkHoDR4YjjJp34biM0mDvplBe//mB+IHCqHDGV7pxF+7MklTvighcCPPZC7ynWyjdTA==",
+          "dev": true
+        }
+      }
     },
     "esquery": {
       "version": "1.7.0",
