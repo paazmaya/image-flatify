@@ -20,6 +20,14 @@ tape('getImages - got one image in sub directory', (test) => {
   test.equal(output.length, 2);
 });
 
+tape('getImages - verbose mode', (test) => {
+  test.plan(1);
+
+  const output = getImages('tests/fixtures', { verbose: true });
+
+  test.equal(output.length, 1);
+});
+
 tape('getImages - got no images', (test) => {
   test.plan(1);
 

@@ -8,9 +8,22 @@
  * Licensed under the MIT license
  */
 
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+
 import tape from 'tape';
 
 import getDateString, {getDateStringMediainfo, getDateStringExiftool, getDateStringGraphicsMagick} from '../../lib/get-date-string.js';
+
+let mediaInfoAvailable = false;
+try {
+  execSync('mediainfo --Version', { timeout: 2000, encoding: 'utf8' });
+  mediaInfoAvailable = true;
+}
+catch {
+  // mediainfo not available on this system
+}
 
 tape('getDateString - Get date via GM as expected', (test) => {
   test.plan(1);
@@ -66,7 +79,7 @@ tape('getDateStringExiftool - non existing file', (test) => {
   test.notOk(output);
 });
 
-tape('getDateStringMediainfo - existing image file', (test) => {
+(mediaInfoAvailable ? tape : tape.skip)('getDateStringMediainfo - existing image file', (test) => {
   test.plan(1);
 
   const filepath = 'tests/fixtures/IMG_0640.JPG';
@@ -91,4 +104,23 @@ tape('getDateString - not an image file', (test) => {
   const output = getDateString(filepath);
 
   test.equal(typeof output, 'string');
+});
+
+tape('getDateString - uses exiftool when gm finds no DateTime EXIF', (test) => {
+  test.plan(1);
+
+  const tmpFile = path.join('tests', 'tmp-no-datetime.jpg');
+  try {
+    fs.copyFileSync(path.join('tests', 'fixtures', 'IMG_0640.JPG'), tmpFile);
+    // Strip ModifyDate (0x0132, what gm reads via %[EXIF:DateTime]) and DateTimeOriginal (0x9003)
+    // while preserving CreateDate (0x9004, what exiftool reads via -createdate)
+    execSync(`exiftool -overwrite_original -EXIF:ModifyDate= -EXIF:DateTimeOriginal= "${tmpFile}"`, { timeout: 5000, encoding: 'utf8' });
+    const output = getDateString(tmpFile);
+    test.ok(output && /^\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}$/u.test(output), 'Date from exiftool fallback');
+  }
+  finally {
+    if (fs.existsSync(tmpFile)) {
+      fs.unlinkSync(tmpFile);
+    }
+  }
 });

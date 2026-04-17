@@ -131,26 +131,28 @@ const execConfig = {
   encoding: 'utf8'
 };
 
-let versionOutput = '';
 try {
-  // Why does it exit non-zero when all is good?
-  versionOutput = execSync('mediainfo --Version || true', execConfig);
+  execSync('mediainfo --Version', execConfig);
 }
+/* c8 ignore next 3 */
 catch {
-  if (!versionOutput || versionOutput.indexOf('MediaInfoLib') === -1) {
-    console.error('Looks like MediaInfo is not available. Please install it before continuing.');
-    process.exit(1);
-  }
+  console.warn('Warning: MediaInfo is not available. Date detection will use exiftool or GraphicsMagick modification time as fallback.');
 }
 
+try {
+  execSync('exiftool -ver', execConfig);
+}
+/* c8 ignore next 3 */
+catch {
+  console.warn('Warning: ExifTool is not available. Date detection will use GraphicsMagick or file modification time as fallback.');
+}
 try {
   execSync('gm version', execConfig);
 }
+/* c8 ignore next 3 */
 catch {
-  console.error('Looks like GraphicsMagick is not available. Please install it before continuing.');
-  process.exit(1);
+  console.warn('Warning: GraphicsMagick is not available. Date detection will use file modification time as fallback.');
 }
-
 
 const options = {
   verbose: typeof opts.verbose === 'boolean' ?
