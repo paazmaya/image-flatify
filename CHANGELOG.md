@@ -3,6 +3,12 @@
 This changelog covers the version history and possible upcoming changes.
 It follows the guidance from https://keepachangelog.com/en/1.0.0/.
 
+## `v5.0.1` (2026-04-17)
+
+- Audit dependencies to remove current vulnerabilities
+- Primary tool is now MediaInfo, getting the oldest date
+- Clearer documentation
+
 ## `v5.0.0` (2026-04-17)
 
 - No longer stops execution if any of the tools are not found and uses the file modification date

@@ -26,24 +26,32 @@ See also [`image-foldarizer`](https://github.com/paazmaya/image-foldarizer) for 
 
 ## Installation
 
-Make sure to have both [GraphicsMagick](http://www.graphicsmagick.org/) and
-[Mediainfo](https://mediaarea.net/en/MediaInfo) available in the `PATH` environment variable.
+Make sure to have [MediaInfo](https://mediaarea.net/en/MediaInfo), [ExifTool](https://exiftool.org/),
+and [GraphicsMagick](http://www.graphicsmagick.org/) available in the `PATH` environment variable.
+
+The date of each media file is determined by trying these tools in order:
+
+1. **MediaInfo** — fastest, works with many media formats
+2. **ExifTool** — broad EXIF support across image and video types
+3. **GraphicsMagick** — fallback for image files
+4. **File modification time** — last resort when none of the above produce a result
 
 The versions supported (tested via automation) are
-[GraphicsMagick `1.3.45`](http://www.graphicsmagick.org/NEWS.html)
-and [MediaInfo `18.08`](https://mediaarea.net/MediaInfo/ChangeLog).
+[GraphicsMagick `1.3.42`](http://www.graphicsmagick.org/NEWS.html),
+[MediaInfo `24.01`](https://mediaarea.net/MediaInfo/ChangeLog),
+and [ExifTool `12`](https://exiftool.org/history.html).
 Other versions should work...
 
 They can be installed for example for macOS via [Brew](http://brew.sh):
 
 ```sh
-brew install graphicsmagick mediainfo
+brew install graphicsmagick mediainfo exiftool
 ```
 
 In Ubuntu Linux it can be done with command:
 
 ```sh
-sudo apt-get install graphicsmagick mediainfo
+sudo apt-get install graphicsmagick mediainfo libimage-exiftool-perl
 ```
 
 In Windows, the applications need to be downloaded from their sites and once installed,
@@ -99,8 +107,8 @@ There should be no errors appearing after any JavaScript file changes.
 
 Unit tests are written with [`tape`](https://github.com/substack/tape) and can be executed with `npm test`.
 
-Code coverage is inspected with [`nyc`](https://github.com/istanbuljs/nyc) and
-can be executed with `npm run coverage` after running `npm test`.
+Code coverage is inspected with [`c8`](https://github.com/bcoe/c8) and
+is executed together with `npm test`.
 Please make sure it is over 90% at all times.
 
 ## Version history
