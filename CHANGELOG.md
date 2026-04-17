@@ -3,8 +3,10 @@
 This changelog covers the version history and possible upcoming changes.
 It follows the guidance from https://keepachangelog.com/en/1.0.0/.
 
-## Unreleased
+## `v5.0.0` (2026-04-17)
 
+- No longer stops execution if any of the tools are not found and uses the file modification date
+- Fix the use of `exiftool`. Its now used as the secondary option to find the date, after GraphicsMagick
 - Minimum supported Node.js version lifted from `22.11.0` to `24.12.0`
 
 ## `v4.0.0` (2024-12-21)
