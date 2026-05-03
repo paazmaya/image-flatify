@@ -20,6 +20,67 @@ This tool will solve that step in the process when renaming and organising image
 The given directory will be searched recursively for media files and they all will be renamed to the given directory.
 Those directories which are touched during the operation, in case they will be empty after the rename, the directory will be renamed.
 
+```mermaid
+flowchart TD
+    Start([User runs<br/>image-flatify]) --> ParseArgs[Parse CLI arguments<br/>bin/image-flatify.js]
+    
+    ParseArgs --> CheckDeps{Check external<br/>dependencies}
+    CheckDeps -->|mediainfo| CheckDeps
+    CheckDeps -->|exiftool| CheckDeps
+    CheckDeps -->|graphicsmagick| LoopDirs
+    
+    LoopDirs[For each input directory] --> Flatify[Call flatify()<br/>index.js]
+    
+    Flatify --> GetImages[getImages()<br/>lib/get-images.js]
+    
+    GetImages --> ReadDir[Read directory<br/>recursively]
+    ReadDir --> FilterMedia{Filter by media<br/>extensions}
+    FilterMedia -->|Image/Video file| Collect[Add to file list]
+    FilterMedia -->|Subdirectory| ReadDir
+    FilterMedia -->|Other| Skip[Skip]
+    
+    Collect --> FlatifyLoop[For each file found]
+    
+    FlatifyLoop --> TrackDir[Track source<br/>directory]
+    TrackDir --> GetTarget[getTargetPath()<br/>lib/get-target-path.js]
+    
+    GetTarget --> GetDate[getDateString()<br/>lib/get-date-string.js]
+    
+    GetDate --> TryMediaInfo{Try<br/>mediainfo}
+    TryMediaInfo -->|Success| FormatDate[Format date string]
+    TryMediaInfo -->|Fail| TryExif{Try<br/>exiftool}
+    TryExif -->|Success| FormatDate
+    TryExif -->|Fail| TryGM{Try<br/>graphicsmagick}
+    TryGM -->|Success| FormatDate
+    TryGM -->|Fail| UseMtime[Use file<br/>modification time]
+    UseMtime --> FormatDate
+    
+    FormatDate --> BuildName[Build target filename:<br/>prefix + date + ext]
+    BuildName --> HandleDup{Handle duplicates}
+    HandleDup -->|appendHash| AddHash[Append MD5 hash]
+    HandleDup -->|counter| Increment[Add counter<br/>_1, _2, ...]
+    
+    AddHash --> FinalPath[Final target path]
+    Increment --> FinalPath
+    
+    FinalPath --> MoveFile{Rename/move file<br/>unless dry-run}
+    MoveFile --> NextFile{More files?}
+    NextFile -->|Yes| FlatifyLoop
+    NextFile -->|No| CleanDirs[Clean directories<br/>lib/clean-directories.js]
+    
+    CleanDirs --> SortDirs[Sort by path depth<br/>deepest first]
+    SortDirs --> CleanLoop[For each tracked dir]
+    CleanLoop --> IsEmpty{Directory<br/>empty?}
+    IsEmpty -->|Yes| Rmdir[Remove directory]
+    IsEmpty -->|No| KeepDir[Keep directory]
+    Rmdir --> NextDir{More dirs?}
+    KeepDir --> NextDir
+    NextDir -->|Yes| CleanLoop
+    NextDir -->|No| Report[Report results]
+    
+    Report --> End([Done])
+```
+
 Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `24.12.0`, which is [the active Long Term Support (LTS) version](https://github.com/nodejs/Release#release-schedule).
 
 See also [`image-foldarizer`](https://github.com/paazmaya/image-foldarizer) for organising images by their names and counter numbers.
