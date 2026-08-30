@@ -3,6 +3,15 @@
 This changelog covers the version history and possible upcoming changes.
 It follows the guidance from https://keepachangelog.com/en/1.0.0/.
 
+## `v6.0.0` (2026-08-30)
+
+- Complete rewrite and conversion from Node.js to a Rust Cargo CLI application and library
+- Command line option parsing powered by `clap`
+- Fast recursive file search and traversal using `walkdir`
+- 3rd-party tool invocation (`mediainfo`, `exiftool`, `gm`) via subprocesses with filesystem timestamp fallback
+- All CLI flags preserved (`-v`, `-n`, `-K`, `-p`, `-a`, `-l`, `-D`)
+- Native distribution and installation via `cargo install image-flatify`
+
 ## `v5.0.1` (2026-04-17)
 
 - Audit dependencies to remove current vulnerabilities

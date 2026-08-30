@@ -18,58 +18,58 @@ but the filenames inside those folders are always the same.
 This tool will solve that step in the process when renaming and organising images.
 
 The given directory will be searched recursively for media files and they all will be renamed to the given directory.
-Those directories which are touched during the operation, in case they will be empty after the rename, the directory will be renamed.
+Those directories which are touched during the operation, in case they will be empty after the rename, will be deleted.
 
 ```mermaid
 flowchart TD
-    Start([User runs<br/>image-flatify]) --> ParseArgs[Parse CLI arguments<br/>bin/image-flatify.js]
-    
+    Start([User runs<br/>image-flatify]) --> ParseArgs[Parse CLI arguments<br/>src/main.rs]
+
     ParseArgs --> CheckDeps{Check external<br/>dependencies}
     CheckDeps -->|mediainfo| CheckDeps
     CheckDeps -->|exiftool| CheckDeps
     CheckDeps -->|graphicsmagick| LoopDirs
-    
-    LoopDirs[For each input directory] --> Flatify[Call flatify()<br/>index.js]
-    
-    Flatify --> GetImages[getImages()<br/>lib/get-images.js]
-    
-    GetImages --> ReadDir[Read directory<br/>recursively]
-    ReadDir --> FilterMedia{Filter by media<br/>extensions}
+
+    LoopDirs[For each input directory] --> Flatify[Call flatify()<br/>src/flatify.rs]
+
+    Flatify --> GetImages[get_images()<br/>src/finder.rs]
+
+    GetImages --> ReadDir[Read directory<br/>recursively via WalkDir]
+    ReadDir --> FilterMedia{Filter by media<br/>extensions<br/>src/media.rs}
     FilterMedia -->|Image/Video file| Collect[Add to file list]
     FilterMedia -->|Subdirectory| ReadDir
     FilterMedia -->|Other| Skip[Skip]
-    
+
     Collect --> FlatifyLoop[For each file found]
-    
+
     FlatifyLoop --> TrackDir[Track source<br/>directory]
-    TrackDir --> GetTarget[getTargetPath()<br/>lib/get-target-path.js]
-    
-    GetTarget --> GetDate[getDateString()<br/>lib/get-date-string.js]
-    
+    TrackDir --> GetTarget[get_target_path()<br/>src/naming.rs]
+
+    GetTarget --> GetDate[get_date_string()<br/>src/date.rs]
+
     GetDate --> TryMediaInfo{Try<br/>mediainfo}
     TryMediaInfo -->|Success| FormatDate[Format date string]
     TryMediaInfo -->|Fail| TryExif{Try<br/>exiftool}
     TryExif -->|Success| FormatDate
     TryExif -->|Fail| TryGM{Try<br/>graphicsmagick}
     TryGM -->|Success| FormatDate
-    TryGM -->|Fail| UseMtime[Use file<br/>modification time]
+    TryGM -->|Fail| UseMtime[Use file<br/>metadata timestamp]
     UseMtime --> FormatDate
-    
+
     FormatDate --> BuildName[Build target filename:<br/>prefix + date + ext]
     BuildName --> HandleDup{Handle duplicates}
     HandleDup -->|appendHash| AddHash[Append MD5 hash]
     HandleDup -->|counter| Increment[Add counter<br/>_1, _2, ...]
-    
+
     AddHash --> FinalPath[Final target path]
     Increment --> FinalPath
-    
+
     FinalPath --> MoveFile{Rename/move file<br/>unless dry-run}
     MoveFile --> NextFile{More files?}
     NextFile -->|Yes| FlatifyLoop
-    NextFile -->|No| CleanDirs[Clean directories<br/>lib/clean-directories.js]
-    
-    CleanDirs --> SortDirs[Sort by path depth<br/>deepest first]
-    SortDirs --> CleanLoop[For each tracked dir]
+    NextFile -->|No| CleanDirs[clean_directories()<br/>src/cleaner.rs]
+
+    CleanDirs --> SortDirs[Sort by path length<br/>deepest first]
+    CleanDirs --> CleanLoop[For each tracked dir]
     CleanLoop --> IsEmpty{Directory<br/>empty?}
     IsEmpty -->|Yes| Rmdir[Remove directory]
     IsEmpty -->|No| KeepDir[Keep directory]
@@ -77,7 +77,7 @@ flowchart TD
     KeepDir --> NextDir
     NextDir -->|Yes| CleanLoop
     NextDir -->|No| Report[Report results]
-    
+
     Report --> End([Done])
 ```
 
@@ -87,8 +87,10 @@ See also [`image-foldarizer`](https://github.com/paazmaya/image-foldarizer) for 
 
 ## Installation
 
+### External Tools
+
 Make sure to have [MediaInfo](https://mediaarea.net/en/MediaInfo), [ExifTool](https://exiftool.org/),
-and [GraphicsMagick](http://www.graphicsmagick.org/) available in the `PATH` environment variable.
+and [GraphicsMagick](http://www.graphicsmagick.org/) available in your `PATH` environment variable.
 
 The date of each media file is determined by trying these tools in order:
 
@@ -115,13 +117,27 @@ In Ubuntu Linux it can be done with command:
 sudo apt-get install graphicsmagick mediainfo libimage-exiftool-perl
 ```
 
-In Windows, the applications need to be downloaded from their sites and once installed,
-their installation paths should be added in the `Path` system environment variable.
+In Windows, the applications can be installed via package managers such as `winget`:
 
-Now install the `image-flatify` command line tool globally, which might need increased privileges:
+```powershell
+winget install MediaArea.MediaInfo.CLI
+winget install PhilHarvey.ExifTool
+```
+
+### Install CLI binary
+
+Install `image-flatify` using Cargo:
 
 ```sh
-[sudo] npm install --global image-flatify
+cargo install image-flatify
+```
+
+Or build and install from source:
+
+```sh
+git clone https://github.com/paazmaya/image-flatify.git
+cd image-flatify
+cargo build --release
 ```
 
 ## Command line options
@@ -130,20 +146,26 @@ Now install the `image-flatify` command line tool globally, which might need inc
 image-flatify --help
 ```
 
-```sh
-image-flatify [options] <directory> [more directories]
+```text
+Take a directory, search images recursively and rename as single flat directory with date based filenames
 
-  -h, --help                 Help and usage instructions
-  -V, --version              Version number
-  -v, --verbose              Verbose output, will print which file is currently being processed
-  -n, --dry-run              Try it out without actually touching anything
-  -K, --keep-in-directories  Keep the renamed image files in their original directory
-  -p, --prefix String        Prefix for the resulting filename, default empty
-  -a, --append-hash          Always append a hash string to the filename instead of a possible counter
-  -l, --lowercase-suffix     Lowercase the resulting file suffixes, or use as is by default
+Usage: image-flatify [OPTIONS] <DIRECTORY>...
+
+Arguments:
+  <DIRECTORY>...  Directory or directories to process
+
+Options:
+  -v, --verbose                      Verbose output, will print which file is currently being processed
+  -n, --dry-run                      Try it out without actually touching anything
+  -K, --keep-in-directories          Keep the renamed image files in their original directory
+  -p, --prefix <PREFIX>              Prefix for the resulting filename, default empty [default: ""]
+  -a, --append-hash                  Always append a hash string to the filename instead of a possible counter
+  -l, --lowercase-suffix             Lowercase the resulting file suffixes, or use as is by default
   -D, --no-delete-empty-directories  Do not delete any directories that become empty after processing
+  -h, --help                         Print help
+  -V, --version                      Print version
 
-Version 4.0.0
+Version 6.0.0
 ```
 
 ### Example commands
@@ -163,14 +185,18 @@ First thing to do is to file [an issue](https://github.com/paazmaya/image-flatif
 
 [Also there is a blog post about "45 Github Issues Dos and Don’ts"](https://davidwalsh.name/45-github-issues-dos-donts).
 
-Linting is done with [ESLint](http://eslint.org) and can be executed with `npm run lint`.
-There should be no errors appearing after any JavaScript file changes.
+Format code with `cargo fmt` and run linter checks with `cargo clippy`:
 
-Unit tests are written with [`tape`](https://github.com/substack/tape) and can be executed with `npm test`.
+```sh
+cargo fmt
+cargo clippy -- -D warnings
+```
 
-Code coverage is inspected with [`c8`](https://github.com/bcoe/c8) and
-is executed together with `npm test`.
-Please make sure it is over 90% at all times.
+Run test suite:
+
+```sh
+cargo test
+```
 
 ## Version history
 
