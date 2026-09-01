@@ -2,7 +2,6 @@
 
 > Take a directory, search image files recursively and rename them based on their creation time, producing a flat directory
 
-
 [![Rust CI](https://github.com/paazmaya/image-flatify/actions/workflows/linting-and-unit-testing.yml/badge.svg)](https://github.com/paazmaya/image-flatify/actions/workflows/linting-and-unit-testing.yml)
 [![codecov](https://codecov.io/gh/paazmaya/image-flatify/branch/main/graph/badge.svg)](https://codecov.io/gh/paazmaya/image-flatify)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpaazmaya%2Fimage-flatify.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fpaazmaya%2Fimage-flatify?ref=badge_shield)
@@ -22,55 +21,55 @@ Those directories which are touched during the operation, in case they will be e
 
 ```mermaid
 flowchart TD
-    Start([User runs<br/>image-flatify]) --> ParseArgs[Parse CLI arguments<br/>src/main.rs]
+    Start([User runs image-flatify]) --> ParseArgs[Parse CLI arguments src/main.rs]
 
-    ParseArgs --> CheckDeps{Check external<br/>dependencies}
+    ParseArgs --> CheckDeps{Check external dependencies}
     CheckDeps -->|mediainfo| CheckDeps
     CheckDeps -->|exiftool| CheckDeps
     CheckDeps -->|graphicsmagick| LoopDirs
 
-    LoopDirs[For each input directory] --> Flatify[Call flatify()<br/>src/flatify.rs]
+    LoopDirs[For each input directory] --> Flatify[Call flatify() src/flatify.rs]
 
-    Flatify --> GetImages[get_images()<br/>src/finder.rs]
+    Flatify --> GetImages[get_images() src/finder.rs]
 
-    GetImages --> ReadDir[Read directory<br/>recursively via WalkDir]
-    ReadDir --> FilterMedia{Filter by media<br/>extensions<br/>src/media.rs}
+    GetImages --> ReadDir[Read directory recursively via WalkDir]
+    ReadDir --> FilterMedia{Filter by media extensions src/media.rs}
     FilterMedia -->|Image/Video file| Collect[Add to file list]
     FilterMedia -->|Subdirectory| ReadDir
     FilterMedia -->|Other| Skip[Skip]
 
     Collect --> FlatifyLoop[For each file found]
 
-    FlatifyLoop --> TrackDir[Track source<br/>directory]
-    TrackDir --> GetTarget[get_target_path()<br/>src/naming.rs]
+    FlatifyLoop --> TrackDir[Track source directory]
+    TrackDir --> GetTarget[get_target_path() src/naming.rs]
 
-    GetTarget --> GetDate[get_date_string()<br/>src/date.rs]
+    GetTarget --> GetDate[get_date_string() src/date.rs]
 
-    GetDate --> TryMediaInfo{Try<br/>mediainfo}
+    GetDate --> TryMediaInfo{Try mediainfo}
     TryMediaInfo -->|Success| FormatDate[Format date string]
-    TryMediaInfo -->|Fail| TryExif{Try<br/>exiftool}
+    TryMediaInfo -->|Fail| TryExif{Try exiftool}
     TryExif -->|Success| FormatDate
-    TryExif -->|Fail| TryGM{Try<br/>graphicsmagick}
+    TryExif -->|Fail| TryGM{Try graphicsmagick}
     TryGM -->|Success| FormatDate
-    TryGM -->|Fail| UseMtime[Use file<br/>metadata timestamp]
+    TryGM -->|Fail| UseMtime[Use file metadata timestamp]
     UseMtime --> FormatDate
 
-    FormatDate --> BuildName[Build target filename:<br/>prefix + date + ext]
+    FormatDate --> BuildName[Build target filename: prefix + date + ext]
     BuildName --> HandleDup{Handle duplicates}
     HandleDup -->|appendHash| AddHash[Append MD5 hash]
-    HandleDup -->|counter| Increment[Add counter<br/>_1, _2, ...]
+    HandleDup -->|counter| Increment[Add counter _1, _2, ...]
 
     AddHash --> FinalPath[Final target path]
     Increment --> FinalPath
 
-    FinalPath --> MoveFile{Rename/move file<br/>unless dry-run}
+    FinalPath --> MoveFile{Rename/move file unless dry-run}
     MoveFile --> NextFile{More files?}
     NextFile -->|Yes| FlatifyLoop
-    NextFile -->|No| CleanDirs[clean_directories()<br/>src/cleaner.rs]
+    NextFile -->|No| CleanDirs[clean_directories() src/cleaner.rs]
 
-    CleanDirs --> SortDirs[Sort by path length<br/>deepest first]
+    CleanDirs --> SortDirs[Sort by path length deepest first]
     CleanDirs --> CleanLoop[For each tracked dir]
-    CleanLoop --> IsEmpty{Directory<br/>empty?}
+    CleanLoop --> IsEmpty{Directory empty?}
     IsEmpty -->|Yes| Rmdir[Remove directory]
     IsEmpty -->|No| KeepDir[Keep directory]
     Rmdir --> NextDir{More dirs?}
@@ -80,8 +79,6 @@ flowchart TD
 
     Report --> End([Done])
 ```
-
-Please note that the minimum supported version of [Node.js](https://nodejs.org/en/) is `24.12.0`, which is [the active Long Term Support (LTS) version](https://github.com/nodejs/Release#release-schedule).
 
 See also [`image-foldarizer`](https://github.com/paazmaya/image-foldarizer) for organising images by their names and counter numbers.
 
