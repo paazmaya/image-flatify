@@ -31,7 +31,9 @@ pub fn get_date_string_mediainfo<P: AsRef<Path>>(filepath: P) -> Option<String> 
     let mut candidates: Vec<(i64, String)> = Vec::new();
 
     for line in stdout.lines() {
-        if line.to_ascii_lowercase().contains("date") {
+        let lower = line.to_ascii_lowercase();
+        // Skip filesystem-level date lines; only use media metadata dates.
+        if lower.contains("date") && !lower.contains("file ") {
             if let Some(caps) = date_pattern.captures(line) {
                 let date_part = caps[1].replace(':', "-");
                 let time_part = &caps[2];

@@ -7,40 +7,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y graphicsmagick mediainfo libimage-exiftool-perl
-        gm version
-        mediainfo --Version
-        exiftool -ver
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphicsmagick mediainfo libimage-exiftool-perl
+          gm version
+          mediainfo --Version
+          exiftool -ver
 
-    - name: Set up Rust toolchain
-      uses: dtolnay/rust-toolchain@stable
-      with:
-        components: rustfmt, clippy
+      - name: Set up Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
 
-    - name: Cache Cargo registry and build
-      uses: actions/cache@v4
-      with:
-        path: |
-          ~/.cargo/registry
-          ~/.cargo/git
-          target
-        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-cargo-
+      - name: Cache Cargo registry and build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
 
-    - name: Build
-      run: cargo build --release
+      - name: Format check
+        run: cargo fmt --check
 
-    - name: Test
-      run: cargo test
+      - name: Lint (clippy)
+        run: cargo clippy -- -D warnings
 
-    - name: Lint (clippy)
-      run: cargo clippy -- -D warnings
+      - name: Build
+        run: cargo build --release
 
-    - name: Format check
-      run: cargo fmt --check
+      - name: Test
+        run: cargo test
