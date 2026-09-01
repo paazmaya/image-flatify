@@ -1,6 +1,5 @@
 tmp
 *.lcov
-/target
 
 # Logs
 logs
@@ -36,3 +35,6 @@ flow
 *.cpuprofile
 *.heapsnapshot
 memwatch.*
+
+# Rust build artifacts
+/target

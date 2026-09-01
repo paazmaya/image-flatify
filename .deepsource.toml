@@ -1,7 +1,7 @@
 version = 1
 
 [[analyzers]]
-name = "javascript"
+name = "rust"
 
   [analyzers.meta]
-  environment = ["nodejs"]
+  toolchain = "stable"

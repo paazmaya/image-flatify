@@ -1,42 +1,46 @@
-name: Node.js CI
+name: Rust CI
 
 on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y graphicsmagick mediainfo exiftool
+        sudo apt-get install -y graphicsmagick mediainfo libimage-exiftool-perl
         gm version
         mediainfo --Version
         exiftool -ver
 
-    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-    - name: Use Node.js v24
-      uses: actions/setup-node@v6
+    - name: Set up Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
       with:
-        node-version: '24.x'
+        components: rustfmt, clippy
 
-    - name: Install Node.js dependencies
-      run: npm ci
-
-    - name: Lint and test
-      run: |
-        npm run lint
-        npm test
-        npm run coverage
-
-    - name: Upload code coverage to codecov
-      # https://github.com/marketplace/actions/codecov
-      uses: codecov/codecov-action@v6
+    - name: Cache Cargo registry and build
+      uses: actions/cache@v4
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: coverage.lcov
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-
+
+    - name: Build
+      run: cargo build --release
+
+    - name: Test
+      run: cargo test
+
+    - name: Lint (clippy)
+      run: cargo clippy -- -D warnings
+
+    - name: Format check
+      run: cargo fmt --check
