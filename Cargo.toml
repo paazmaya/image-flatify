@@ -14,7 +14,7 @@ regex = "1.10"
 chrono = "0.4"
 md-5 = "0.10"
 rand = "0.8"
-which = "6.0"
+which = "8.0"
 
 [dev-dependencies]
 tempfile = "3.10"
