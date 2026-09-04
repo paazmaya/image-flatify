@@ -1,11 +1,10 @@
 //! Target file path generation module.
 
-use md5::{Digest, Md5};
-use rand::Rng;
-use std::path::{Path, PathBuf};
-
 use crate::date::get_date_string;
 use crate::FlatifyOptions;
+use md5::{Digest, Md5};
+use rand::RngExt;
+use std::path::{Path, PathBuf};
 
 /// Generate the full target file path for a media file.
 ///
@@ -35,8 +34,8 @@ pub fn get_target_path<P1: AsRef<Path>, P2: AsRef<Path>>(
         .unwrap_or_default();
 
     if options.append_hash {
-        let mut rng = rand::thread_rng();
-        let rand_val: f64 = rng.gen();
+        let mut rng = rand::rng();
+        let rand_val: f64 = rng.random();
         let hash_input = format!(
             "{}{}{}{}",
             dest_dir.display(),
@@ -47,7 +46,11 @@ pub fn get_target_path<P1: AsRef<Path>, P2: AsRef<Path>>(
 
         let mut hasher = Md5::new();
         hasher.update(hash_input.as_bytes());
-        let hex = format!("{:x}", hasher.finalize());
+        let hex: String = hasher
+            .finalize()
+            .iter()
+            .map(|byte| format!("{byte:02x}"))
+            .collect();
 
         let target_filename = format!("{name_part}_{hex}{ext}");
         let target_path = if dest_dir.as_os_str().is_empty() {

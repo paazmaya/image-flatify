@@ -93,3 +93,14 @@ fn main() {
         flatify(dir, &options);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_check_external_tools_does_not_panic() {
+        // Exercises the warning branches when the external CLI tools are unavailable.
+        check_external_tools();
+    }
+}

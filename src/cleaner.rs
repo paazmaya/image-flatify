@@ -106,4 +106,25 @@ mod tests {
         clean_directory(&sub, &options);
         assert!(sub.exists());
     }
+
+    #[test]
+    fn test_clean_directory_read_dir_error() {
+        let tmp = tempdir().unwrap();
+        let missing = tmp.path().join("does_not_exist");
+
+        let options = FlatifyOptions::default();
+        // fs::read_dir fails, function should return early without panicking.
+        clean_directory(&missing, &options);
+        assert!(!missing.exists());
+    }
+
+    #[test]
+    fn test_clean_directories_missing_directory() {
+        let tmp = tempdir().unwrap();
+        let missing = tmp.path().join("does_not_exist");
+
+        let options = FlatifyOptions::default();
+        // Should print a message and continue instead of panicking.
+        clean_directories(vec![missing], &options);
+    }
 }

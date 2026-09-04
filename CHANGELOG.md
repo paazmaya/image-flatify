@@ -3,7 +3,7 @@
 This changelog covers the version history and possible upcoming changes.
 It follows the guidance from https://keepachangelog.com/en/1.0.0/.
 
-## `v6.0.0` (2026-08-30)
+## `v6.0.0` (2026-09-04)
 
 - Complete rewrite and conversion from Node.js to a Rust Cargo CLI application and library
 - Command line option parsing powered by `clap`
