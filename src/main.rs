@@ -43,6 +43,10 @@ struct Cli {
     #[arg(short = 'D', long = "no-delete-empty-directories")]
     no_delete_empty_directories: bool,
 
+    /// Append the ISO date part (YYYY-MM-DD) to the original file basename instead of replacing it
+    #[arg(short = 'd', long = "append-date")]
+    append_date: bool,
+
     /// Directory or directories to process
     #[arg(required = true, value_name = "DIRECTORY")]
     directories: Vec<PathBuf>,
@@ -87,6 +91,7 @@ fn main() {
         append_hash: cli.append_hash,
         lowercase_suffix: cli.lowercase_suffix,
         no_delete_empty_directories: cli.no_delete_empty_directories,
+        append_date: cli.append_date,
     };
 
     for dir in cli.directories {

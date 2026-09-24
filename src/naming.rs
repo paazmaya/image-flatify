@@ -19,7 +19,8 @@ pub fn get_target_path<P1: AsRef<Path>, P2: AsRef<Path>>(
     let filepath = filepath.as_ref();
 
     let date_string = get_date_string(filepath)?;
-    let name_part = format!("{}{}", options.prefix, date_string);
+    let date_iso = date_string.chars().take(10).collect::<String>();
+    let date_part = date_string;
 
     let ext = filepath
         .extension()
@@ -32,6 +33,16 @@ pub fn get_target_path<P1: AsRef<Path>, P2: AsRef<Path>>(
             }
         })
         .unwrap_or_default();
+
+    let stem = filepath
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or_default();
+    let name_part = if options.append_date {
+        format!("{}{}_{}", options.prefix, stem, date_iso)
+    } else {
+        format!("{}{}", options.prefix, date_part)
+    };
 
     if options.append_hash {
         let mut rng = rand::rng();

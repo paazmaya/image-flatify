@@ -13,6 +13,7 @@ fn test_flatify_dry_run() {
         append_hash: false,
         lowercase_suffix: false,
         no_delete_empty_directories: false,
+        append_date: false,
     };
     flatify("tests/fixtures", &options);
 }
@@ -27,6 +28,7 @@ fn test_flatify_dry_run_verbose() {
         append_hash: false,
         lowercase_suffix: false,
         no_delete_empty_directories: false,
+        append_date: false,
     };
     flatify("tests/fixtures", &options);
 }
@@ -41,6 +43,7 @@ fn test_flatify_dry_run_with_keep_in_directories() {
         append_hash: false,
         lowercase_suffix: false,
         no_delete_empty_directories: false,
+        append_date: false,
     };
     flatify("tests/fixtures", &options);
 }
@@ -60,6 +63,7 @@ fn test_flatify_moves_files() {
         append_hash: false,
         lowercase_suffix: true,
         no_delete_empty_directories: false,
+        append_date: false,
     };
 
     flatify(tmp.path(), &options);
@@ -89,6 +93,7 @@ fn test_flatify_clean_empty_subdirectories() {
         append_hash: false,
         lowercase_suffix: false,
         no_delete_empty_directories: false,
+        append_date: false,
     };
 
     flatify(tmp.path(), &options);

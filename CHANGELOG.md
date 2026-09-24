@@ -3,6 +3,10 @@
 This changelog covers the version history and possible upcoming changes.
 It follows the guidance from https://keepachangelog.com/en/1.0.0/.
 
+## `Unreleased`
+
+- Add `--append-date` / `-d` CLI option to append the ISO date part (`YYYY-MM-DD`) to the original file basename instead of replacing it; a counter is appended at the end when a collision occurs
+
 ## `v6.0.0` (2026-09-04)
 
 - Complete rewrite and conversion from Node.js to a Rust Cargo CLI application and library

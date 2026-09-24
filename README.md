@@ -157,6 +157,7 @@ Options:
   -K, --keep-in-directories          Keep the renamed image files in their original directory
   -p, --prefix <PREFIX>              Prefix for the resulting filename, default empty [default: ""]
   -a, --append-hash                  Always append a hash string to the filename instead of a possible counter
+  -d, --append-date                  Append the ISO date part (YYYY-MM-DD) to the original file basename instead of replacing it
   -l, --lowercase-suffix             Lowercase the resulting file suffixes, or use as is by default
   -D, --no-delete-empty-directories  Do not delete any directories that become empty after processing
   -h, --help                         Print help
@@ -172,6 +173,14 @@ not done since the `--dry-run` option is used.
 
 ```sh
 image-flatify -vn .
+```
+
+When the `--append-date` option is used, the ISO date part (`YYYY-MM-DD`) is appended to the
+original file basename instead of replacing it. For example `DCIM_01.JPG` taken on 2026-09-24
+becomes `DCIM_01-2026-09-24.JPG`. If a collision occurs, a counter is appended at the end.
+
+```sh
+image-flatify -d -vn .
 ```
 
 ## Contributing
