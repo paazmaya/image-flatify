@@ -227,16 +227,23 @@ mod tests {
     }
 
     fn make_output(success: bool, stdout: &str) -> (Option<Output>, bool) {
-        let mut cmd = if success {
-            std::process::Command::new("true")
-        } else {
-            std::process::Command::new("false")
+        #[cfg(unix)]
+        let status = {
+            use std::os::unix::process::ExitStatusExt;
+            std::process::ExitStatus::from_raw(if success { 0 } else { 1 })
         };
-        let output = cmd.output().unwrap_or_else(|_| Output {
-            status: std::process::ExitStatus::default(),
+
+        #[cfg(windows)]
+        let status = {
+            use std::os::windows::process::ExitStatusExt;
+            std::process::ExitStatus::from_raw(if success { 0 } else { 1 })
+        };
+
+        let output = Output {
+            status,
             stdout: vec![],
             stderr: vec![],
-        });
+        };
         let mut out = output;
         out.stdout = stdout.as_bytes().to_vec();
         (Some(out), success)

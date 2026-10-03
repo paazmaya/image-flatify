@@ -53,20 +53,27 @@ struct Cli {
 }
 
 fn check_external_tools() {
-    if which("mediainfo").is_err() {
-        eprintln!(
-            "Warning: MediaInfo is not available. Date detection will use exiftool or GraphicsMagick modification time as fallback."
-        );
-    }
-    if which("exiftool").is_err() {
-        eprintln!(
-            "Warning: ExifTool is not available. Date detection will use GraphicsMagick or file modification time as fallback."
-        );
-    }
-    if which("gm").is_err() {
-        eprintln!(
-            "Warning: GraphicsMagick is not available. Date detection will use file modification time as fallback."
-        );
+    check_external_tools_with(|tool| which(tool).is_ok());
+}
+
+fn check_external_tools_with(mut is_available: impl FnMut(&str) -> bool) {
+    for (tool, warning) in [
+        (
+            "mediainfo",
+            "Warning: MediaInfo is not available. Date detection will use exiftool or GraphicsMagick modification time as fallback.",
+        ),
+        (
+            "exiftool",
+            "Warning: ExifTool is not available. Date detection will use GraphicsMagick or file modification time as fallback.",
+        ),
+        (
+            "gm",
+            "Warning: GraphicsMagick is not available. Date detection will use file modification time as fallback.",
+        ),
+    ] {
+        if !is_available(tool) {
+            eprintln!("{warning}");
+        }
     }
 }
 
@@ -104,8 +111,24 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_check_external_tools_does_not_panic() {
-        // Exercises the warning branches when the external CLI tools are unavailable.
-        check_external_tools();
+    fn test_check_external_tools_warns_when_unavailable() {
+        let mut checked = Vec::new();
+        check_external_tools_with(|tool| {
+            checked.push(tool.to_string());
+            false
+        });
+
+        assert_eq!(checked, ["mediainfo", "exiftool", "gm"]);
+    }
+
+    #[test]
+    fn test_check_external_tools_accepts_available_tools() {
+        let mut checked = Vec::new();
+        check_external_tools_with(|tool| {
+            checked.push(tool.to_string());
+            true
+        });
+
+        assert_eq!(checked, ["mediainfo", "exiftool", "gm"]);
     }
 }

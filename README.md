@@ -166,22 +166,40 @@ Options:
 Version 6.0.0
 ```
 
-### Example commands
+### Examples
 
-The following command shows how the renaming would be done in the current directory, but it is
-not done since the `--dry-run` option is used.
+The examples below use `photos/album/DCIM_01.JPG`, with a detected date of
+`2026-09-24 13:45:06`. Unless noted otherwise, image-flatify moves the file to the
+input directory and names it `2026-09-24-13-45-06.JPG`. The original extension
+case is preserved by default.
+
+| Option                                | Example command                                      | Result                                                                                                                                |
+| ------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `<DIRECTORY>`                         | `image-flatify photos`                               | `photos/2026-09-24-13-45-06.JPG`                                                                                                      |
+| Multiple directories                  | `image-flatify photos holiday-photos`                | Processes both directories independently; for example, `photos/2026-09-24-13-45-06.JPG` and `holiday-photos/2026-09-24-13-45-06.JPG`. |
+| `-v`, `--verbose`                     | `image-flatify --verbose photos`                     | Same filename; prints each source-to-target move.                                                                                     |
+| `-n`, `--dry-run`                     | `image-flatify --dry-run photos`                     | Same proposed filename; does not move files or delete directories.                                                                    |
+| `-K`, `--keep-in-directories`         | `image-flatify -K photos`                            | `photos/album/2026-09-24-13-45-06.JPG`; keeps the renamed file in its source directory.                                               |
+| `-p`, `--prefix <PREFIX>`             | `image-flatify --prefix trip- photos`                | `photos/trip-2026-09-24-13-45-06.JPG`                                                                                                 |
+| `-a`, `--append-hash`                 | `image-flatify -a photos`                            | `photos/2026-09-24-13-45-06_<32-character-lowercase-hex-hash>.JPG`; the hash varies between runs.                                     |
+| `-d`, `--append-date`                 | `image-flatify --append-date photos`                 | `photos/DCIM_01_2026-09-24.JPG`; appends the ISO date to the original basename instead of replacing it with the full timestamp.       |
+| `-l`, `--lowercase-suffix`            | `image-flatify -l photos`                            | `photos/2026-09-24-13-45-06.jpg`                                                                                                      |
+| `-D`, `--no-delete-empty-directories` | `image-flatify --no-delete-empty-directories photos` | Same filename as the default; leaves source directories in place even if they become empty.                                           |
+| `-h`, `--help`                        | `image-flatify --help`                               | Prints usage and options; does not process files.                                                                                     |
+| `-V`, `--version`                     | `image-flatify --version`                            | Prints the program version; does not process files.                                                                                   |
+
+If a target filename already exists, the default behavior appends a counter before
+the extension, for example `2026-09-24-13-45-06_1.JPG`. `--append-hash` uses a
+hash suffix instead of this counter.
+
+Options can be combined. For example, this previews a prefixed filename with a
+lowercase extension and prints each proposed move without changing any files:
 
 ```sh
-image-flatify -vn .
+image-flatify --verbose --dry-run --prefix trip- --lowercase-suffix photos
 ```
 
-When the `--append-date` option is used, the ISO date part (`YYYY-MM-DD`) is appended to the
-original file basename instead of replacing it. For example `DCIM_01.JPG` taken on 2026-09-24
-becomes `DCIM_01-2026-09-24.JPG`. If a collision occurs, a counter is appended at the end.
-
-```sh
-image-flatify -d -vn .
-```
+The proposed output path is `photos/trip-2026-09-24-13-45-06.jpg`.
 
 ## Contributing
 
