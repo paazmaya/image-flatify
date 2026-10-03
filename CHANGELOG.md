@@ -3,7 +3,7 @@
 This changelog covers the version history and possible upcoming changes.
 It follows the guidance from https://keepachangelog.com/en/1.0.0/.
 
-## `Unreleased`
+## `v6.1.0` (2026-10-03)
 
 - Add `--append-date` / `-d` CLI option to append the ISO date part (`YYYY-MM-DD`) to the original file basename instead of replacing it; a counter is appended at the end when a collision occurs
 
