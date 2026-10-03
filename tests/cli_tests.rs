@@ -7,7 +7,10 @@ fn test_cli_version() {
     cmd.arg("-V")
         .assert()
         .success()
-        .stdout(predicate::str::contains("image-flatify 6.0.0"));
+        .stdout(predicate::str::contains(concat!(
+            "image-flatify ",
+            env!("CARGO_PKG_VERSION")
+        )));
 }
 
 #[test]

@@ -12,7 +12,7 @@ use image_flatify::{flatify, FlatifyOptions};
     name = "image-flatify",
     version,
     about = "Take a directory, search images recursively and rename as single flat directory with date based filenames",
-    after_help = "Version 6.0.0"
+    after_help = concat!("Version ", env!("CARGO_PKG_VERSION"))
 )]
 struct Cli {
     /// Verbose output, will print which file is currently being processed

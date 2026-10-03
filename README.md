@@ -117,8 +117,8 @@ sudo apt-get install graphicsmagick mediainfo libimage-exiftool-perl
 In Windows, the applications can be installed via package managers such as `winget`:
 
 ```powershell
-winget install MediaArea.MediaInfo.CLI
-winget install PhilHarvey.ExifTool
+winget install MediaArea.MediaInfo
+winget install OliverBetz.ExifTool
 ```
 
 ### Install CLI binary
@@ -163,7 +163,7 @@ Options:
   -h, --help                         Print help
   -V, --version                      Print version
 
-Version 6.0.0
+Version 6.1.0
 ```
 
 ### Examples

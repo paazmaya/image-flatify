@@ -192,13 +192,15 @@ mod tests {
     use std::io;
     use std::process::Output;
 
+    type MockResponse = (String, Vec<String>, (Option<Output>, bool));
+
     struct MockRunner {
-        responses: Vec<(String, Vec<String>, (Option<Output>, bool))>,
+        responses: Vec<MockResponse>,
         index: std::cell::RefCell<usize>,
     }
 
     impl MockRunner {
-        fn new(responses: Vec<(String, Vec<String>, (Option<Output>, bool))>) -> Self {
+        fn new(responses: Vec<MockResponse>) -> Self {
             Self {
                 responses,
                 index: std::cell::RefCell::new(0),
@@ -210,19 +212,14 @@ mod tests {
         fn run(&self, program: &str, args: &[&str]) -> io::Result<Output> {
             let idx = *self.index.borrow();
             if idx >= self.responses.len() {
-                return Err(io::Error::new(
-                    io::ErrorKind::Other,
-                    "no more mock responses",
-                ));
+                return Err(io::Error::other("no more mock responses"));
             }
             let (expected_program, expected_args, (output, _)) = &self.responses[idx];
             assert_eq!(program, *expected_program, "unexpected program");
             let args_strings: Vec<String> = args.iter().map(|s| s.to_string()).collect();
             assert_eq!(args_strings, *expected_args, "unexpected args");
             *self.index.borrow_mut() += 1;
-            output
-                .clone()
-                .ok_or_else(|| io::Error::new(io::ErrorKind::Other, "no output"))
+            output.clone().ok_or_else(|| io::Error::other("no output"))
         }
     }
 
@@ -697,5 +694,193 @@ mod tests {
         ]);
         let result = get_date_string_with_runner("nonexistent.jpg", &runner);
         assert!(result.is_none());
+    }
+
+    /// Response for a tool that is not installed: the runner returns an error.
+    fn mock_missing(program: &str, args: &[&str]) -> (String, Vec<String>, (Option<Output>, bool)) {
+        (
+            program.to_string(),
+            args.iter().map(|s| s.to_string()).collect(),
+            (None, false),
+        )
+    }
+
+    fn temp_file(name: &str) -> (std::path::PathBuf, String) {
+        let path = std::env::temp_dir().join(name);
+        fs::write(&path, "test").unwrap();
+        let path_str = path.to_string_lossy().to_string();
+        (path, path_str)
+    }
+
+    // Tool not installed
+    #[test]
+    fn test_mediainfo_not_available() {
+        let runner = MockRunner::new(vec![mock_missing("mediainfo", &["-f", "test.jpg"])]);
+        assert!(get_date_string_mediainfo("test.jpg", &runner).is_none());
+    }
+
+    #[test]
+    fn test_exiftool_not_available() {
+        let runner = MockRunner::new(vec![mock_missing(
+            "exiftool",
+            &["-s3", "-createdate", "test.jpg"],
+        )]);
+        assert!(get_date_string_exiftool("test.jpg", &runner).is_none());
+    }
+
+    #[test]
+    fn test_gm_not_available() {
+        let runner = MockRunner::new(vec![mock_missing(
+            "gm",
+            &["identify", "-format", "%[EXIF:DateTime]", "test.jpg"],
+        )]);
+        assert!(get_date_string_graphicsmagick("test.jpg", &runner).is_none());
+    }
+
+    // Output parsing when the tool is available
+    #[test]
+    fn test_mediainfo_picks_earliest_date() {
+        let runner = MockRunner::new(vec![mock_resp(
+            "mediainfo",
+            &["-f", "test.jpg"],
+            true,
+            "Encoded date: 2023:05:01 10:00:00\nTagged date: 2021:02:03 04:05:06\nMastered date: 2022-01-01 00:00:00",
+        )]);
+        let result = get_date_string_mediainfo("test.jpg", &runner);
+        assert_eq!(result, Some("2021-02-03 04:05:06".to_string()));
+    }
+
+    #[test]
+    fn test_mediainfo_iso_t_separator() {
+        let runner = MockRunner::new(vec![mock_resp(
+            "mediainfo",
+            &["-f", "test.jpg"],
+            true,
+            "Recorded date: 2020-07-08T09:10:11",
+        )]);
+        let result = get_date_string_mediainfo("test.jpg", &runner);
+        assert_eq!(result, Some("2020-07-08 09:10:11".to_string()));
+    }
+
+    #[test]
+    fn test_mediainfo_ignores_epoch_and_invalid_dates() {
+        let runner = MockRunner::new(vec![mock_resp(
+            "mediainfo",
+            &["-f", "test.jpg"],
+            true,
+            "Encoded date: 1970:01:01 00:00:00\nTagged date: 2023:13:45 25:61:61",
+        )]);
+        assert!(get_date_string_mediainfo("test.jpg", &runner).is_none());
+    }
+
+    #[test]
+    fn test_exiftool_with_negative_timezone() {
+        let runner = MockRunner::new(vec![mock_resp(
+            "exiftool",
+            &["-s3", "-createdate", "test.jpg"],
+            true,
+            "2023:01:01 12:00:00-05:00\n",
+        )]);
+        let result = get_date_string_exiftool("test.jpg", &runner);
+        assert_eq!(result, Some("2023:01:01 12:00:00".to_string()));
+    }
+
+    #[test]
+    fn test_gm_output_is_trimmed() {
+        let runner = MockRunner::new(vec![mock_resp(
+            "gm",
+            &["identify", "-format", "%[EXIF:DateTime]", "test.jpg"],
+            true,
+            "  2023:01:01 12:00:00\n",
+        )]);
+        let result = get_date_string_graphicsmagick("test.jpg", &runner);
+        assert_eq!(result, Some("2023:01:01 12:00:00".to_string()));
+    }
+
+    // Fallback chain when the primary tool is not available
+    #[test]
+    fn test_get_date_string_mediainfo_missing_uses_exiftool() {
+        let (file, p) = temp_file("test_chain_mi_missing.jpg");
+        let runner = MockRunner::new(vec![
+            mock_missing("mediainfo", &["-f", &p]),
+            mock_resp(
+                "exiftool",
+                &["-s3", "-createdate", &p],
+                true,
+                "2023:01:01 12:00:00",
+            ),
+        ]);
+        let result = get_date_string_with_runner(&file, &runner);
+        assert_eq!(result, Some("2023-01-01-12-00-00".to_string()));
+        fs::remove_file(&file).unwrap();
+    }
+
+    #[test]
+    fn test_get_date_string_mediainfo_and_exiftool_missing_uses_gm() {
+        let (file, p) = temp_file("test_chain_mi_et_missing.jpg");
+        let runner = MockRunner::new(vec![
+            mock_missing("mediainfo", &["-f", &p]),
+            mock_missing("exiftool", &["-s3", "-createdate", &p]),
+            mock_resp(
+                "gm",
+                &["identify", "-format", "%[EXIF:DateTime]", &p],
+                true,
+                "2022:02:02 02:02:02",
+            ),
+        ]);
+        let result = get_date_string_with_runner(&file, &runner);
+        assert_eq!(result, Some("2022-02-02-02-02-02".to_string()));
+        fs::remove_file(&file).unwrap();
+    }
+
+    #[test]
+    fn test_get_date_string_mediainfo_fails_exiftool_missing_uses_gm() {
+        let (file, p) = temp_file("test_chain_mi_fail_et_missing.jpg");
+        let runner = MockRunner::new(vec![
+            mock_resp("mediainfo", &["-f", &p], false, ""),
+            mock_missing("exiftool", &["-s3", "-createdate", &p]),
+            mock_resp(
+                "gm",
+                &["identify", "-format", "%[EXIF:DateTime]", &p],
+                true,
+                "2021:03:03 03:03:03",
+            ),
+        ]);
+        let result = get_date_string_with_runner(&file, &runner);
+        assert_eq!(result, Some("2021-03-03-03-03-03".to_string()));
+        fs::remove_file(&file).unwrap();
+    }
+
+    #[test]
+    fn test_get_date_string_exiftool_wins_over_gm() {
+        let (file, p) = temp_file("test_chain_et_over_gm.jpg");
+        // gm has no response queued; reaching it would return an error and fail the assertion.
+        let runner = MockRunner::new(vec![
+            mock_missing("mediainfo", &["-f", &p]),
+            mock_resp(
+                "exiftool",
+                &["-s3", "-createdate", &p],
+                true,
+                "2024:04:04 04:04:04+01:00",
+            ),
+        ]);
+        let result = get_date_string_with_runner(&file, &runner);
+        assert_eq!(result, Some("2024-04-04-04-04-04".to_string()));
+        fs::remove_file(&file).unwrap();
+    }
+
+    #[test]
+    fn test_get_date_string_all_tools_missing_uses_file_metadata() {
+        let (file, p) = temp_file("test_chain_all_missing.jpg");
+        let runner = MockRunner::new(vec![
+            mock_missing("mediainfo", &["-f", &p]),
+            mock_missing("exiftool", &["-s3", "-createdate", &p]),
+            mock_missing("gm", &["identify", "-format", "%[EXIF:DateTime]", &p]),
+        ]);
+        let result = get_date_string_with_runner(&file, &runner).unwrap();
+        assert!(Regex::new(r"^\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}$")
+            .unwrap()
+            .is_match(&result));
+        fs::remove_file(&file).unwrap();
     }
 }
