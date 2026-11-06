@@ -87,7 +87,7 @@ See also [`image-foldarizer`](https://github.com/paazmaya/image-foldarizer) for 
 ### External Tools
 
 Make sure to have [MediaInfo](https://mediaarea.net/en/MediaInfo), [ExifTool](https://exiftool.org/),
-and [GraphicsMagick](http://www.graphicsmagick.org/) available in your `PATH` environment variable.
+and [GraphicsMagick](https://www.graphicsmagick.org/) available in your `PATH` environment variable.
 
 The date of each media file is determined by trying these tools in order:
 
@@ -97,12 +97,12 @@ The date of each media file is determined by trying these tools in order:
 4. **File modification time** — last resort when none of the above produce a result
 
 The versions supported (tested via automation) are
-[GraphicsMagick `1.3.42`](http://www.graphicsmagick.org/NEWS.html),
+[GraphicsMagick `1.3.42`](https://www.graphicsmagick.org/NEWS.html),
 [MediaInfo `24.01`](https://mediaarea.net/MediaInfo/ChangeLog),
 and [ExifTool `12`](https://exiftool.org/history.html).
 Other versions should work...
 
-They can be installed for example for macOS via [Brew](http://brew.sh):
+They can be installed for example for macOS via [Brew](https://brew.sh):
 
 ```sh
 brew install graphicsmagick mediainfo exiftool
@@ -205,7 +205,7 @@ The proposed output path is `photos/trip-2026-09-24-13-45-06.jpg`.
 
 First thing to do is to file [an issue](https://github.com/paazmaya/image-flatify/issues).
 
-["A Beginner's Guide to Open Source: The Best Advice for Making your First Contribution"](http://www.erikaheidi.com/blog/a-beginners-guide-to-open-source-the-best-advice-for-making-your-first-contribution/).
+["A Beginner's Guide to Open Source: The Best Advice for Making your First Contribution"](https://www.erikaheidi.com/blog/a-beginners-guide-to-open-source-the-best-advice-for-making-your-first-contribution/).
 
 [Also there is a blog post about "45 Github Issues Dos and Don’ts"](https://davidwalsh.name/45-github-issues-dos-donts).
 
