@@ -2,7 +2,7 @@
 name = "image-flatify"
 version = "6.1.0"
 edition = "2021"
-rust-version = "1.85"
+rust-version = "1.92"
 authors = ["Juga Paazmaya <paazmaya@yahoo.com>"]
 description = "Take a directory, search images recursively and rename as single flat directory with date based filenames"
 license = "MIT"
