@@ -15,7 +15,7 @@ fn extract_iso_date(date_string: &str) -> String {
 fn build_extension(filepath: &Path, lowercase_suffix: bool) -> String {
     filepath
         .extension()
-        .and_then(|e| e.to_str())
+        .map(|e| e.to_string_lossy())
         .map(|e| {
             if lowercase_suffix {
                 format!(".{}", e.to_ascii_lowercase())
@@ -103,9 +103,9 @@ pub fn get_target_path<P1: AsRef<Path>, P2: AsRef<Path>>(
 
     let stem = filepath
         .file_stem()
-        .and_then(|s| s.to_str())
+        .map(|s| s.to_string_lossy())
         .unwrap_or_default();
-    let name_part = build_name_part(stem, options, &date_part, &date_iso);
+    let name_part = build_name_part(&stem, options, &date_part, &date_iso);
 
     if options.append_hash {
         let mut rng = rand::rng();
@@ -341,7 +341,7 @@ mod tests {
             ..Default::default()
         };
         let target = get_target_path("", "tests/fixtures/IMG_0640.JPG", &options).unwrap();
-        let name = target.to_str().unwrap();
+        let name = target.to_string_lossy();
         assert_eq!(name.len(), 63);
         assert!(name.starts_with("hoplaa-2016-06-05-20-40-00_"));
         assert!(name.ends_with(".jpg"));

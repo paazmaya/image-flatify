@@ -2,20 +2,21 @@
 
 use chrono::{DateTime, Local, NaiveDateTime, TimeZone, Utc};
 use regex::Regex;
+use std::ffi::OsStr;
 use std::fs;
 use std::path::Path;
 use std::process::{Command, Output};
 
 /// Trait for running external commands, allowing mocking in tests.
 pub trait CommandRunner {
-    fn run(&self, program: &str, args: &[&str]) -> std::io::Result<Output>;
+    fn run(&self, program: &str, args: &[&OsStr]) -> std::io::Result<Output>;
 }
 
 /// Default implementation using std::process::Command.
 pub struct RealCommandRunner;
 
 impl CommandRunner for RealCommandRunner {
-    fn run(&self, program: &str, args: &[&str]) -> std::io::Result<Output> {
+    fn run(&self, program: &str, args: &[&OsStr]) -> std::io::Result<Output> {
         Command::new(program).args(args).output()
     }
 }
@@ -32,7 +33,9 @@ pub fn get_date_string_mediainfo<P: AsRef<Path>>(
     runner: &dyn CommandRunner,
 ) -> Option<String> {
     let path = filepath.as_ref();
-    let output = runner.run("mediainfo", &["-f", path.to_str()?]).ok()?;
+    let output = runner
+        .run("mediainfo", &[OsStr::new("-f"), path.as_os_str()])
+        .ok()?;
 
     if !output.status.success() {
         return None;
@@ -77,7 +80,14 @@ pub fn get_date_string_exiftool<P: AsRef<Path>>(
 ) -> Option<String> {
     let path = filepath.as_ref();
     let output = runner
-        .run("exiftool", &["-s3", "-createdate", path.to_str()?])
+        .run(
+            "exiftool",
+            &[
+                OsStr::new("-s3"),
+                OsStr::new("-createdate"),
+                path.as_os_str(),
+            ],
+        )
         .ok()?;
 
     if !output.status.success() {
@@ -110,7 +120,12 @@ pub fn get_date_string_graphicsmagick<P: AsRef<Path>>(
     let output = runner
         .run(
             "gm",
-            &["identify", "-format", "%[EXIF:DateTime]", path.to_str()?],
+            &[
+                OsStr::new("identify"),
+                OsStr::new("-format"),
+                OsStr::new("%[EXIF:DateTime]"),
+                path.as_os_str(),
+            ],
         )
         .ok()?;
 
@@ -209,14 +224,17 @@ mod tests {
     }
 
     impl CommandRunner for MockRunner {
-        fn run(&self, program: &str, args: &[&str]) -> io::Result<Output> {
+        fn run(&self, program: &str, args: &[&OsStr]) -> io::Result<Output> {
             let idx = *self.index.borrow();
             if idx >= self.responses.len() {
                 return Err(io::Error::other("no more mock responses"));
             }
             let (expected_program, expected_args, (output, _)) = &self.responses[idx];
             assert_eq!(program, *expected_program, "unexpected program");
-            let args_strings: Vec<String> = args.iter().map(|s| s.to_string()).collect();
+            let args_strings: Vec<String> = args
+                .iter()
+                .map(|s| s.to_string_lossy().into_owned())
+                .collect();
             assert_eq!(args_strings, *expected_args, "unexpected args");
             *self.index.borrow_mut() += 1;
             output.clone().ok_or_else(|| io::Error::other("no output"))
@@ -882,5 +900,47 @@ mod tests {
             .unwrap()
             .is_match(&result));
         fs::remove_file(&file).unwrap();
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn test_non_utf8_path_handling() {
+        use std::os::unix::ffi::OsStrExt;
+        let non_utf8_bytes = b"test_\xFF\xFE.jpg";
+        let non_utf8_path = Path::new(OsStr::from_bytes(non_utf8_bytes));
+        let path_str = non_utf8_path.to_string_lossy().to_string();
+
+        let runner = MockRunner::new(vec![mock_resp(
+            "mediainfo",
+            &["-f", &path_str],
+            true,
+            "Recorded date: 2023-05-01 10:20:30",
+        )]);
+
+        let result = get_date_string_mediainfo(non_utf8_path, &runner);
+        assert_eq!(result, Some("2023-05-01 10:20:30".to_string()));
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn test_non_utf8_path_handling_windows() {
+        use std::ffi::OsString;
+        use std::os::windows::ffi::OsStringExt;
+        let wide = [
+            0x0074, 0x0065, 0x0073, 0x0074, 0xD800, 0x002E, 0x006A, 0x0070, 0x0067,
+        ];
+        let os_str = OsString::from_wide(&wide);
+        let non_utf8_path = Path::new(&os_str);
+        let path_str = non_utf8_path.to_string_lossy().to_string();
+
+        let runner = MockRunner::new(vec![mock_resp(
+            "mediainfo",
+            &["-f", &path_str],
+            true,
+            "Recorded date: 2023-05-01 10:20:30",
+        )]);
+
+        let result = get_date_string_mediainfo(non_utf8_path, &runner);
+        assert_eq!(result, Some("2023-05-01 10:20:30".to_string()));
     }
 }
