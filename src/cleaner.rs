@@ -7,35 +7,37 @@ use crate::FlatifyOptions;
 
 /// Remove a directory if it is empty.
 pub fn clean_directory<P: AsRef<Path>>(item: P, options: &FlatifyOptions) {
+    clean_directory_with(item, options, |path| fs::remove_dir(path));
+}
+
+/// Remove a directory if it is empty, using the provided removal function.
+fn clean_directory_with<P, F>(item: P, options: &FlatifyOptions, remove_dir: F)
+where
+    P: AsRef<Path>,
+    F: Fn(&Path) -> std::io::Result<()>,
+{
     let path = item.as_ref();
 
-    let entries = match fs::read_dir(path) {
-        Ok(read_dir) => {
-            let count = read_dir.count();
-            if count > 0 {
-                if options.verbose {
-                    println!(
-                        "Cannot delete directory which has files ({}): {}",
-                        count,
-                        path.display()
-                    );
-                }
-                return;
-            }
-            count
-        }
+    let count = match fs::read_dir(path) {
+        Ok(read_dir) => read_dir.count(),
         Err(_) => return,
     };
 
-    if entries == 0 {
+    if count > 0 {
         if options.verbose {
-            println!("Deleting empty directory {}", path.display());
+            let shown = path.display();
+            println!("Cannot delete directory which has files ({count}): {shown}");
         }
-        if !options.dry_run {
-            if let Err(e) = fs::remove_dir(path) {
-                if options.verbose {
-                    eprintln!("Failed to delete directory {}: {}", path.display(), e);
-                }
+        return;
+    }
+
+    if options.verbose {
+        println!("Deleting empty directory {}", path.display());
+    }
+    if !options.dry_run {
+        if let Err(e) = remove_dir(path) {
+            if options.verbose {
+                eprintln!("Failed to delete directory {}: {}", path.display(), e);
             }
         }
     }
@@ -116,6 +118,25 @@ mod tests {
         // fs::read_dir fails, function should return early without panicking.
         clean_directory(&missing, &options);
         assert!(!missing.exists());
+    }
+
+    #[test]
+    fn test_clean_directory_reports_removal_failure() {
+        let tmp = tempdir().unwrap();
+        let sub = tmp.path().join("stubborn");
+        fs::create_dir(&sub).unwrap();
+
+        let options = FlatifyOptions {
+            dry_run: false,
+            verbose: true,
+            ..Default::default()
+        };
+
+        // Simulate a removal that fails; the directory must be kept.
+        clean_directory_with(&sub, &options, |_path: &Path| {
+            Err(std::io::Error::other("removal failed"))
+        });
+        assert!(sub.exists());
     }
 
     #[test]

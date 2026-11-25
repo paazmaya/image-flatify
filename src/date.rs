@@ -187,17 +187,23 @@ pub fn get_date_string_with_runner<P: AsRef<Path>>(
     }
 
     // 4. File metadata fallback (creation / modification time)
-    if let Ok(metadata) = fs::metadata(path) {
-        let system_time = metadata
-            .created()
-            .or_else(|_| metadata.modified())
-            .unwrap_or_else(|_| std::time::SystemTime::now());
+    let metadata = fs::metadata(path).ok()?;
+    let created = metadata.created();
+    let modified = metadata.modified();
+    let system_time = resolve_file_time(created, modified, std::time::SystemTime::now());
 
-        let dt: DateTime<Local> = system_time.into();
-        return Some(dt.format("%Y-%m-%d-%H-%M-%S").to_string());
-    }
+    let dt: DateTime<Local> = system_time.into();
+    Some(dt.format("%Y-%m-%d-%H-%M-%S").to_string())
+}
 
-    None
+/// Resolve the best available file time, preferring creation time, then modification,
+/// then falling back to the current time.
+fn resolve_file_time(
+    created: std::io::Result<std::time::SystemTime>,
+    modified: std::io::Result<std::time::SystemTime>,
+    now: std::time::SystemTime,
+) -> std::time::SystemTime {
+    created.or(modified).unwrap_or(now)
 }
 
 #[cfg(test)]
@@ -942,5 +948,35 @@ mod tests {
 
         let result = get_date_string_mediainfo(non_utf8_path, &runner);
         assert_eq!(result, Some("2023-05-01 10:20:30".to_string()));
+    }
+
+    #[test]
+    fn test_resolve_file_time_prefers_created() {
+        let created = std::time::UNIX_EPOCH + std::time::Duration::from_secs(100);
+        let modified = std::time::UNIX_EPOCH + std::time::Duration::from_secs(200);
+        let got = resolve_file_time(Ok(created), Ok(modified), std::time::UNIX_EPOCH);
+        assert_eq!(got, created);
+    }
+
+    #[test]
+    fn test_resolve_file_time_falls_back_to_modified() {
+        let modified = std::time::UNIX_EPOCH + std::time::Duration::from_secs(200);
+        let got = resolve_file_time(
+            Err(io::Error::other("no created")),
+            Ok(modified),
+            std::time::UNIX_EPOCH,
+        );
+        assert_eq!(got, modified);
+    }
+
+    #[test]
+    fn test_resolve_file_time_falls_back_to_now() {
+        let now = std::time::UNIX_EPOCH + std::time::Duration::from_secs(300);
+        let got = resolve_file_time(
+            Err(io::Error::other("no created")),
+            Err(io::Error::other("no modified")),
+            now,
+        );
+        assert_eq!(got, now);
     }
 }

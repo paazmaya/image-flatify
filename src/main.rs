@@ -81,14 +81,14 @@ fn check_external_tools_with(mut is_available: impl FnMut(&str) -> bool) {
     }
 }
 
-fn main() {
+fn main() -> process::ExitCode {
     let cli = Cli::parse();
 
     // Check directory existence upfront
     for dir in &cli.directories {
         if !dir.exists() {
             eprintln!("Directory ({}) does not exist", dir.display());
-            process::exit(1);
+            return process::ExitCode::FAILURE;
         }
     }
 
@@ -109,6 +109,8 @@ fn main() {
     for dir in cli.directories {
         flatify(dir, &options);
     }
+
+    process::ExitCode::SUCCESS
 }
 
 #[cfg(test)]
