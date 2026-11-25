@@ -81,3 +81,66 @@ fn test_cli_append_hash() {
         .success()
         .stdout(predicate::str::is_match(r"40-00_\S+\.JPG").unwrap());
 }
+
+#[test]
+fn test_cli_prepend_date() {
+    let mut cmd = Command::cargo_bin("image-flatify").unwrap();
+    cmd.args(["-Pnv", "tests/fixtures"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("--> 2016-06-05_IMG_0640.JPG"));
+}
+
+#[test]
+fn test_cli_prepend_date_long() {
+    let mut cmd = Command::cargo_bin("image-flatify").unwrap();
+    cmd.args(["--prepend-date", "-nv", "tests/fixtures"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("--> 2016-06-05_IMG_0640.JPG"));
+}
+
+#[test]
+fn test_cli_prepend_date_with_hash() {
+    let mut cmd = Command::cargo_bin("image-flatify").unwrap();
+    cmd.args(["-aPnv", "tests/fixtures"])
+        .assert()
+        .success()
+        .stdout(predicate::str::is_match(r"2016-06-05_IMG_0640_\S+\.JPG").unwrap());
+}
+
+#[test]
+fn test_cli_prepend_date_with_lowercase_suffix() {
+    let mut cmd = Command::cargo_bin("image-flatify").unwrap();
+    cmd.args(["-Plnv", "tests/fixtures"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("--> 2016-06-05_IMG_0640.jpg"));
+}
+
+#[test]
+fn test_cli_prepend_date_conflicts_with_append_date() {
+    let mut cmd = Command::cargo_bin("image-flatify").unwrap();
+    cmd.args(["-P", "-d", "-nv", "tests/fixtures"])
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains("cannot be used with"));
+}
+
+#[test]
+fn test_cli_prepend_date_conflicts_with_prefix() {
+    let mut cmd = Command::cargo_bin("image-flatify").unwrap();
+    cmd.args(["-P", "-p", "trip-", "-nv", "tests/fixtures"])
+        .assert()
+        .failure()
+        .stderr(predicate::str::contains("cannot be used with"));
+}
+
+#[test]
+fn test_cli_append_date() {
+    let mut cmd = Command::cargo_bin("image-flatify").unwrap();
+    cmd.args(["-dnv", "tests/fixtures"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("--> IMG_0640_2016-06-05.JPG"));
+}

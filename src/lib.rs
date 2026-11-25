@@ -37,4 +37,6 @@ pub struct FlatifyOptions {
     pub no_delete_empty_directories: bool,
     /// Append the date to the original filename instead of replacing it.
     pub append_date: bool,
+    /// Prepend the ISO date to the original filename instead of replacing it.
+    pub prepend_date: bool,
 }

@@ -157,9 +157,10 @@ Options:
   -K, --keep-in-directories          Keep the renamed image files in their original directory
   -p, --prefix <PREFIX>              Prefix for the resulting filename, default empty [default: ""]
   -a, --append-hash                  Always append a hash string to the filename instead of a possible counter
-  -d, --append-date                  Append the ISO date part (YYYY-MM-DD) to the original file basename instead of replacing it
   -l, --lowercase-suffix             Lowercase the resulting file suffixes, or use as is by default
   -D, --no-delete-empty-directories  Do not delete any directories that become empty after processing
+  -d, --append-date                  Append the ISO date part (YYYY-MM-DD) to the original file basename instead of replacing it
+  -P, --prepend-date                 Prepend the ISO date part (YYYY-MM-DD) to the original file basename instead of replacing it
   -h, --help                         Print help
   -V, --version                      Print version
 
@@ -168,10 +169,13 @@ Version 6.1.0
 
 ### Examples
 
-The examples below use `photos/album/DCIM_01.JPG`, with a detected date of
-`2026-09-24 13:45:06`. Unless noted otherwise, image-flatify moves the file to the
-input directory and names it `2026-09-24-13-45-06.JPG`. The original extension
-case is preserved by default.
+The examples below use the source file `photos/album/DCIM_01.JPG`, with a detected
+date of `2026-09-24 13:45:06` and thereby the ISO date part `2026-09-24`. Unless
+noted otherwise, image-flatify moves the file to the input directory and keeps the
+original extension case (`.JPG`). The `<hash>` placeholder stands for the
+32-character lowercase hex hash produced by `--append-hash`, which varies per run.
+
+#### Option reference
 
 | Option                                | Example command                                      | Result                                                                                                                                |
 | ------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
@@ -181,8 +185,9 @@ case is preserved by default.
 | `-n`, `--dry-run`                     | `image-flatify --dry-run photos`                     | Same proposed filename; does not move files or delete directories.                                                                    |
 | `-K`, `--keep-in-directories`         | `image-flatify -K photos`                            | `photos/album/2026-09-24-13-45-06.JPG`; keeps the renamed file in its source directory.                                               |
 | `-p`, `--prefix <PREFIX>`             | `image-flatify --prefix trip- photos`                | `photos/trip-2026-09-24-13-45-06.JPG`                                                                                                 |
-| `-a`, `--append-hash`                 | `image-flatify -a photos`                            | `photos/2026-09-24-13-45-06_<32-character-lowercase-hex-hash>.JPG`; the hash varies between runs.                                     |
+| `-a`, `--append-hash`                 | `image-flatify -a photos`                            | `photos/2026-09-24-13-45-06_<hash>.JPG`; uses a hash instead of a collision counter.                                                  |
 | `-d`, `--append-date`                 | `image-flatify --append-date photos`                 | `photos/DCIM_01_2026-09-24.JPG`; appends the ISO date to the original basename instead of replacing it with the full timestamp.       |
+| `-P`, `--prepend-date`                | `image-flatify --prepend-date photos`                | `photos/2026-09-24_DCIM_01.JPG`; prepends the ISO date to the original basename instead of replacing it with the full timestamp.      |
 | `-l`, `--lowercase-suffix`            | `image-flatify -l photos`                            | `photos/2026-09-24-13-45-06.jpg`                                                                                                      |
 | `-D`, `--no-delete-empty-directories` | `image-flatify --no-delete-empty-directories photos` | Same filename as the default; leaves source directories in place even if they become empty.                                           |
 | `-h`, `--help`                        | `image-flatify --help`                               | Prints usage and options; does not process files.                                                                                     |
@@ -192,8 +197,76 @@ If a target filename already exists, the default behavior appends a counter befo
 the extension, for example `2026-09-24-13-45-06_1.JPG`. `--append-hash` uses a
 hash suffix instead of this counter.
 
-Options can be combined. For example, this previews a prefixed filename with a
-lowercase extension and prints each proposed move without changing any files:
+#### All naming combinations
+
+The tables below cover every valid combination of the options that affect the
+resulting file name, all applied to the same source `photos/album/DCIM_01.JPG`
+(date `2026-09-24 13:45:06`). Each row moves the file into the input directory and
+shows only the resulting file name; add `--keep-in-directories` to keep it next to
+the source instead.
+
+**Default naming** (no `--append-date` / `--prepend-date`): the original basename
+is replaced by the full timestamp.
+
+| Options                                           | Output file name                      |
+| ------------------------------------------------- | ------------------------------------- |
+| _(none)_                                          | `2026-09-24-13-45-06.JPG`             |
+| `--prefix trip-`                                  | `trip-2026-09-24-13-45-06.JPG`        |
+| `--append-hash`                                   | `2026-09-24-13-45-06_<hash>.JPG`      |
+| `--lowercase-suffix`                              | `2026-09-24-13-45-06.jpg`             |
+| `--prefix trip- --append-hash`                    | `trip-2026-09-24-13-45-06_<hash>.JPG` |
+| `--prefix trip- --lowercase-suffix`               | `trip-2026-09-24-13-45-06.jpg`        |
+| `--append-hash --lowercase-suffix`                | `2026-09-24-13-45-06_<hash>.jpg`      |
+| `--prefix trip- --append-hash --lowercase-suffix` | `trip-2026-09-24-13-45-06_<hash>.jpg` |
+
+**With `--append-date`**: the original basename is kept and the ISO date is added
+after it.
+
+| Options                                                         | Output file name                     |
+| --------------------------------------------------------------- | ------------------------------------ |
+| `--append-date`                                                 | `DCIM_01_2026-09-24.JPG`             |
+| `--append-date --prefix trip-`                                  | `trip-DCIM_01_2026-09-24.JPG`        |
+| `--append-date --append-hash`                                   | `DCIM_01_2026-09-24_<hash>.JPG`      |
+| `--append-date --lowercase-suffix`                              | `DCIM_01_2026-09-24.jpg`             |
+| `--append-date --prefix trip- --append-hash`                    | `trip-DCIM_01_2026-09-24_<hash>.JPG` |
+| `--append-date --prefix trip- --lowercase-suffix`               | `trip-DCIM_01_2026-09-24.jpg`        |
+| `--append-date --append-hash --lowercase-suffix`                | `DCIM_01_2026-09-24_<hash>.jpg`      |
+| `--append-date --prefix trip- --append-hash --lowercase-suffix` | `trip-DCIM_01_2026-09-24_<hash>.jpg` |
+
+**With `--prepend-date`**: the original basename is kept and the ISO date is added
+before it. It cannot be combined with `--prefix` or `--append-date`.
+
+| Options                                           | Output file name                |
+| ------------------------------------------------- | ------------------------------- |
+| `--prepend-date`                                  | `2026-09-24_DCIM_01.JPG`        |
+| `--prepend-date --append-hash`                    | `2026-09-24_DCIM_01_<hash>.JPG` |
+| `--prepend-date --lowercase-suffix`               | `2026-09-24_DCIM_01.jpg`        |
+| `--prepend-date --append-hash --lowercase-suffix` | `2026-09-24_DCIM_01_<hash>.jpg` |
+
+#### Invalid combinations
+
+`--prepend-date` cannot be used together with `--append-date` or `--prefix`. Both
+are rejected before any file is touched:
+
+| Options                         | Result                                                                         |
+| ------------------------------- | ------------------------------------------------------------------------------ |
+| `--prepend-date --append-date`  | `error: the argument '--prepend-date' cannot be used with '--append-date'`     |
+| `--prepend-date --prefix trip-` | `error: the argument '--prepend-date' cannot be used with '--prefix <PREFIX>'` |
+
+#### Behavior-only options
+
+`--verbose`, `--dry-run`, `--keep-in-directories`, and `--no-delete-empty-directories`
+do not change the resulting file name, so they can be added to any row above:
+
+| Option                          | Effect                                                                            | Changes the file name? |
+| ------------------------------- | --------------------------------------------------------------------------------- | ---------------------- |
+| `--verbose`                     | Prints each source-to-target move.                                                | No                     |
+| `--dry-run`                     | Prints proposed moves without touching files or directories.                      | No                     |
+| `--keep-in-directories`         | Writes the renamed file into its source directory instead of the input directory. | No (directory only)    |
+| `--no-delete-empty-directories` | Leaves source directories in place even if they become empty.                     | No                     |
+
+For example, this previews a prefixed file name with a lowercase extension and
+prints each proposed move without changing any files:
 
 ```sh
 image-flatify --verbose --dry-run --prefix trip- --lowercase-suffix photos

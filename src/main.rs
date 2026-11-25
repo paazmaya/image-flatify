@@ -47,6 +47,10 @@ struct Cli {
     #[arg(short = 'd', long = "append-date")]
     append_date: bool,
 
+    /// Prepend the ISO date part (YYYY-MM-DD) to the original file basename instead of replacing it
+    #[arg(short = 'P', long = "prepend-date", conflicts_with_all = ["append_date", "prefix"])]
+    prepend_date: bool,
+
     /// Directory or directories to process
     #[arg(required = true, value_name = "DIRECTORY")]
     directories: Vec<PathBuf>,
@@ -99,6 +103,7 @@ fn main() {
         lowercase_suffix: cli.lowercase_suffix,
         no_delete_empty_directories: cli.no_delete_empty_directories,
         append_date: cli.append_date,
+        prepend_date: cli.prepend_date,
     };
 
     for dir in cli.directories {

@@ -35,6 +35,8 @@ fn build_name_part(
 ) -> String {
     if options.append_date {
         format!("{}{}_{}", options.prefix, stem, date_iso)
+    } else if options.prepend_date {
+        format!("{}{}_{}", options.prefix, date_iso, stem)
     } else {
         format!("{}{}", options.prefix, date_part)
     }
@@ -203,6 +205,57 @@ mod tests {
     }
 
     #[test]
+    fn test_build_name_part_with_prepend_date() {
+        let options = FlatifyOptions {
+            prepend_date: true,
+            ..Default::default()
+        };
+        assert_eq!(
+            build_name_part("IMG_0640", &options, "2016-06-05-20-40-00", "2016-06-05"),
+            "2016-06-05_IMG_0640"
+        );
+    }
+
+    #[test]
+    fn test_build_name_part_with_prepend_date_and_prefix() {
+        let options = FlatifyOptions {
+            prefix: "pre-".to_string(),
+            prepend_date: true,
+            ..Default::default()
+        };
+        assert_eq!(
+            build_name_part("IMG_0640", &options, "2016-06-05-20-40-00", "2016-06-05"),
+            "pre-2016-06-05_IMG_0640"
+        );
+    }
+
+    #[test]
+    fn test_build_name_part_with_prepend_date_empty_stem() {
+        let options = FlatifyOptions {
+            prepend_date: true,
+            ..Default::default()
+        };
+        assert_eq!(
+            build_name_part("", &options, "2023-01-15-10-00-00", "2023-01-15"),
+            "2023-01-15_"
+        );
+    }
+
+    #[test]
+    fn test_build_name_part_prepend_takes_priority_over_append() {
+        // Direct API use could set both; append is evaluated first and wins.
+        let options = FlatifyOptions {
+            append_date: true,
+            prepend_date: true,
+            ..Default::default()
+        };
+        assert_eq!(
+            build_name_part("IMG_0640", &options, "2016-06-05-20-40-00", "2016-06-05"),
+            "IMG_0640_2016-06-05"
+        );
+    }
+
+    #[test]
     fn test_generate_md5_hash_empty() {
         assert_eq!(generate_md5_hash(""), "d41d8cd98f00b204e9800998ecf8427e");
     }
@@ -345,6 +398,53 @@ mod tests {
         assert_eq!(name.len(), 63);
         assert!(name.starts_with("hoplaa-2016-06-05-20-40-00_"));
         assert!(name.ends_with(".jpg"));
+    }
+
+    #[test]
+    fn test_get_target_path_prepend_date() {
+        let options = FlatifyOptions {
+            prepend_date: true,
+            ..Default::default()
+        };
+        let target = get_target_path("", "tests/fixtures/IMG_0640.JPG", &options);
+        assert_eq!(target, Some(PathBuf::from("2016-06-05_IMG_0640.JPG")));
+    }
+
+    #[test]
+    fn test_get_target_path_prepend_date_lowercase_suffix() {
+        let options = FlatifyOptions {
+            prepend_date: true,
+            lowercase_suffix: true,
+            ..Default::default()
+        };
+        let target = get_target_path("", "tests/fixtures/IMG_0640.JPG", &options);
+        assert_eq!(target, Some(PathBuf::from("2016-06-05_IMG_0640.jpg")));
+    }
+
+    #[test]
+    fn test_get_target_path_prepend_date_with_hash() {
+        let options = FlatifyOptions {
+            prepend_date: true,
+            append_hash: true,
+            lowercase_suffix: true,
+            ..Default::default()
+        };
+        let target = get_target_path("", "tests/fixtures/IMG_0640.JPG", &options).unwrap();
+        let name = target.to_string_lossy();
+        // "2016-06-05_IMG_0640" (19) + "_" + 32 hex chars + ".jpg" (4)
+        assert_eq!(name.len(), 56);
+        assert!(name.starts_with("2016-06-05_IMG_0640_"));
+        assert!(name.ends_with(".jpg"));
+    }
+
+    #[test]
+    fn test_get_target_path_append_date() {
+        let options = FlatifyOptions {
+            append_date: true,
+            ..Default::default()
+        };
+        let target = get_target_path("", "tests/fixtures/IMG_0640.JPG", &options);
+        assert_eq!(target, Some(PathBuf::from("IMG_0640_2016-06-05.JPG")));
     }
 
     #[test]
