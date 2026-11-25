@@ -3,7 +3,7 @@
 This changelog covers the version history and possible upcoming changes.
 It follows the guidance from https://keepachangelog.com/en/1.0.0/.
 
-## Unreleased
+## `v6.2.0` (2026-11-25)
 
 - Add `--prepend-date` / `-P` CLI option to prepend the ISO date part (`YYYY-MM-DD`) to the original file basename instead of replacing it; a counter (or hash when `--append-hash` is used) is appended at the end when a collision occurs
 - `--prepend-date` conflicts with `--append-date` and `--prefix`; it can be combined with `--append-hash`
